@@ -1,4 +1,5 @@
-#Locations and Container Management
+##Locations and Container Management
+
 [Auto Replace Containers](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/asAutoReplaceContainers.py)
 
 [Replace Containers](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/asReplaceContainers.py)
@@ -7,10 +8,12 @@
 
 [Replace Locations](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/asReplaceLocations.py)
 
-#Note Editing
+##Note Editing
+
 [Edit Notes](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/advancedNoteEdit.py)
 
-#Export Data to CSVs
+##Export Data to CSVs
+
 [Accessions CSV](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/asCSV-accessions.py)
 
 [Archival Objects CSV](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/asCSV-archivalObjects.py)
@@ -21,5 +24,6 @@
 
 [Resource Titles CSV](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/asCSV-titles.py)
 
-#Post New Data to AS
+##Post New Data to AS
+
 [Post Objects from JSON](https://github.com/RockefellerArchiveCenter/scripts/blob/master/archivesspace/post_objects.py)
