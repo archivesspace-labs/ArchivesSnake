@@ -1,4 +1,4 @@
-Python scripts used to perform various tasks with the ArchivesSpace API developed for the Johns Hopkins University Sherdian Libraries. All scripts and documentation created by Valerie Addonizio, [Eric Hanson](https://github.com/ehanson8), and [Lora Woodford](https://github.com/lorawoodford)
+Python scripts used to perform various tasks with the ArchivesSpace API developed for the Johns Hopkins University Sherdian Libraries. All scripts and documentation created by [Valerie Addonizio](https://github.com/vscripty), [Eric Hanson](https://github.com/ehanson8), and [Lora Woodford](https://github.com/lorawoodford)
 
 # archivesspace-api
 
