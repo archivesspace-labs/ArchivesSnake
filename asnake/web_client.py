@@ -23,7 +23,7 @@ class ASnakeProxyMethods(type):
         for meth in ('get', 'post', 'head', 'put', 'delete', 'options',):
             fn = http_meth_factory(meth)
             fn.__name__ = meth
-            fn.__doc__ = '''Proxied '{}' from requests.Session'''.format(meth)
+            fn.__doc__ = '''Proxied :meth:`requests.Session.{}` method from :class:`requests.Session`'''.format(meth)
 
             setattr(cls, meth, fn)
 
@@ -40,6 +40,10 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
 
 
     def authorize(self, username=None, password=None):
+        '''Authorizes the client against the configured archivesspace instance.
+
+Parses the JSON response, and stores the returned session token in the session.headers for future requests.
+Asks for a "non-expiring" session, which isn't truly immortal, just long-lived.'''
         username = username or self.config['username']
         password = password or self.config['password']
 

@@ -17,6 +17,8 @@ attrs = "*"
 
 pytest = "*"
 vcrpy = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
 
 
 [requires]
