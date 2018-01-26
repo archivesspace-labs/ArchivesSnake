@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+requests = "*"
+pyaml = "*"
+boltons = "*"
+attrs = "*"
+
+
+[dev-packages]
+
+pytest = "*"
+vcrpy = "*"
+
+
+[requires]
+
+python_version = "3.6"
