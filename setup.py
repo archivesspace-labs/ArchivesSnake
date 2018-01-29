@@ -10,5 +10,5 @@ setup(
         "boltons",
         "pyyaml",
         "requests",
-    ]
+    ],
 )
