@@ -68,7 +68,16 @@ In addition to saving typing, the result of this is that the url fragments used 
 
 ## Configuration
 
-As you can see in the example above, you can configure the client with a baseurl, username, and password in code when creating the client object.
+As per the example above, you can configure the client the client object.
+
+Allowed configuration values are:
+
+| **Setting** | **Description**                                                               |
+|-------------|-------------------------------------------------------------------------------|
+| baseurl     | The location (including port if not on port 80) of your archivesspace backend |
+| username    | Username for authorization                                                    |
+| password    | Password for authorization                                                    |
+
 You can also define a file in the [YAML](http://yaml.org/) configuration language; by default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search for a YAML config file there.
 
 An example config:
@@ -80,3 +89,8 @@ password: admin
 ```
 
 Default values corresponding to the admin account of an unaltered local development instance of ASpace are included as fallback values.
+
+## Documentation
+Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available at
+**TBD: proposed at the github pages for this repo pointing at `/docs/html`**
+</em>
