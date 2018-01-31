@@ -6,3 +6,4 @@ Repo for all AS Python Related work
 * [Outline of UAlbany Draft Library](ualbanyExample.md)
 * [Harvard/Smith Ingest Client/Scripts](HarvardSmithLinks.md)
 * [Johns Hopkins University links](Johns_Hopkins_University_links.md)
+* [Yale University Links] (Yale_Links.md)
