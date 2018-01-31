@@ -10,10 +10,12 @@ a comprehensive client library, to reduce duplication of effort and simplify scr
 Here are listed several examples of pre-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
 own via pull request!
 
-* [RAC Examples](RAC_links.md)
 * [Duke Examples](Duke_links.md)
-* [Outline of UAlbany Draft Library](ualbanyExample.md)
 * [Harvard/Smith Ingest Client/Scripts](HarvardSmithLinks.md)
+* [Johns Hopkins University links](Johns_Hopkins_University_links.md)
+* [RAC Examples](RAC_links.md)
+* [Outline of UAlbany Draft Library](ualbanyExample.md)
+* [Yale University Links](Yale_Links.md)
 
 ## Requirements
 ArchivesSnake has the following requirements.
@@ -93,4 +95,3 @@ Default values corresponding to the admin account of an unaltered local developm
 ## Documentation
 Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available at
 **TBD: proposed at the github pages for this repo pointing at `/docs/html`**
-</em>
