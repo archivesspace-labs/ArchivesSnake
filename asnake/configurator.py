@@ -22,7 +22,7 @@ def ConfigSources(yaml_path):
 @attr.s(slots=True, repr=False)
 class ASnakeConfig:
     '''Configuration object.  Essentially a convenience wrapper over an instance of :class:`boltons.dictutils.OrderedMultiDict`'''
-    config = attr.ib(converter=ConfigSources, default=expanduser(env.get('ASNAKE_CONFIG_FILE', "~/.archivessnake.yml")))
+    config = attr.ib(converter=ConfigSources, default=attr.Factory(lambda: expanduser(env.get('ASNAKE_CONFIG_FILE', "~/.archivessnake.yml"))))
 
     def __setitem__(self, k, v):
         return self.config.add(k, v)
