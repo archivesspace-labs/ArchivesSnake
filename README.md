@@ -93,5 +93,4 @@ password: admin
 Default values corresponding to the admin account of an unaltered local development instance of ASpace are included as fallback values.
 
 ## Documentation
-Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available at
-**TBD: proposed at the github pages for this repo pointing at `/docs/html`**
+Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available [here](https://archivesspace-labs.github.io/ArchivesSnake)

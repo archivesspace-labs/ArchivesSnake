@@ -8,7 +8,7 @@ class ASnakeAuthError(Exception): pass
 def http_meth_factory(meth):
     '''Utility method for producing HTTP proxy methods for ASnakeProxyMethods mixin class.
 
-Urls are prefixed with the baseurl defined  All arguments are p
+    Urls are prefixed with the baseurl defined  All arguments are p
     '''
     def http_method(self, url, *args, **kwargs):
         return getattr(self.session, meth)(urljoin(self.config['baseurl'], url), *args, **kwargs)
@@ -42,8 +42,9 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
     def authorize(self, username=None, password=None):
         '''Authorizes the client against the configured archivesspace instance.
 
-Parses the JSON response, and stores the returned session token in the session.headers for future requests.
-Asks for a "non-expiring" session, which isn't truly immortal, just long-lived.'''
+        Parses the JSON response, and stores the returned session token in the session.headers for future requests.
+        Asks for a "non-expiring" session, which isn't truly immortal, just long-lived.'''
+
         username = username or self.config['username']
         password = password or self.config['password']
 
