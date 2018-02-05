@@ -70,7 +70,7 @@ In addition to saving typing, the result of this is that the url fragments used 
 
 ## Configuration
 
-As per the example above, you can configure the client the client object.
+As per the example above, you can configure the client object by passing it arguments during creation.
 
 Allowed configuration values are:
 
@@ -80,9 +80,9 @@ Allowed configuration values are:
 | username    | Username for authorization                                                    |
 | password    | Password for authorization                                                    |
 
-You can also define a file in the [YAML](http://yaml.org/) configuration language; by default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search for a YAML config file there.
+You can also define a configuration file, formatted in the [YAML](http://yaml.org/) markup language.  By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
 
-An example config:
+An example configuration file:
 
 ``` yaml
 baseurl: http://localhost:4567
