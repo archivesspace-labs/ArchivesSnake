@@ -30,8 +30,10 @@ Very soon, ArchivesSnake should be registered with pypi, but currently, to insta
 git clone https://github.com/archivesspace-labs/ArchivesSnake.git
 cd ArchivesSnake
 python3 setup.py sdist
-pip install dist/ArchivesSnake-0.1.tar.gz
+pip3 install dist/ArchivesSnake-0.1.tar.gz
 ```
+
+Note that this assumes your install of Python has `python3` and `pip3` aliases, which it should, especially if installed in a virtualenv.
 
 You'll need an internet connection to fetch ASnake's dependencies.
 
