@@ -10,6 +10,7 @@ a comprehensive client library, to reduce duplication of effort and simplify scr
 Here are listed several examples of pre-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
 own via pull request!
 
+* [Smith archivesspace Python Module](https://smithcollegelibraries.github.io/archivesspace-python/)
 * [Duke Examples](Duke_links.md)
 * [Harvard/Smith Ingest Client/Scripts](HarvardSmithLinks.md)
 * [Johns Hopkins University links](Johns_Hopkins_University_links.md)
