@@ -94,5 +94,21 @@ password: admin
 
 Default values corresponding to the admin account of an unaltered local development instance of ASpace are included as fallback values.
 
+### Logging
+
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  All of this can be adjusted by configuring the logging module prior to loading the asnake library or any of its submodules, like so:
+
+``` python
+import logging, structlog, sys
+
+logging.basicConfig(level=logging.DEBUG, format="%(message)s", stream=sys.stdout)
+structlog.configure(
+    ... # structlog configuration is somewhat complex, see docs
+)
+import asnake
+```
+
+Due to complexities of configuring Python logging, if you want to configure one of these components (logging, structlog) you'll need to _completely_ configure it; configuration will entirely _replace_ the defaults, rather than being merged with them.
+
 ## Documentation
 Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available [here](https://archivesspace-labs.github.io/ArchivesSnake)

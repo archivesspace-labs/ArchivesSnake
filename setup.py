@@ -10,5 +10,6 @@ setup(
         "boltons",
         "pyyaml",
         "requests",
+	"structlog",
     ],
 )

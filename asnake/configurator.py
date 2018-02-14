@@ -1,7 +1,9 @@
+import attr, structlog, yaml
 from boltons.dictutils import OMD
-import yaml, attr
 from os.path import exists, expanduser
 from os import environ as env
+
+log = structlog.get_logger(__name__)
 
 def ConfigSources(yaml_path):
     '''Helper method returning an :py:class:`boltons.dictutils.OrderedMultiDict` representing configuration sources (defaults, yaml)'''
@@ -17,6 +19,7 @@ def ConfigSources(yaml_path):
     if exists(yaml_path):
         with open(yaml_path, 'r') as f:
             omd.update_extend(yaml.safe_load(f))
+            log.debug("loaded yaml config", source=yaml_path)
     return omd
 
 @attr.s(slots=True, repr=False)

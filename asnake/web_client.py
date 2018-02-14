@@ -1,7 +1,9 @@
 from requests import Session
 from urllib.parse import urljoin, quote
-import json
+import json, structlog
 from .configurator import ASnakeConfig
+
+log = structlog.get_logger(__name__)
 
 class ASnakeAuthError(Exception): pass
 
@@ -11,8 +13,10 @@ def http_meth_factory(meth):
     Urls are prefixed with the baseurl defined  All arguments are p
     '''
     def http_method(self, url, *args, **kwargs):
-        return getattr(self.session, meth)(urljoin(self.config['baseurl'], url), *args, **kwargs)
-
+        full_url = urljoin(self.config['baseurl'], url)
+        result = getattr(self.session, meth)(full_url, *args, **kwargs)
+        log.debug("proxied http method", method=meth.upper(), url=full_url, status=result.status_code)
+        return result
     return http_method
 
 
@@ -37,6 +41,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
         if not hasattr(self, 'session'): self.session = Session()
         self.session.headers.update({'Accept': 'application/json',
                                      'User-Agent': 'ArchivesSnake/0.1'})
+        log.debug("client created")
 
 
     def authorize(self, username=None, password=None):
@@ -48,14 +53,18 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
         username = username or self.config['username']
         password = password or self.config['password']
 
+        log.debug("authorizing against ArchivesSpace", user=username)
+
         resp = self.session.post(
             urljoin(self.config['baseurl'], 'users/{username}/login'.format(username=quote(username))),
             params={"password": password, "expiring": False}
         )
 
         if resp.status_code != 200:
+            log.debug("authorization failure", status=resp.status_code)
             raise ASnakeAuthError("Failed to authorize ASnake with status: {}".format(resp.status_code))
         else:
             session_token = json.loads(resp.text)['session']
             self.session.headers['X-ArchivesSpace-Session'] = session_token
+            log.debug("authorization success", session_token=session_token)
             return session_token

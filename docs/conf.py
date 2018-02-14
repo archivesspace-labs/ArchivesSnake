@@ -83,7 +83,8 @@ todo_include_todos = False
 # intersphinx options
 intersphinx_mapping = {
     'boltons': ['https://boltons.readthedocs.io/en/latest/', None],
-    'requests': ['http://docs.python-requests.org/en/master/', None]
+    'requests': ['http://docs.python-requests.org/en/master/', None],
+    'structlog': ['http://www.structlog.org/en/stable/', None]
 }
 
 
