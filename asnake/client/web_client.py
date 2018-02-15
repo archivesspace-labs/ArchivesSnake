@@ -1,9 +1,10 @@
 from requests import Session
 from urllib.parse import urljoin, quote
-import json, structlog
-from .configurator import ASnakeConfig
+import json
+import asnake.configurator as conf
+import asnake.logging as logging
 
-log = structlog.get_logger(__name__)
+log = logging.get_logger(__name__)
 
 class ASnakeAuthError(Exception): pass
 
@@ -35,7 +36,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
     '''ArchivesSnake Web Client'''
 
     def __init__(self, **config):
-        self.config = ASnakeConfig()
+        self.config = conf.ASnakeConfig()
         self.config.update(config)
 
         if not hasattr(self, 'session'): self.session = Session()
