@@ -2,34 +2,50 @@ import logging
 import sys, os
 import structlog
 from copy import copy
+import re
 
 def copy_config(config):
+    '''Copy relevant information from one config to another.'''
+
     new_config = {}
     new_logging = config['logging'].copy()
-    new_structlog = {k:v for k,v in config['structlog'].items() if k != 'processors'}
-    new_structlog['processors'] = copy(config['structlog']['processors'])
+    new_structlog = {k:v for k,copy(v) in config['structlog'].items()}
+
     new_config.update(logging=new_logging, structlog=new_structlog)
     return new_config
 
+# Regex to Match down or mixed-case usage of standard logging levels
+canonical_levels = ('CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSET',)
+level_re = re.compile(
+    r"|".join((r'^{}$'.format(level) for level in canonical_levels)),
+    re.I
+)
+
 already_configured = False
-def setup_logging(config=None, level=None, stream=None, force_reconfigure=False):
+def setup_logging(config=None, level=None, stream=None):
+    '''sets up both logging and structlog.'''
     global already_configured
-    from_env = os.environ.get('ASNAKE_LOG_CONFIG', None)
-    default = configurations.get(from_env, DEFAULT_CONFIG)
+    if not already_configured:
+        from_env = os.environ.get('ASNAKE_LOG_CONFIG', None)
+        default = configurations.get(from_env, DEFAULT_CONFIG)
 
-    if not config:
-        config = copy_config(DEFAULT_CONFIG)
+        if not config:
+            config = copy_config(DEFAULT_CONFIG)
 
-    if level:
-        config['logging']['level'] = level
+        if level:
+            if isinstance(level, str) and level_re.match(level):
+                level = getattr(logging, level.upper())
 
-    if stream:
-        config['logging']['stream'] = stream
+            config['logging']['level'] = level
 
-    if not already_configured or force_reconfigure:
+        if stream:
+            config['logging']['stream'] = stream
+
         logging.basicConfig(**config['logging'])
         structlog.configure(**config['structlog'])
         already_configured = True
+    else:
+        raise RuntimeError("Attempted to configure logging when it has already been configured")
 
 def get_logger(name=None):
     if not already_configured:
@@ -40,6 +56,7 @@ def get_logger(name=None):
 # This amounts to a log of serialized JSON events with UTC timestamps and various
 # useful information attached, which formats exceptions passed to logging methods in exc_info
 def default_structlog_conf(**overrides):
+    '''Generate a default configuration for structlog'''
     conf = {
         "logger_factory": structlog.stdlib.LoggerFactory(),
         "wrapper_class":structlog.stdlib.BoundLogger,
@@ -58,6 +75,7 @@ def default_structlog_conf(**overrides):
     return conf
 
 def default_logging_conf(**overrides):
+    '''Generate a default stdlib logging configuration.'''
     conf = {"level": logging.INFO, "format": "%(message)s", "stream": sys.stderr}
     conf.update(**overrides)
     return conf

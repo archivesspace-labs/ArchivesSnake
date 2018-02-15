@@ -41,7 +41,7 @@ You'll need an internet connection to fetch ASnake's dependencies.
 To start, here's a simple, fairly complete example - fetching the JSON representation of all the repositories from an ArchivesSpace instance and saving it to a variable.
 
 ``` python
-from asnake import ASnakeClient
+from asnake.client import ASnakeClient
 
 client = ASnakeClient(baseurl="http://my.aspace.backend.url.edu:4567",
                       username="admin",
@@ -96,19 +96,30 @@ Default values corresponding to the admin account of an unaltered local developm
 
 ### Logging
 
-ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  All of this can be adjusted by configuring the logging module prior to loading the asnake library or any of its submodules, like so:
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  All of this can be configured; note that configuration must happen prior to loading asnake.client.ASnakeClient or any of module that uses it, like so:
 
 ``` python
-import logging, structlog, sys
+import asnake.logging as logging
 
-logging.basicConfig(level=logging.DEBUG, format="%(message)s", stream=sys.stdout)
-structlog.configure(
-    ... # structlog configuration is somewhat complex, see docs
-)
-import asnake
+logging.setup_logging(level='DEBUG') # logging takes several arguments, provides defaults, etc
+from asnake.client import ASnakeClient
 ```
 
-Due to complexities of configuring Python logging, if you want to configure one of these components (logging, structlog) you'll need to _completely_ configure it; configuration will entirely _replace_ the defaults, rather than being merged with them.
+There are a number of provided configurations, available in dict `asnake.logging.configurations` and exposed as toplevel constants in the module (e.g. `asnake.logging.DEBUG_TO_STDERR`, `asnake.logging.DEFAULT_CONFIG`).  Log level and stream to be printed to can be overriden by passing `level` and `stream` arguments to `setup_logging`.
+
+The provided configurations are:
+
+| Configuration Names | Level | Output To  | Notes                    |
+|---------------------|-------|------------|--------------------------|
+| DEFAULT_CONFIG      | INFO  | sys.stderr | Alias for INFO_TO_STDERR |
+| INFO_TO_STDERR      | INFO  | sys.stderr |                          |
+| INFO_TO_STDOUT      | INFO  | sys.stdout |                          |
+| DEBUG_TO_STDERR     | DEBUG | sys.stderr |                          |
+| DEBUG_TO_STDOUT     | DEBUG | sys.stdout |                          |
+
+By setting the `ASNAKE_LOG_CONFIG` variable to one of these names, you can set that config as the default.
+
+To directly get ahold of a logger for use in your own application, you can call `asnake.logging.get_logger`.
 
 ## Documentation
 Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available [here](https://archivesspace-labs.github.io/ArchivesSnake)
