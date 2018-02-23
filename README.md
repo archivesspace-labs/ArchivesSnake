@@ -34,7 +34,7 @@ python3 setup.py sdist
 pip3 install dist/ArchivesSnake-0.1.tar.gz
 ```
 
-Note that this assumes your install of Python has `python3` and `pip3` aliases, which it should, especially if installed in a virtualenv.
+This is assuming a standard Python 3 install, which provides `pip3` and `python3` commands.  If your environment doesn't let you successfully run either command, please consult the documentation for your version of Python and/or your operating system.
 
 You'll need an internet connection to fetch ASnake's dependencies.
 
