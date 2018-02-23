@@ -159,57 +159,57 @@
 <h1>Welcome to ArchivesSnake’s documentation!<a class="headerlink" href="#welcome-to-archivessnake-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-asnake"></span><dl class="class">
-<dt id="asnake.ASnakeClient">
-<em class="property">class </em><code class="descclassname">asnake.</code><code class="descname">ASnakeClient</code><span class="sig-paren">(</span><em>**config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/web_client.html#ASnakeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeClient" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-asnake.client"></span><dl class="class">
+<dt id="asnake.client.ASnakeClient">
+<em class="property">class </em><code class="descclassname">asnake.client.</code><code class="descname">ASnakeClient</code><span class="sig-paren">(</span><em>**config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>ArchivesSnake Web Client</p>
 <dl class="method">
-<dt id="asnake.ASnakeClient.authorize">
-<code class="descname">authorize</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/web_client.html#ASnakeClient.authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeClient.authorize" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.authorize">
+<code class="descname">authorize</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorizes the client against the configured archivesspace instance.</p>
 <p>Parses the JSON response, and stores the returned session token in the session.headers for future requests.
 Asks for a “non-expiring” session, which isn’t truly immortal, just long-lived.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="asnake.ASnakeClient.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.delete" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="asnake.ASnakeClient.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.get" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="asnake.ASnakeClient.head">
-<code class="descname">head</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.head">
+<code class="descname">head</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.head" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="asnake.ASnakeClient.options">
-<code class="descname">options</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.options">
+<code class="descname">options</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.options" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="asnake.ASnakeClient.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
 <dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.post" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="asnake.ASnakeClient.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
+<dt id="asnake.client.ASnakeClient.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
 <dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.put" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<span class="target" id="module-asnake"></span><dl class="class">
 <dt id="asnake.ASnakeConfig">
 <em class="property">class </em><code class="descclassname">asnake.</code><code class="descname">ASnakeConfig</code><span class="sig-paren">(</span><em>config=NOTHING</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configuration object.  Essentially a convenience wrapper over an instance of <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict" title="(in boltons v17.2)"><code class="xref py py-class docutils literal"><span class="pre">boltons.dictutils.OrderedMultiDict</span></code></a></p>

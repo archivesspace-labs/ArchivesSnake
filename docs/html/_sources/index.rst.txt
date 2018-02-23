@@ -7,15 +7,18 @@ Welcome to ArchivesSnake's documentation!
 =========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
+
+.. automodule:: asnake.client
+   :members:
+
+.. autoclass:: asnake.client.ASnakeClient
+   :members:
+   :inherited-members:
 
 .. automodule:: asnake
    :members:
-
-.. autoclass:: ASnakeClient
-   :members:
-   :inherited-members:
 
 .. autoclass:: ASnakeConfig
    :members:

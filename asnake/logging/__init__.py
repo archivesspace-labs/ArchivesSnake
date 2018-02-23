@@ -9,7 +9,7 @@ def copy_config(config):
 
     new_config = {}
     new_logging = config['logging'].copy()
-    new_structlog = {k:v for k,copy(v) in config['structlog'].items()}
+    new_structlog = {k:copy(v) for k,v in config['structlog'].items()}
 
     new_config.update(logging=new_logging, structlog=new_structlog)
     return new_config
