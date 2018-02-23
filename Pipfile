@@ -1,0 +1,28 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+requests = "*"
+pyaml = "*"
+boltons = "*"
+attrs = "*"
+structlog = "*"
+"e1839a8" = {path = ".", editable = true}
+
+
+[dev-packages]
+
+pytest = "*"
+vcrpy = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+
+
+[requires]
+
+python_version = "3.6"

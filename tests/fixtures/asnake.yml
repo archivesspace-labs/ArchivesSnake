@@ -1,0 +1,3 @@
+username: APIUser
+password: APIPass
+baseurl: http://notarealurl.com:4567
