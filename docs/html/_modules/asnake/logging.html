@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>asnake.logging &mdash; ArchivesSnake 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="ArchivesSnake 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> ArchivesSnake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ArchivesSnake</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>asnake.logging</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for asnake.logging</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">structlog</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="copy_config"><a class="viewcode-back" href="../../index.html#asnake.logging.copy_config">[docs]</a><span class="k">def</span> <span class="nf">copy_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Copy relevant information from one config to another.&#39;&#39;&#39;</span>
+
+    <span class="n">new_config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">new_logging</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">new_structlog</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;structlog&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">new_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">logging</span><span class="o">=</span><span class="n">new_logging</span><span class="p">,</span> <span class="n">structlog</span><span class="o">=</span><span class="n">new_structlog</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_config</span></div>
+
+<span class="c1"># Regex to Match down or mixed-case usage of standard logging levels</span>
+<span class="n">canonical_levels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;CRITICAL&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;NOTSET&#39;</span><span class="p">,)</span>
+<span class="n">level_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="sa">r</span><span class="s1">&#39;^</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">canonical_levels</span><span class="p">)),</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">I</span>
+<span class="p">)</span>
+
+<span class="n">already_configured</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="viewcode-block" id="setup_logging"><a class="viewcode-back" href="../../index.html#asnake.logging.setup_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;sets up both logging and structlog.&#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">already_configured</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">already_configured</span><span class="p">:</span>
+        <span class="n">from_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ASNAKE_LOG_CONFIG&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">configurations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">from_env</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">copy_config</span><span class="p">(</span><span class="n">DEFAULT_CONFIG</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">level_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+                <span class="n">level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging&#39;</span><span class="p">][</span><span class="s1">&#39;level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">level</span>
+
+        <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging&#39;</span><span class="p">][</span><span class="s1">&#39;stream&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging&#39;</span><span class="p">])</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;structlog&#39;</span><span class="p">])</span>
+        <span class="n">already_configured</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Attempted to configure logging when it has already been configured&quot;</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">already_configured</span><span class="p">:</span>
+        <span class="n">setup_logging</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">structlog</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Log format is standard across all provided defaults</span>
+<span class="c1"># This amounts to a log of serialized JSON events with UTC timestamps and various</span>
+<span class="c1"># useful information attached, which formats exceptions passed to logging methods in exc_info</span>
+<div class="viewcode-block" id="default_structlog_conf"><a class="viewcode-back" href="../../index.html#asnake.logging.default_structlog_conf">[docs]</a><span class="k">def</span> <span class="nf">default_structlog_conf</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Generate a default configuration for structlog&#39;&#39;&#39;</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;logger_factory&quot;</span><span class="p">:</span> <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
+        <span class="s2">&quot;wrapper_class&quot;</span><span class="p">:</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="s2">&quot;cache_logger_on_first_use&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;processors&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_logger_name</span><span class="p">,</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_log_level</span><span class="p">,</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">PositionalArgumentsFormatter</span><span class="p">(),</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">StackInfoRenderer</span><span class="p">(),</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">format_exc_info</span><span class="p">,</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">UnicodeDecoder</span><span class="p">(),</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">TimeStamper</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;iso&#39;</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">JSONRenderer</span><span class="p">()]</span>
+    <span class="p">}</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conf</span></div>
+
+<div class="viewcode-block" id="default_logging_conf"><a class="viewcode-back" href="../../index.html#asnake.logging.default_logging_conf">[docs]</a><span class="k">def</span> <span class="nf">default_logging_conf</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Generate a default stdlib logging configuration.&#39;&#39;&#39;</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">}</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conf</span></div>
+
+<span class="c1"># Provided example configurations for structlog.</span>
+<span class="n">configurations</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">configurations</span><span class="p">[</span><span class="s1">&#39;INFO_TO_STDERR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;logging&quot;</span><span class="p">:</span> <span class="n">default_logging_conf</span><span class="p">(),</span>
+    <span class="s2">&quot;structlog&quot;</span><span class="p">:</span> <span class="n">default_structlog_conf</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="n">configurations</span><span class="p">[</span><span class="s1">&#39;INFO_TO_STDOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;logging&quot;</span><span class="p">:</span> <span class="n">default_logging_conf</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">),</span>
+    <span class="s2">&quot;structlog&quot;</span><span class="p">:</span> <span class="n">default_structlog_conf</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="n">configurations</span><span class="p">[</span><span class="s1">&#39;DEBUG_TO_STDERR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;logging&quot;</span><span class="p">:</span> <span class="n">default_logging_conf</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">),</span>
+    <span class="s2">&quot;structlog&quot;</span><span class="p">:</span> <span class="n">default_structlog_conf</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="n">configurations</span><span class="p">[</span><span class="s1">&#39;DEBUG_TO_STDOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;logging&quot;</span><span class="p">:</span> <span class="n">default_logging_conf</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">),</span>
+    <span class="s2">&quot;structlog&quot;</span><span class="p">:</span> <span class="n">default_structlog_conf</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="n">configurations</span><span class="p">[</span><span class="s1">&#39;DEFAULT_CONFIG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">configurations</span><span class="p">[</span><span class="s1">&#39;INFO_TO_STDERR&#39;</span><span class="p">]</span>
+
+<span class="c1"># Expose these as constants for user convenience</span>
+<span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">configurations</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Various Artists.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

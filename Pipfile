@@ -21,6 +21,7 @@ pytest = "*"
 vcrpy = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+twine = "*"
 
 
 [requires]

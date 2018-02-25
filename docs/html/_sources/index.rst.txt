@@ -24,6 +24,8 @@ Welcome to ArchivesSnake's documentation!
    :members:
    :inherited-members:
 
+.. automodule:: asnake.logging
+   :members:
 
 Indices and tables
 ==================
