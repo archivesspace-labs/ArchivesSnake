@@ -22,11 +22,9 @@ class ASpace():
 		else:
 			return jsonmodel_muliple_object(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr) + "?all_ids=true").json())
 
-	# no sure how to pass a variable to implement this with __getattr__
+	# not sure how to pass a variable to implement this with __getattr__
 	def resource(self, id):
-		resource = self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json()
-		
-		
+		resource = self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json()	
 		return jsonmodel_single_object(resource, self.__client)
 	
 		
