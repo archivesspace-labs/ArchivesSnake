@@ -11,3 +11,5 @@ for note in AS.resource("150").notes:
 			
 for ao in AS.resource(151).archival_objects:
 	print (ao.title)
+	for note in ao.notes:
+		note.pp()

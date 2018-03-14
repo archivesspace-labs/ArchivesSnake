@@ -53,7 +53,7 @@ class jsonmodel_single_object:
 
 	# utility methods
 	def pp(self):
-		return json.dumps(self.__json, indent=2)
+		print (json.dumps(self.__json, indent=2))
 
 	def json(self):
 		return self.__json
