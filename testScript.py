@@ -2,6 +2,9 @@ from asnake.aspace import ASpace
 
 AS = ASpace()
 
+for repo in AS.repositories:
+    print (repo.name)
+
 print (AS.resource(150).title)
 
 for note in AS.resource("150").notes:
