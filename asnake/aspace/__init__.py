@@ -3,29 +3,49 @@ import json
 
 class ASpace():
 
-	#pass repository when instantiated?
+	# this happens when you call ASpace()
 	def __init__(self, repository=None):
 	
-		#repository default to 2 if not provided?
+		# Repository will default to 2 if not provided
 		if repository == None:
 			self.repository = "2"
 		else:
 			self.repository = repository
-			
+		
+		# Connect to ASpace using .archivessnake.yml
 		self.__client = ASnakeClient()
 		self.__client.authorize()
-		
-		
+	
+	# this autormatically sets attribues to ASpace(), so you can ASpace().resources, etc	
 	def __getattr__(self, attr):
-		if attr == "repositories":
-			return jsonmodel_muliple_object(self.__client.get("/repositories").json(), self.__client)
-		else:
-			return jsonmodel_muliple_object(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr) + "?all_ids=true").json(), self.__client)
+		if not attr.startswith('_'):
+			# This sets plural attribures, like reources and archival_objects
+			# Not sure if this is safe
+			if attr.lower().endswith("s"):
+				#repositories is separtate, as the URL is different
+				if attr == "repositories":
+					return jsonmodel_muliple_object(self.__client.get("/repositories").json(), self.__client)
+				else:
+					return jsonmodel_muliple_object(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr) + "?all_ids=true").json(), self.__client, self.repository, attr)
 
-	# not sure how to pass a variable to implement this with __getattr__
+	# not sure if theres a way to pass a variable to implement this with __getattr__
 	def resource(self, id):
-		resource = self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json()	
-		return jsonmodel_single_object(resource, self.__client)
+		return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json(), self.__client)
+	
+	#this doesn't work yet
+	def resourceID(self, id):
+		return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json(), self.__client)		
+		
+	def archival_object(self, id):
+		if isinstance(id, str):
+			if len(id) == 32:
+				# its a ref_id
+				params = {"ref_id[]": str(id)}
+				refList = self.__client.get("repositories/" + self.repository + "/find_by_id/archival_objects?page=1&ref_id[]=" + str(id)).json()
+				return jsonmodel_single_object(self.__client.get(refList["archival_objects"][0]["ref"]).json(), self.__client)
+		#its a uri number
+		return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/archival_objects/" + str(id)).json(), self.__client)
+	
 	
 		
 class jsonmodel_single_object:
