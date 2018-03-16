@@ -7,19 +7,21 @@ for repo in AS.repositories:
 
 print (AS.resource(150).title)
 
-print (AS.archival_object(219664).title)
+print (AS.resourceID("apap101").title)
 
+print (AS.archival_object(219664).title)
+"""
 record = AS.archival_object("610555991d1ab7559c835ab7cac38bcf")
 
 record.extents[0].pp()
 
 for note in record.notes:
 	print (note.subnotes[0].publish)
-
+"""
 for agent in AS.agents("people"):
 	print (agent.title)
 
-AS.agents("people", 115).pp()
+#AS.agents("people", 115).pp()
 
 
 
