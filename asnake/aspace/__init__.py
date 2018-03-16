@@ -1,5 +1,6 @@
 from asnake.client import ASnakeClient
 import json
+import time
 
 class ASpace():
 
@@ -34,7 +35,9 @@ class ASpace():
 	
 	#this doesn't work yet
 	def resourceID(self, id):
-		return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json(), self.__client)		
+		result = self.__client.get("/repositories/" + self.repository + "/search?page=1&aq={\"query\":{\"field\":\"identifier\", \"value\":\"" + str(id) + "\", \"jsonmodel_type\":\"field_query\"}}").json()
+		resourceURI = result["results"][0]["uri"]
+		return jsonmodel_single_object(self.__client.get(resourceURI).json(), self.__client)		
 		
 	def archival_object(self, id):
 		if isinstance(id, str):
@@ -91,22 +94,34 @@ class jsonmodel_muliple_object:
 
 	def __init__(self, json_list, client, repository=None, call=None):
 		self.__client = client
+
 	
 		self.list = []
 		if isinstance(json_list, list):
-			for item in json_list:
-				if isinstance(item, str):
-					self.list.append(item)
-				if isinstance(item, int):
-					#check for agents, because its a different call
-					agentTypes = ["corporate_entities", "families", "people", "software"]
-					if call in agentTypes:
-						object = self.__client.get("agents/" + call + "/" + str(item)).json()
+
+			#break into chunks of 100
+			#this isn't Python2 compatible
+			chunks = []
+			for i in range(0, len(json_list), 100):
+				chunks.append(json_list[i:i+100])
+
+			for chunk in chunks:
+				for item in json_list:
+					if isinstance(item, str):
+						self.list.append(item)
+					if isinstance(item, int):
+						#check for agents, because its a different call
+						agentTypes = ["corporate_entities", "families", "people", "software"]
+						if call in agentTypes:
+							object = self.__client.get("agents/" + call + "/" + str(item)).json()
+						else:
+							object = self.__client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
+						self.list.append(jsonmodel_single_object(object))
 					else:
-						object = self.__client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
-					self.list.append(jsonmodel_single_object(object))
-				else:
-					self.list.append(jsonmodel_single_object(item))
+						self.list.append(jsonmodel_single_object(item))
+				print ("sleeping...")
+				#time.sleep(10)
+
 		else:
 			# for trees
 			# check if resource or archival_object
