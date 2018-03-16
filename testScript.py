@@ -9,10 +9,17 @@ print (AS.resource(150).title)
 
 print (AS.archival_object(219664).title)
 
-record = AS.archival_object("f53f04ab07334848b101318eebb7c300")
+record = AS.archival_object("610555991d1ab7559c835ab7cac38bcf")
 
-for extent in record.extents:
-	print (extent.number + " " + extent.extent_type)
+record.extents[0].pp()
+
+for note in record.notes:
+	print (note.subnotes[0].publish)
+
+for agent in AS.agents("people"):
+	print (agent.title)
+
+AS.agents("people", 115).pp()
 
 
 
