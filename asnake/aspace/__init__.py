@@ -5,7 +5,7 @@ class ASpace():
 
 	# this happens when you call ASpace()
 	def __init__(self, repository=None):
-	
+		
 		# Repository will default to 2 if not provided
 		if repository == None:
 			self.repository = "2"
@@ -15,6 +15,8 @@ class ASpace():
 		# Connect to ASpace using .archivessnake.yml
 		self.__client = ASnakeClient()
 		self.__client.authorize()
+		
+		self.version = self.__client.get("/version").text.split("(v")[1].split(")")[0]
 	
 	# this automatically sets attributes to ASpace(), so you can ASpace().resources, etc.	
 	def __getattr__(self, attr):
@@ -22,7 +24,7 @@ class ASpace():
 			# This sets plural attributes, like resources and archival_objects
 			# Not sure if this is safe
 			if attr.lower().endswith("s"):
-				shortCalls = ["repositories", "locations"]
+				shortCalls = ["repositories", "locations", "subjects", "users", "vocabularies", "location_profiles", "container_profiles"]
 				#for calls without repositories in them
 				if attr in shortCalls:
 					return jsonmodel_muliple_object(self.__client.get("/" + str(attr) + "?all_ids=true").json(), self.__client, self.repository, attr)
@@ -88,7 +90,7 @@ class jsonmodel_single_object:
 		f.write(json.dumps(self.__json, indent=2))
 		f.close
 
-
+#Returns a generator object to stream lists of objects
 def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
 
 	if isinstance(json_list, list):
@@ -98,8 +100,9 @@ def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
 				yield item
 			if isinstance(item, int):
 				#check for agents, because its a different call
+				shortCalls = ["locations", "subjects", "users", "vocabularies", "location_profiles", "container_profiles"]
 				agentTypes = ["corporate_entities", "families", "people", "software"]
-				if call == "locations":
+				if call in shortCalls:
 					object = client.get(call + "/" + str(item)).json()
 				elif call in agentTypes:
 					object = client.get("agents/" + call + "/" + str(item)).json()
