@@ -11,9 +11,6 @@ print (AS.resourceID("apap101").title)
 
 print (AS.archival_object(219664).title)
 
-for spot in AS.locations:
-	print (spot.building + " " + spot.floor + " " + spot. area)
-
 for collection in AS.resources:
 	print (collection.title)
 
@@ -41,3 +38,6 @@ for ao in AS.resource(151).archival_objects:
 	print (ao.title)
 	for note in ao.notes:
 		note.pp()
+
+for spot in AS.locations:
+	print (spot.building + " " + spot.floor + " " + spot. area)

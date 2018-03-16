@@ -126,6 +126,7 @@ def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
 					yield jsonmodel_single_object(lient.get(child["record_uri"]).json(), client)
 
 # this finds children within trees
+# I think there's better ways of doing this in 2.0+
 def findChild(tree, uri, childrenObject):
 	for child in tree["children"]:
 		if child["record_uri"] == uri:
