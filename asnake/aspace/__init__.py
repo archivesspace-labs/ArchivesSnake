@@ -46,7 +46,12 @@ class ASpace():
 		#its a uri number
 		return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/archival_objects/" + str(id)).json(), self.__client)
 	
-	
+	def agents(self, type, id = None):
+		if id == None:
+			return jsonmodel_muliple_object(self.__client.get("/agents/" + str(type) + "?all_ids=true").json(), self.__client, self.repository, type)
+		else:
+			return jsonmodel_single_object(self.__client.get("/agents/" + str(type) + "/" + str(id)).json(), self.__client)
+
 		
 class jsonmodel_single_object:
 	def __init__(self, json_rep, client = None):
@@ -65,11 +70,10 @@ class jsonmodel_single_object:
 		
 		if isinstance(self.__json[key], list):
 			return jsonmodel_muliple_object(self.__json[key], self.__client)
-		elif isinstance(self.__json[key], str):
-			return self.__json[key]
 		elif isinstance(self.__json[key], dict):
 			return jsonmodel_single_object(self.__json[key], self.__client)
-
+		else:
+			return self.__json[key]
 
 	# utility methods
 	def pp(self):
@@ -94,7 +98,12 @@ class jsonmodel_muliple_object:
 				if isinstance(item, str):
 					self.list.append(item)
 				if isinstance(item, int):
-					object = self.__client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
+					#check for agents, because its a different call
+					agentTypes = ["corporate_entities", "families", "people", "software"]
+					if call in agentTypes:
+						object = self.__client.get("agents/" + call + "/" + str(item)).json()
+					else:
+						object = self.__client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
 					self.list.append(jsonmodel_single_object(object))
 				else:
 					self.list.append(jsonmodel_single_object(item))
@@ -126,3 +135,6 @@ class jsonmodel_muliple_object:
 			
 	def __iter__(self):
 		return iter(self.list)
+
+	def __getitem__(self, key):
+		return self.list[key]
