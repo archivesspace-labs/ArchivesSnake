@@ -17,10 +17,10 @@ class ASpace():
 		self.__client = ASnakeClient()
 		self.__client.authorize()
 	
-	# this autormatically sets attribues to ASpace(), so you can ASpace().resources, etc	
+	# this automatically sets attributes to ASpace(), so you can ASpace().resources, etc.	
 	def __getattr__(self, attr):
 		if not attr.startswith('_'):
-			# This sets plural attribures, like reources and archival_objects
+			# This sets plural attributes, like resources and archival_objects
 			# Not sure if this is safe
 			if attr.lower().endswith("s"):
 				#repositories is separtate, as the URL is different
@@ -63,8 +63,6 @@ class jsonmodel_single_object:
 	
 	def __getattr__(self, key):
 	
-		#for testing
-		#print (key)
 		if isinstance(key, str):
 			if not key.startswith('_'):
 				if not key in self.__json.keys():
@@ -90,66 +88,45 @@ class jsonmodel_single_object:
 		f.write(json.dumps(self.__json, indent=2))
 		f.close
 
-class jsonmodel_muliple_object:
 
-	def __init__(self, json_list, client, repository=None, call=None):
-		self.__client = client
-
+def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
 	
-		self.list = []
-		if isinstance(json_list, list):
-
-			#break into chunks of 100
-			#this isn't Python2 compatible
-			chunks = []
-			for i in range(0, len(json_list), 100):
-				chunks.append(json_list[i:i+100])
-
-			for chunk in chunks:
-				for item in json_list:
-					if isinstance(item, str):
-						self.list.append(item)
-					if isinstance(item, int):
-						#check for agents, because its a different call
-						agentTypes = ["corporate_entities", "families", "people", "software"]
-						if call in agentTypes:
-							object = self.__client.get("agents/" + call + "/" + str(item)).json()
-						else:
-							object = self.__client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
-						self.list.append(jsonmodel_single_object(object))
-					else:
-						self.list.append(jsonmodel_single_object(item))
-				print ("sleeping...")
-				#time.sleep(10)
-
-		else:
-			# for trees
+	if isinstance(json_list, list):
+		#this is for a list of ids to call
+		for item in json_list:
+			if isinstance(item, str):
+				yield item
+			if isinstance(item, int):
+				#check for agents, because its a different call
+				agentTypes = ["corporate_entities", "families", "people", "software"]
+				if call in agentTypes:
+					object = client.get("agents/" + call + "/" + str(item)).json()
+				else:
+					object = client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
+				yield jsonmodel_single_object(object)
+			else:
+				yield jsonmodel_single_object(item)
+				
+	else:
+			# for trees, like a list of children
 			# check if resource or archival_object
 			if json_list["jsonmodel_type"] == "resource":
-				tree = self.__client.get(json_list["uri"] + "/tree").json()["children"]
-				childList = []
+				tree = client.get(json_list["uri"] + "/tree").json()["children"]
 				for child in tree:
-					childObject = self.__client.get(child["record_uri"]).json()
-					self.list.append(jsonmodel_single_object(childObject, self.__client))
+					childObject = client.get(child["record_uri"]).json()
+					yield jsonmodel_single_object(childObject, client)
 			else:
-				tree = self.__client.get(json_list["resource"]["ref"] + "/tree").json()["children"]
-				childList = []
+				tree = client.get(json_list["resource"]["ref"] + "/tree").json()["children"]
 				for child in findChild(tree, json_list["uri"], None):
-					self.list.append(jsonmodel_single_object(self.__client.get(child["record_uri"]).json(), self.__client))	
+					yield jsonmodel_single_object(lient.get(child["record_uri"]).json(), client)
 
-	# this finds children within trees
-	def findChild(tree, uri, childrenObject):
-		for child in tree["children"]:
-			if child["record_uri"] == uri:
-				childrenObject = makeObject(child)
-			elif len(child["children"]) < 1:
-				pass
-			else:
-				childrenObject = findChild(child, uri, childrenObject)
-		return childrenObject
-			
-	def __iter__(self):
-		return iter(self.list)
-
-	def __getitem__(self, key):
-		return self.list[key]
+# this finds children within trees
+def findChild(tree, uri, childrenObject):
+	for child in tree["children"]:
+		if child["record_uri"] == uri:
+			childrenObject = makeObject(child)
+		elif len(child["children"]) < 1:
+			pass
+		else:
+			childrenObject = findChild(child, uri, childrenObject)
+	return childrenObject		
