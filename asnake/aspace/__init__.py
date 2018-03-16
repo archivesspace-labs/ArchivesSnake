@@ -1,6 +1,5 @@
 from asnake.client import ASnakeClient
 import json
-import time
 
 class ASpace():
 
