@@ -22,9 +22,10 @@ class ASpace():
 			# This sets plural attributes, like resources and archival_objects
 			# Not sure if this is safe
 			if attr.lower().endswith("s"):
-				#repositories is separtate, as the URL is different
-				if attr == "repositories":
-					return jsonmodel_muliple_object(self.__client.get("/repositories").json(), self.__client)
+				shortCalls = ["repositories", "locations"]
+				#for calls without repositories in them
+				if attr in shortCalls:
+					return jsonmodel_muliple_object(self.__client.get("/" + str(attr) + "?all_ids=true").json(), self.__client, self.repository, attr)
 				else:
 					return jsonmodel_muliple_object(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr) + "?all_ids=true").json(), self.__client, self.repository, attr)
 
@@ -89,7 +90,7 @@ class jsonmodel_single_object:
 
 
 def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
-	
+
 	if isinstance(json_list, list):
 		#this is for a list of ids to call
 		for item in json_list:
@@ -98,7 +99,9 @@ def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
 			if isinstance(item, int):
 				#check for agents, because its a different call
 				agentTypes = ["corporate_entities", "families", "people", "software"]
-				if call in agentTypes:
+				if call == "locations":
+					object = client.get(call + "/" + str(item)).json()
+				elif call in agentTypes:
 					object = client.get("agents/" + call + "/" + str(item)).json()
 				else:
 					object = client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()	
