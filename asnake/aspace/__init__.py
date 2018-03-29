@@ -3,20 +3,6 @@ from itertools import chain
 import json
 import re
 
-def paged_result(uri, client, page_size = 10):
-        '''generator returning jsonmodel_single_objects for results from all pages of a paged index'''
-        initial_page = current_page = client.get(uri, params={"page_size": page_size, "page": 1}).json()
-        last_page = initial_page['last_page']
-        while current_page['this_page'] <= last_page:
-                for obj in current_page['results']:
-                        yield jsonmodel_single_object(obj, client)
-                if current_page['this_page'] == last_page:
-                        break
-                else:
-                        current_page = client.get(uri, params={"page_size": page_size, "page": current_page['this_page'] + 1}).json()
-
-
-
 class ASpace():
 
         # this happens when you call ASpace()
@@ -42,27 +28,27 @@ class ASpace():
                                 shortCalls = ["repositories", "locations", "subjects", "users", "vocabularies", "location_profiles", "container_profiles"]
                                 #for calls without repositories in them
                                 if attr in shortCalls:
-                                        return jsonmodel_muliple_object(self.__client.get("/" + str(attr), params= {"all_ids": True}).json(), self.__client, self.repository, attr)
+                                        return JSONModelRelation(self.__client.get("/" + str(attr), params= {"all_ids": True}).json(), self.__client, self.repository, attr)
                                 else:
-                                        return jsonmodel_muliple_object(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr), params={"all_ids": True}).json(), self.__client, self.repository, attr)
+                                        return JSONModelRelation(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr), params={"all_ids": True}).json(), self.__client, self.repository, attr)
 
 
         def resources(self):
                 '''return all resources from every repo'''
                 repo_uris = [r['uri'] for r in self.__client.get('repositories').json()]
-                for resource in chain(*[paged_result('{}/resources'.format(uri), self.__client) for uri in repo_uris]):
-                        yield resource
+                for resource in chain(*[self.__client.get_paged('{}/resources'.format(uri)) for uri in repo_uris]):
+                        yield JSONModelObject(resource, self.__client)
 
 
         # not sure if theres a way to pass a variable to implement this with __getattr__
         def resource(self, id):
-                return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json(), self.__client)
+                return JSONModelObject(self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json(), self.__client)
 
         #this doesn't work yet
         def resourceID(self, id):
                 result = self.__client.get("/repositories/" + self.repository + "/search?page=1&aq={\"query\":{\"field\":\"identifier\", \"value\":\"" + str(id) + "\", \"jsonmodel_type\":\"field_query\"}}").json()
                 resourceURI = result["results"][0]["uri"]
-                return jsonmodel_single_object(self.__client.get(resourceURI).json(), self.__client)
+                return JSONModelObject(self.__client.get(resourceURI).json(), self.__client)
 
         def archival_object(self, id):
                 if isinstance(id, str):
@@ -70,36 +56,56 @@ class ASpace():
                                 # its a ref_id
                                 params = {"ref_id[]": str(id)}
                                 refList = self.__client.get("repositories/" + self.repository + "/find_by_id/archival_objects?page=1&ref_id[]=" + str(id)).json()
-                                return jsonmodel_single_object(self.__client.get(refList["archival_objects"][0]["ref"]).json(), self.__client)
+                                return JSONModelObject(self.__client.get(refList["archival_objects"][0]["ref"]).json(), self.__client)
                 #its a uri number
-                return jsonmodel_single_object(self.__client.get("repositories/" + self.repository + "/archival_objects/" + str(id)).json(), self.__client)
+                return JSONModelObject(self.__client.get("repositories/" + self.repository + "/archival_objects/" + str(id)).json(), self.__client)
 
         def agents(self, type, id = None):
                 if id == None:
-                        return jsonmodel_muliple_object(self.__client.get("/agents/" + str(type) + "?all_ids=true").json(), self.__client, self.repository, type)
+                        return JSONModelRelation(self.__client.get("/agents/" + str(type) + "?all_ids=true").json(), self.__client, self.repository, type)
                 else:
-                        return jsonmodel_single_object(self.__client.get("/agents/" + str(type) + "/" + str(id)).json(), self.__client)
+                        return JSONModelObject(self.__client.get("/agents/" + str(type) + "/" + str(id)).json(), self.__client)
 
 
-class jsonmodel_single_object:
+class JSONModelObject:
+        '''A wrapper over the JSONModel representation of a single object in ArchivesSpace.'''
+
         def __init__(self, json_rep, client = None):
                 self.__json = json_rep
                 self.__client = client
                 self.__is_ref = 'ref' in json_rep
 
-        def __getattr__(self, key):
+        def reify(self):
+                '''Convert object from a ref into a realized object.'''
                 if self.__is_ref:
                         self.__json = self.__client.get(self.__json['ref']).json()
                         self.__is_ref = False
+
+        def __dir__(self):
+                self.reify()
+                return sorted(chain(self.__json.keys(),
+                                    (x for x in self.__dict__.keys() if not x.startswith("_JSONModelObject__"))))
+
+        def __repr__(self):
+                self.reify()
+                result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'])
+
+                if 'uri' in self.__json:
+                        result += ':' + self.uri
+                return result + '>'
+
+        def __getattr__(self, key):
+                '''Access to properties on the JSONModel object. '''
+                self.reify()
                 if not key.startswith('_'):
                         if not key in self.__json.keys():
                                 repository = self.__json["repository"]["ref"].split("/repositories/")[1]
-                                return jsonmodel_muliple_object(self.__json, self.__client)
+                                return JSONModelRelation(self.__json, self.__client)
 
                 if isinstance(self.__json[key], list):
-                        return jsonmodel_muliple_object(self.__json[key], self.__client)
+                        return JSONModelRelation(self.__json[key], self.__client)
                 elif isinstance(self.__json[key], dict):
-                        return jsonmodel_single_object(self.__json[key], self.__client)
+                        return JSONModelObject(self.__json[key], self.__client)
                 else:
                         return self.__json[key]
 
@@ -116,7 +122,7 @@ class jsonmodel_single_object:
                 f.close
 
 #Returns a generator object to stream lists of objects
-def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
+def JSONModelRelation(json_list, client, repository=None, call=None):
 
         if isinstance(json_list, list):
                 #this is for a list of ids to call
@@ -133,9 +139,9 @@ def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
                                         object = client.get("agents/" + call + "/" + str(item)).json()
                                 else:
                                         object = client.get("repositories/" + repository + "/" + call + "/" + str(item)).json()
-                                yield jsonmodel_single_object(object, client)
+                                yield JSONModelObject(object, client)
                         else:
-                                yield jsonmodel_single_object(item, client)
+                                yield JSONModelObject(item, client)
 
         else:
                         # for trees, like a list of children
@@ -144,11 +150,11 @@ def jsonmodel_muliple_object(json_list, client, repository=None, call=None):
                                 tree = client.get(json_list["uri"] + "/tree").json()["children"]
                                 for child in tree:
                                         childObject = client.get(child["record_uri"]).json()
-                                        yield jsonmodel_single_object(childObject, client)
+                                        yield JSONModelObject(childObject, client)
                         else:
                                 tree = client.get(json_list["resource"]["ref"] + "/tree").json()["children"]
                                 for child in findChild(tree, json_list["uri"], None):
-                                        yield jsonmodel_single_object(lient.get(child["record_uri"]).json(), client)
+                                        yield JSONModelObject(lient.get(child["record_uri"]).json(), client)
 
 # this finds children within trees
 # I think there's better ways of doing this in 2.0+
