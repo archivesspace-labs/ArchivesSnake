@@ -1,5 +1,6 @@
 from requests import Session
 from urllib.parse import urljoin, quote
+from numbers import Number
 import json
 import asnake.configurator as conf
 import asnake.logging as logging
@@ -7,6 +8,7 @@ import asnake.logging as logging
 log = logging.get_logger(__name__)
 
 class ASnakeAuthError(Exception): pass
+class ASnakeWeirdReturnError(Exception): pass
 
 def http_meth_factory(meth):
     '''Utility method for producing HTTP proxy methods for ASnakeProxyMethods mixin class.
@@ -19,7 +21,6 @@ def http_meth_factory(meth):
         log.debug("proxied http method", method=meth.upper(), url=full_url, status=result.status_code)
         return result
     return http_method
-
 
 class ASnakeProxyMethods(type):
     '''Metaclass to set up proxy methods for all requests-supported HTTP methods'''
@@ -69,3 +70,38 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
             self.session.headers['X-ArchivesSpace-Session'] = session_token
             log.debug("authorization success", session_token=session_token)
             return session_token
+
+
+    def get_paged(self, url, *args, page_size=10, **kwargs):
+        '''get list of json objects from urls of paged items'''
+        params = {"page_size": page_size, "page": 1}
+        if "params" in kwargs:
+            params.update(**kwargs)
+            del kwargs['params']
+
+        current_page = self.get(url, params=params, **kwargs)
+        current_json = current_page.json()
+        # Regular paged object
+        if hasattr(current_json, 'keys') and \
+           {'results', 'this_page', 'last_page'} <= set(current_json.keys()):
+            while current_json['this_page'] <= current_json['last_page']:
+                for obj in current_json['results']:
+                    yield obj
+                if current_json['this_page'] == current_json['last_page']: break
+                params['page'] += 1
+                current_page = self.get(uri, params=params)
+                current_json = current_page.json()
+        # routes that just return a list,  or ids, i.e. queries with all_ids param
+        elif isinstance(current_json, list):
+            # e.g. repositories
+            if len(current_json) >= 1:
+                if hasattr(current_json[0], 'keys'):
+                    for obj in current_json:
+                        yield obj
+                elif isinstance(current_json[0], Number):
+                    for i in current_json:
+                        yield self.get(urljoin(url, str(i))).json()
+                else:
+                    raise ASnakeWeirdReturnError("get_paged doesn't know how to handle {}".format(current_json))
+        else:
+            raise ASnakeWeirdReturnError("get_paged doesn't know how to handle {}".format(current_json))
