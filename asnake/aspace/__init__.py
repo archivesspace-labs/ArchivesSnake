@@ -33,7 +33,7 @@ class ASpace():
                                 else:
                                         return JSONModelRelation(self.__client.get("/repositories/" + str(self.repository) + "/" + str(attr), params={"all_ids": True}).json(), self.__client, self.repository, attr)
 
-
+        @property
         def resources(self):
                 '''return all resources from every repo'''
                 repo_uris = [r['uri'] for r in self.__client.get('repositories').json()]
