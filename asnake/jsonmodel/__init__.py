@@ -27,11 +27,12 @@ class JSONModelObject:
                                     (x for x in self.__dict__.keys() if not x.startswith("_JSONModelObject__"))))
 
         def __repr__(self):
-                self.reify()
-                result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'])
+                result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'] if not self.__is_ref else "ref" )
 
                 if 'uri' in self.__json:
                         result += ':' + self.uri
+                elif self.__is_ref:
+                        result += ':' + self.__json['ref']
                 return result + '>'
 
         def __getattr__(self, key):

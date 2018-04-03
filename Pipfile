@@ -14,7 +14,6 @@ attrs = "*"
 structlog = "*"
 "e1839a8" = {path = ".", editable = true}
 
-
 [dev-packages]
 
 pytest = "*"
@@ -23,4 +22,3 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 twine = "*"
 jupyter = "*"
-
