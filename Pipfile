@@ -22,5 +22,5 @@ vcrpy = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 twine = "*"
-
+jupyter = "*"
 
