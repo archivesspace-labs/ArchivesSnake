@@ -40,6 +40,9 @@ This is assuming a standard Python 3 install, which provides `pip3` and `python3
 You'll need an internet connection to fetch ASnake's dependencies.
 
 ## Usage
+### Low level API
+The low level API allows full access to the ArchivesSpace API; it's essentially "what if requests knew enough about an ASpace instance to manage authorization, turning uris into full URLs, and handling paged resources.
+
 To start, here's a simple, fairly complete example - fetching the JSON representation of all the repositories from an ArchivesSpace instance and saving it to a variable.
 
 ``` python
@@ -52,6 +55,15 @@ client.authorize()
 repos = client.get("repositories").json()
 
 # do what thou wilt with some repos
+```
+
+The return values from these methods are raw requests.models.Response objects - you have to call `.json()` on them to get the actual JSON object.
+
+There's also a get_paged method, which handles index methods (`repositories`, `repositories/:id/resources`, etc) and returns JSON for each object in the collection.
+
+``` python
+for repo in client.get_paged('repositories'):
+    print(repo['name'])
 ```
 
 Right now, there's a single user-visible class that's useful, ASnakeClient, which is a convenience wrapper
@@ -71,6 +83,31 @@ client.get('repositories')
 ```
 
 In addition to saving typing, the result of this is that the url fragments used as identifiers in ArchivesSpace `ref` objects can often (always?) be passed directly to these methods.
+
+### Abstraction Layer
+The other way to use ASnake right now is a higher level, more convenient abstraction over the whole repo.  It lets you mostly ignore the details of JSON and API, other than structure.
+
+There are two base classes; a JSONModelObject class that represents individual objects, and a JSONModelRelation class that represents groups of objects.
+
+To use it, import the asnake.aspace.ASpace class.
+
+To print the title for all finding aids in ASpace, for example:
+
+``` python
+from asnake.aspace import ASpace
+
+aspace = ASpace()
+
+for repo in aspace.repositories:
+    for resource in repo.resources:
+        print(resource.title)
+```
+
+If you know the id of a particular thing in the collection, you can treat the JSONModelRelation objects as functions and pass the ids, like so.
+
+``` python
+aspace.repositories(101) # repository with id 101
+```
 
 ## Configuration
 
