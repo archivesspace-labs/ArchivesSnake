@@ -30,23 +30,3 @@ class ASpace():
                 for resource in chain(*[self.__client.get_paged('{}/resources'.format(uri)) for uri in repo_uris]):
                         yield JSONModelObject(resource, self.__client)
 
-
-        # not sure if theres a way to pass a variable to implement this with __getattr__
-        def resource(self, id):
-                return JSONModelObject(self.__client.get("repositories/" + self.repository + "/resources/" + str(id)).json(), self.__client)
-
-        #this doesn't work yet
-        def resourceID(self, id):
-                result = self.__client.get("/repositories/" + self.repository + "/search?page=1&aq={\"query\":{\"field\":\"identifier\", \"value\":\"" + str(id) + "\", \"jsonmodel_type\":\"field_query\"}}").json()
-                resourceURI = result["results"][0]["uri"]
-                return JSONModelObject(self.__client.get(resourceURI).json(), self.__client)
-
-        def archival_object(self, id):
-                if isinstance(id, str):
-                        if len(id) == 32:
-                                # its a ref_id
-                                params = {"ref_id[]": str(id)}
-                                refList = self.__client.get("repositories/" + self.repository + "/find_by_id/archival_objects?page=1&ref_id[]=" + str(id)).json()
-                                return JSONModelObject(self.__client.get(refList["archival_objects"][0]["ref"]).json(), self.__client)
-                #its a uri number
-                return JSONModelObject(self.__client.get("repositories/" + self.repository + "/archival_objects/" + str(id)).json(), self.__client)
