@@ -89,7 +89,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
                     yield obj
                 if current_json['this_page'] == current_json['last_page']: break
                 params['page'] += 1
-                current_page = self.get(uri, params=params)
+                current_page = self.get(url, params=params)
                 current_json = current_page.json()
         # routes that just return a list,  or ids, i.e. queries with all_ids param
         elif isinstance(current_json, list):

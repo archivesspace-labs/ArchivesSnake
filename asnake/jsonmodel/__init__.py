@@ -1,4 +1,5 @@
 from itertools import chain
+import json
 
 # Base metaclass for shared functionality
 class JSONModel(type):
