@@ -1,6 +1,7 @@
 from requests import Session
 from urllib.parse import urljoin, quote
 from numbers import Number
+
 import json
 import asnake.configurator as conf
 import asnake.logging as logging
@@ -13,8 +14,8 @@ class ASnakeWeirdReturnError(Exception): pass
 def http_meth_factory(meth):
     '''Utility method for producing HTTP proxy methods for ASnakeProxyMethods mixin class.
 
-    Urls are prefixed with the baseurl defined  All arguments are p
-    '''
+    Urls are prefixed with the value of baseurl from the client's ASnakeConfig.  Arguments are
+    passed unaltered to the matching requests.Session method.'''
     def http_method(self, url, *args, **kwargs):
         full_url = urljoin(self.config['baseurl'], url)
         result = getattr(self.session, meth)(full_url, *args, **kwargs)

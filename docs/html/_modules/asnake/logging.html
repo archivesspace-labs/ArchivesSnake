@@ -167,8 +167,8 @@
     <span class="n">new_structlog</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;structlog&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="n">new_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">logging</span><span class="o">=</span><span class="n">new_logging</span><span class="p">,</span> <span class="n">structlog</span><span class="o">=</span><span class="n">new_structlog</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_config</span></div>
-
+    <span class="k">return</span> <span class="n">new_config</span>
+</div>
 <span class="c1"># Regex to Match down or mixed-case usage of standard logging levels</span>
 <span class="n">canonical_levels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;CRITICAL&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;NOTSET&#39;</span><span class="p">,)</span>
 <span class="n">level_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
@@ -200,8 +200,8 @@
         <span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;structlog&#39;</span><span class="p">])</span>
         <span class="n">already_configured</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Attempted to configure logging when it has already been configured&quot;</span><span class="p">)</span></div>
-
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Attempted to configure logging when it has already been configured&quot;</span><span class="p">)</span>
+</div>
 <span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">already_configured</span><span class="p">:</span>
         <span class="n">setup_logging</span><span class="p">()</span>
@@ -227,14 +227,14 @@
             <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">JSONRenderer</span><span class="p">()]</span>
     <span class="p">}</span>
     <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">conf</span></div>
-
+    <span class="k">return</span> <span class="n">conf</span>
+</div>
 <div class="viewcode-block" id="default_logging_conf"><a class="viewcode-back" href="../../index.html#asnake.logging.default_logging_conf">[docs]</a><span class="k">def</span> <span class="nf">default_logging_conf</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Generate a default stdlib logging configuration.&#39;&#39;&#39;</span>
     <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">}</span>
     <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">conf</span></div>
-
+    <span class="k">return</span> <span class="n">conf</span>
+</div>
 <span class="c1"># Provided example configurations for structlog.</span>
 <span class="n">configurations</span> <span class="o">=</span> <span class="p">{}</span>
 

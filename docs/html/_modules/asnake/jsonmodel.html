@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>asnake.jsonmodel &mdash; ArchivesSnake 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="ArchivesSnake 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> ArchivesSnake
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ArchivesSnake</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>asnake.jsonmodel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for asnake.jsonmodel</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+
+
+<span class="c1"># Base metaclass for shared functionality</span>
+<div class="viewcode-block" id="JSONModel"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModel">[docs]</a><span class="k">class</span> <span class="nc">JSONModel</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Mixin providing functionality shared by JSONModel and JSONModelRelation classes.&#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">__default_client</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="JSONModel.default_client"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModel.default_client">[docs]</a>    <span class="k">def</span> <span class="nf">default_client</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;return existing ASnakeClient or create, store, and return a new ASnakeClient&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__default_client</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">asnake.client</span> <span class="k">import</span> <span class="n">ASnakeClient</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__default_client</span> <span class="o">=</span> <span class="n">ASnakeClient</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__default_client</span></div></div>
+
+<span class="c1"># Classes dealing with JSONModel imports</span>
+<div class="viewcode-block" id="JSONModelObject"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelObject">[docs]</a><span class="k">class</span> <span class="nc">JSONModelObject</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">JSONModel</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;A wrapper over the JSONModel representation of a single object in ArchivesSpace.&#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_rep</span><span class="p">,</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__json</span> <span class="o">=</span> <span class="n">json_rep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">default_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_ref</span> <span class="o">=</span> <span class="s1">&#39;ref&#39;</span> <span class="ow">in</span> <span class="n">json_rep</span>
+
+<div class="viewcode-block" id="JSONModelObject.reify"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelObject.reify">[docs]</a>    <span class="k">def</span> <span class="nf">reify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Convert object from a ref into a realized object.&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_ref</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="s1">&#39;ref&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_ref</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reify</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                    <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_JSONModelObject__&quot;</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;#&lt;JSONModel:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="s1">&#39;jsonmodel_type&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_ref</span> <span class="k">else</span> <span class="s2">&quot;ref&quot;</span> <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;uri&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">uri</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_ref</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="s1">&#39;ref&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span> <span class="o">+</span> <span class="s1">&#39;&gt;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Access to properties on the JSONModel object and objects from  descendant API routes.</span>
+
+<span class="sd">attr lookup for JSONModel object is provided from the following sources:</span>
+
+<span class="sd">    - objects, lists of objects, and native values present in the wrapped JSON</span>
+<span class="sd">    - API methods matching the object&#39;s URI + the attribute requested</span>
+
+<span class="sd">If neither is present, the method raises an AttributeError.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reify</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">key</span><span class="p">,))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">})</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">key</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">JSONModelObject</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">JSONModelObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__json</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JSONModelObject.json"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelObject.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;return wrapped dict representing JSONModelObject contents.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__json</span></div></div>
+
+<div class="viewcode-block" id="JSONModelRelation"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation">[docs]</a><span class="k">class</span> <span class="nc">JSONModelRelation</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">JSONModel</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;A wrapper over index routes and other routes that represent groups of items in ASpace.</span>
+
+<span class="sd">It provides two means of accessing objects in these collections:</span>
+
+<span class="sd">    - you can iterate over the relation to get all objects</span>
+<span class="sd">    - you can call the relation as a function with an id to get an object with a known id</span>
+
+<span class="sd">e.g.</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    for repo in ASpace().repositories:</span>
+<span class="sd">        # do stuff with repo here</span>
+
+<span class="sd">    ASpace.repositories(12) # object at uri /repositories/12</span>
+
+<span class="sd">This object wraps the route and parameters, and does no caching - each iteration through a relation fetches data from ASpace fresh.</span>
+
+<span class="sd">Additionally, JSONModelRelations implement `__getattr__`, in order to handle nested and subsidiary routes, such as the routes for individual types of agents.&#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">default_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;#&lt;JSONModelRelation:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">jm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_paged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">JSONModelObject</span><span class="p">(</span><span class="n">jm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JSONModelRelation.__call__"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">myid</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Fetch a JSONModelObject from the relation by id.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">JSONModelObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">myid</span><span class="p">),)))</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="JSONModelRelation.__getattr__"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">key</span><span class="p">,)),</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Various Artists.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

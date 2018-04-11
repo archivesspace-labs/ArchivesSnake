@@ -10,22 +10,54 @@ Welcome to ArchivesSnake's documentation!
    :maxdepth: 4
    :caption: Contents:
 
-.. automodule:: asnake.client
+
+
+.. automodule:: asnake.aspace
+   :members:
+   :inherited-members:
+
+   .. autoclass:: asnake.aspace.ASpace
+
+      .. automethod:: asnake.aspace.ASpace.__getattr__
+
+   .. autoclass:: asnake.aspace.AgentRelation
+
+      .. automethod:: asnake.aspace.AgentRelation.__getitem__
+
+.. automodule:: asnake.jsonmodel
    :members:
 
-.. autoclass:: asnake.client.ASnakeClient
+   .. autoclass:: asnake.jsonmodel.JSONModelObject
+      :members:
+
+   .. autoclass:: asnake.jsonmodel.JSONModelRelation
+      :members:
+
+      .. automethod:: asnake.jsonmodel.JSONModelRelation.__getattr__
+
+      .. automethod:: asnake.jsonmodel.JSONModelRelation.__call__
+
+.. automodule:: asnake.client
+   :members:
+   :inherited-members:
+
+   .. autoclass:: asnake.client.ASnakeClient
+      :members:
+      :inherited-members:
+
+.. automodule:: asnake.client.web_client
    :members:
    :inherited-members:
 
 .. automodule:: asnake
-   :members:
 
-.. autoclass:: ASnakeConfig
-   :members:
-   :inherited-members:
+   .. autoclass:: ASnakeConfig
+      :members:
+      :inherited-members:
 
-.. automodule:: asnake.logging
-   :members:
+      .. automodule:: asnake.logging
+         :members:
+         :inherited-members:
 
 Indices and tables
 ==================

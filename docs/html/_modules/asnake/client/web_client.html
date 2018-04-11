@@ -155,49 +155,51 @@
   <h1>Source code for asnake.client.web_client</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">requests</span> <span class="k">import</span> <span class="n">Session</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">quote</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Number</span>
+
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">asnake.configurator</span> <span class="k">as</span> <span class="nn">conf</span>
 <span class="kn">import</span> <span class="nn">asnake.logging</span> <span class="k">as</span> <span class="nn">logging</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">ASnakeAuthError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
+<div class="viewcode-block" id="ASnakeAuthError"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeAuthError">[docs]</a><span class="k">class</span> <span class="nc">ASnakeAuthError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
+<div class="viewcode-block" id="ASnakeWeirdReturnError"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeWeirdReturnError">[docs]</a><span class="k">class</span> <span class="nc">ASnakeWeirdReturnError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
 
-<span class="k">def</span> <span class="nf">http_meth_factory</span><span class="p">(</span><span class="n">meth</span><span class="p">):</span>
+<div class="viewcode-block" id="http_meth_factory"><a class="viewcode-back" href="../../../index.html#asnake.client.http_meth_factory">[docs]</a><span class="k">def</span> <span class="nf">http_meth_factory</span><span class="p">(</span><span class="n">meth</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Utility method for producing HTTP proxy methods for ASnakeProxyMethods mixin class.</span>
 
-<span class="sd">    Urls are prefixed with the baseurl defined  All arguments are p</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    Urls are prefixed with the value of baseurl from the client&#39;s ASnakeConfig.  Arguments are</span>
+<span class="sd">    passed unaltered to the matching requests.Session method.&#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">http_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">full_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;baseurl&#39;</span><span class="p">],</span> <span class="n">url</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;proxied http method&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">meth</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">url</span><span class="o">=</span><span class="n">full_url</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
-    <span class="k">return</span> <span class="n">http_method</span>
+    <span class="k">return</span> <span class="n">http_method</span></div>
 
-
-<span class="k">class</span> <span class="nc">ASnakeProxyMethods</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+<div class="viewcode-block" id="ASnakeProxyMethods"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeProxyMethods">[docs]</a><span class="k">class</span> <span class="nc">ASnakeProxyMethods</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Metaclass to set up proxy methods for all requests-supported HTTP methods&#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+<div class="viewcode-block" id="ASnakeProxyMethods.__init__"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeProxyMethods.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
 
         <span class="k">for</span> <span class="n">meth</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="s1">&#39;head&#39;</span><span class="p">,</span> <span class="s1">&#39;put&#39;</span><span class="p">,</span> <span class="s1">&#39;delete&#39;</span><span class="p">,</span> <span class="s1">&#39;options&#39;</span><span class="p">,):</span>
             <span class="n">fn</span> <span class="o">=</span> <span class="n">http_meth_factory</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
             <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">meth</span>
             <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;Proxied :meth:`requests.Session.</span><span class="si">{}</span><span class="s1">` method from :class:`requests.Session`&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
 
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">meth</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">meth</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="ASnakeClient"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeClient">[docs]</a><span class="k">class</span> <span class="nc">ASnakeClient</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ASnakeProxyMethods</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;ArchivesSnake Web Client&#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+<div class="viewcode-block" id="ASnakeClient.__init__"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeClient.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">ASnakeConfig</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
                                      <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;ArchivesSnake/0.1&#39;</span><span class="p">})</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;client created&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;client created&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ASnakeClient.authorize"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeClient.authorize">[docs]</a>    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -223,7 +225,42 @@
             <span class="n">session_token</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="s1">&#39;session&#39;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-ArchivesSpace-Session&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">session_token</span>
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;authorization success&quot;</span><span class="p">,</span> <span class="n">session_token</span><span class="o">=</span><span class="n">session_token</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">session_token</span></div></div>
+            <span class="k">return</span> <span class="n">session_token</span></div>
+
+
+<div class="viewcode-block" id="ASnakeClient.get_paged"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeClient.get_paged">[docs]</a>    <span class="k">def</span> <span class="nf">get_paged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;get list of json objects from urls of paged items&#39;&#39;&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;page_size&quot;</span><span class="p">:</span> <span class="n">page_size</span><span class="p">,</span> <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="k">if</span> <span class="s2">&quot;params&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span>
+
+        <span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">current_json</span> <span class="o">=</span> <span class="n">current_page</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="c1"># Regular paged object</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">current_json</span><span class="p">,</span> <span class="s1">&#39;keys&#39;</span><span class="p">)</span> <span class="ow">and</span> \
+           <span class="p">{</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="s1">&#39;this_page&#39;</span><span class="p">,</span> <span class="s1">&#39;last_page&#39;</span><span class="p">}</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">current_json</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">while</span> <span class="n">current_json</span><span class="p">[</span><span class="s1">&#39;this_page&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">current_json</span><span class="p">[</span><span class="s1">&#39;last_page&#39;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">current_json</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]:</span>
+                    <span class="k">yield</span> <span class="n">obj</span>
+                <span class="k">if</span> <span class="n">current_json</span><span class="p">[</span><span class="s1">&#39;this_page&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">current_json</span><span class="p">[</span><span class="s1">&#39;last_page&#39;</span><span class="p">]:</span> <span class="k">break</span>
+                <span class="n">params</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+                <span class="n">current_json</span> <span class="o">=</span> <span class="n">current_page</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="c1"># routes that just return a list,  or ids, i.e. queries with all_ids param</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">current_json</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># e.g. repositories</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_json</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">current_json</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;keys&#39;</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">current_json</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">obj</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">current_json</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Number</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">current_json</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ASnakeWeirdReturnError</span><span class="p">(</span><span class="s2">&quot;get_paged doesn&#39;t know how to handle </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">current_json</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ASnakeWeirdReturnError</span><span class="p">(</span><span class="s2">&quot;get_paged doesn&#39;t know how to handle </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">current_json</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
