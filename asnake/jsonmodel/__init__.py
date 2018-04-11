@@ -56,7 +56,7 @@ If neither is present, the method raises an AttributeError.
 '''
         self.reify()
         if not key.startswith('_'):
-            if not key in self.__json.keys():
+            if not key in self.__json.keys() and 'uri' in self.__json:
                 uri = "/".join((self.__json['uri'].rstrip("/"), key,))
                 if self.__client.head(uri, params={"all_ids":True}).status_code == 200:
                     return JSONModelRelation(uri, client=self.__client)
@@ -64,7 +64,11 @@ If neither is present, the method raises an AttributeError.
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
         if isinstance(self.__json[key], list):
-            return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
+            if len(self.__json[key]) < 1 or isinstance(self.__json[key][0], dict):
+                return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
+            else:
+                # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
+                return self.__json[key]
         elif isinstance(self.__json[key], dict):
             return JSONModelObject(self.__json[key], self.__client)
         else:
