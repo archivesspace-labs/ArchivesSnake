@@ -21,13 +21,13 @@ class JSONModelObject(metaclass=JSONModel):
     def __init__(self, json_rep, client = None):
         self.__json = json_rep
         self.__client = client or type(self).default_client()
-        self.__is_ref = 'ref' in json_rep
+        self.is_ref = 'ref' in json_rep
 
     def reify(self):
         '''Convert object from a ref into a realized object.'''
-        if self.__is_ref:
+        if self.is_ref:
             self.__json = self.__client.get(self.__json['ref']).json()
-            self.__is_ref = False
+            self.is_ref = False
         return self
 
     def __dir__(self):
@@ -36,11 +36,11 @@ class JSONModelObject(metaclass=JSONModel):
                     (x for x in self.__dict__.keys() if not x.startswith("_JSONModelObject__"))))
 
     def __repr__(self):
-        result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'] if not self.__is_ref else "ref" )
+        result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'] if not self.is_ref else "ref" )
 
         if 'uri' in self.__json:
             result += ':' + self.uri
-        elif self.__is_ref:
+        elif self.is_ref:
             result += ':' + self.__json['ref']
         return result + '>'
 
@@ -52,10 +52,12 @@ attr lookup for JSONModel object is provided from the following sources:
     - objects, lists of objects, and native values present in the wrapped JSON
     - API methods matching the object's URI + the attribute requested
 
-If neither is present, the method raises an AttributeError.
-'''
-        self.reify()
-        if not key.startswith('_'):
+If neither is present, the method raises an AttributeError.'''
+        if self.is_ref:
+            if key == 'uri': return self.__json['ref']
+            self.reify()
+
+        if not key.startswith('_') and not key == 'is_ref':
             if not key in self.__json.keys() and 'uri' in self.__json:
                 uri = "/".join((self.__json['uri'].rstrip("/"), key,))
                 if self.__client.head(uri, params={"all_ids":True}).status_code == 200:
@@ -63,16 +65,17 @@ If neither is present, the method raises an AttributeError.
                 else:
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
-        if isinstance(self.__json[key], list):
-            if len(self.__json[key]) < 1 or isinstance(self.__json[key][0], dict):
-                return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
+            if isinstance(self.__json[key], list):
+                if len(self.__json[key]) < 1 or isinstance(self.__json[key][0], dict):
+                    return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
+                else:
+                    # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
+                    return self.__json[key]
+            elif isinstance(self.__json[key], dict):
+                return JSONModelObject(self.__json[key], self.__client)
             else:
-                # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
                 return self.__json[key]
-        elif isinstance(self.__json[key], dict):
-            return JSONModelObject(self.__json[key], self.__client)
-        else:
-            return self.__json[key]
+        else: return self.__getattribute__(key)
 
     def __str__(self):
         return json.dumps(self.__json, indent=2)
