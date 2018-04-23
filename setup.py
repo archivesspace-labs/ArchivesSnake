@@ -7,7 +7,7 @@ setup(
     long_description="""A client library for the ArchivesSpace REST API.""",
     author="ArchivesSnake Developer Group",
     author_email="asnake.developers@gmail.com",
-    version="0.1.0",
+    version="0.2.0",
     packages=find_packages(),
     zip_safe=False,
     classifiers=[
