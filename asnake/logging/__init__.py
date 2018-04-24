@@ -32,16 +32,16 @@ def setup_logging(config=None, level=None, stream=None):
         if not config:
             config = copy_config(DEFAULT_CONFIG)
 
-        if level:
-            if isinstance(level, str) and level_re.match(level):
-                level = getattr(logging, level.upper())
-
-            config['logging']['level'] = level
+        level = level or config.get('level', None) or logging.INFO
+        if isinstance(level, str) and level_re.match(level):
+            level = getattr(logging, level.upper())
 
         if stream:
             config['logging']['stream'] = stream
 
         logging.basicConfig(**config['logging'])
+        l = logging.getLogger('asnake')
+        l.setLevel(level)
         structlog.configure(**config['structlog'])
         already_configured = True
     else:
@@ -95,12 +95,14 @@ configurations['INFO_TO_STDOUT'] = {
 
 configurations['DEBUG_TO_STDERR'] = {
     "logging": default_logging_conf(level=logging.DEBUG),
-    "structlog": default_structlog_conf()
+    "structlog": default_structlog_conf(),
+    "level": "DEBUG"
 }
 
 configurations['DEBUG_TO_STDOUT'] = {
     "logging": default_logging_conf(level=logging.DEBUG, stream=sys.stdout),
-    "structlog": default_structlog_conf()
+    "structlog": default_structlog_conf(),
+    "level": "DEBUG"
 }
 
 configurations['DEFAULT_CONFIG'] = configurations['INFO_TO_STDERR']

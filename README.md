@@ -6,6 +6,15 @@ As institutions have adopted ArchivesSpace, a variety of practitioners and insti
 the backend API to accomplish various bulk tasks not supported (yet) by the interface.  ArchivesSnake is intended to be
 a comprehensive client library, to reduce duplication of effort and simplify scripting ArchivesSpace.
 
+## Detailed API Doc
+When you've read through this, please check out [the detailed API Docs](https://archivesspace-labs.github.io/ArchivesSnake/).  The
+most important classes to understand are:
+
+- asnake.aspace.ASpace
+- asnake.client.ASnakeClient
+- asnake.jsonmodel.JSONModelObject
+- asnake.jsonmodel.JSONModelRelation
+
 ## Prior Art
 Here are listed several examples of pre-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
 own via pull request!
@@ -26,13 +35,19 @@ ArchivesSnake has the following requirements.
 - ability to install packages via pip ([Pipenv](https://docs.pipenv.org/) is recommended for development)
 
 ## Installation
-Very soon, ArchivesSnake should be registered with pypi, but currently, to install, follow these steps.
+ArchivesSnake is available from pypi:
+
+``` bash
+pip3 install ArchivesSnake
+```
+
+If you want to install from git:
 
 ``` bash
 git clone https://github.com/archivesspace-labs/ArchivesSnake.git
 cd ArchivesSnake
 python3 setup.py sdist
-pip3 install dist/ArchivesSnake-0.1.tar.gz
+pip3 install dist/ArchivesSnake-0.2.0.tar.gz
 ```
 
 This is assuming a standard Python 3 install, which provides `pip3` and `python3` commands.  If your environment doesn't let you successfully run either command, please consult the documentation for your version of Python and/or your operating system.
@@ -66,23 +81,30 @@ for repo in client.get_paged('repositories'):
     print(repo['name'])
 ```
 
-Right now, there's a single user-visible class that's useful, ASnakeClient, which is a convenience wrapper
-over the [requests](http://docs.python-requests.org/en/master/) module that handles configuration, authentication to
-ArchivesSpace, and prepends a baseurl to API paths.
+ASnakeClient, is a convenience wrapper over the [requests](http://docs.python-requests.org/en/master/) module.  The additional functionality it provides is:
+- handles configuration,
+- handles and persists authorization across multiple requests
+- prepends a baseurl to API paths.
 
-So this:
-
-``` python
-requests.get("http://my.aspace.backend.url.edu:4567/repositories")
-```
-
-is equivalent to:
+The latter means that this:
 
 ``` python
 client.get('repositories')
 ```
 
-In addition to saving typing, the result of this is that the url fragments used as identifiers in ArchivesSpace `ref` objects can often (always?) be passed directly to these methods.
+is equivalent to:
+
+``` python
+requests.get("http://my.aspace.backend.url.edu:4567/repositories")
+```
+
+In addition to saving typing, the result of this is that the url fragments used as identifiers in ArchivesSpace `ref` objects can often (always?) be passed directly to these methods, e.g.:
+
+``` python
+uri = client.get('repositories/2').json()['agent_representation']['ref']
+client.get(uri) # gets the agent!
+```
+
 
 ### Abstraction Layer
 The other way to use ASnake right now is a higher level, more convenient abstraction over the whole repo.  It lets you mostly ignore the details of JSON and API, other than structure.
@@ -91,9 +113,43 @@ There are two base classes; a JSONModelObject class that represents individual o
 
 To use it, import the asnake.aspace.ASpace class.
 
-To print the title for all finding aids in ASpace, for example:
+JSONModelObjects wrap a single ASpace JSONModel object.  Method calls on JSONModelObjects will return either the value stored in the object's JSON representation, or will try to make a call to the API to fetch a subsidiary route.
+
+So, for a JSONModelObject named `obj` wrapping this JSON:
+
+``` json
+{
+    "jsonmodel_type": "repository",
+    "uri": "/repositories/2",
+    "name": "International Repository of Pancakes",
+    ...
+}
+```
+
+`obj.name` would return `"International Repository of Pancakes"`, and `obj.resources` would return a JSONModelRelation of the route `/repositories/2/resources`
+
+JSONModelRelation objects "wrap" an API route representing either a collection of objects or an intermediate route (a route such as `/agents` that has child routes but no direct results.  A JSONModelRelation can be iterated over like a list, like so:
 
 ``` python
+for repo in aspace.repositories:
+    # do stuff with repo which is a JSONModelObject
+```
+
+You can get the wrapped JSON by doing:
+
+``` python
+obj.json()
+```
+
+If you know the id of a particular thing in the collection, you can also treat JSONModelRelation objects as functions and pass the ids to get that specific thing, like so.
+
+``` python
+aspace.repositories(101) # repository with id 101
+```
+
+A short full example using ASnake to print the title for all finding aids in ASpace, for example:
+
+```` python
 from asnake.aspace import ASpace
 
 aspace = ASpace()
@@ -103,10 +159,21 @@ for repo in aspace.repositories:
         print(resource.title)
 ```
 
-If you know the id of a particular thing in the collection, you can treat the JSONModelRelation objects as functions and pass the ids, like so.
+Currently, the ASpace interface is effectively read-only; if you need to create or update records (or just do something we haven't implemented yet), you'll have to drop down to the low-level
+interface - for convenience, the client used by the ASpace object is accessible like so:
 
 ``` python
-aspace.repositories(101) # repository with id 101
+aspace.client.get('/repositories/2/resources/1')
+```
+
+For example, if you were really excited about archival data, and wanted to add an interrobang (‽) to the end of every resource's title, you'd do:
+
+``` python
+for repo in aspace.repositories:
+    for resource in repo.resources:
+        res_json = resource.json()
+        res_json['title'] = res_json['title'] + '‽'
+        aspace.client.post(resource.uri, json=res_json)
 ```
 
 ## Configuration
