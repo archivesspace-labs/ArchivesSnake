@@ -77,7 +77,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
         '''get list of json objects from urls of paged items'''
         params = {"page_size": page_size, "page": 1}
         if "params" in kwargs:
-            params.update(**kwargs)
+            params.update(**kwargs['params'])
             del kwargs['params']
 
         current_page = self.get(url, params=params, **kwargs)
