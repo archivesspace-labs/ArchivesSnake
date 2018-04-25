@@ -149,7 +149,7 @@ aspace.repositories(101) # repository with id 101
 
 A short full example using ASnake to print the title for all finding aids in ASpace, for example:
 
-```` python
+``` python
 from asnake.aspace import ASpace
 
 aspace = ASpace()
