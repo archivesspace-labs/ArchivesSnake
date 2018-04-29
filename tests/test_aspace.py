@@ -20,6 +20,13 @@ def test_fetch():
     repo_id = resolved[0].uri.split("/")[-1]
     assert isinstance(aspace.repositories(repo_id), JSONModelObject)
 
+@vcr.use_cassette
+def test_ordered_records():
+    aspace = ASpace()
+    getem = list(aspace.resources)[0].ordered_records.uris
+    assert len(getem) > 0
+    assert all(isinstance(x, JSONModelObject) for x in getem)
+
 def teardown():
     '''Undo the thing from setup'''
     if conf_file:

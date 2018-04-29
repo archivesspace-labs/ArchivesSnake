@@ -14,6 +14,7 @@ class JSONModel(type):
             cls.__default_client = ASnakeClient()
         return cls.__default_client
 
+
 # Classes dealing with JSONModel imports
 class JSONModelObject(metaclass=JSONModel):
     '''A wrapper over the JSONModel representation of a single object in ArchivesSpace.'''
@@ -60,7 +61,13 @@ If neither is present, the method raises an AttributeError.'''
         if not key.startswith('_') and not key == 'is_ref':
             if not key in self.__json.keys() and 'uri' in self.__json:
                 uri = "/".join((self.__json['uri'].rstrip("/"), key,))
+                # Existence of route isn't enough, need to discriminate by type
+                # example: .../resources/:id/ordered_records which ALSO ought to be maybe treated as plural?
+                # This works, at the cost of a "wasted" full call if not a JSONModelObject
                 if self.__client.head(uri, params={"all_ids":True}).status_code == 200:
+                    resp = self.__client.get(uri, params={"all_ids":True})
+                    if 'jsonmodel_type' in resp.json():
+                        return JSONModelObject(resp.json(), client=self.__client)
                     return JSONModelRelation(uri, client=self.__client)
                 else:
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
