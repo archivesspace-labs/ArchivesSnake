@@ -27,9 +27,24 @@ class JSONModelObject(metaclass=JSONModel):
     def reify(self):
         '''Convert object from a ref into a realized object.'''
         if self.is_ref:
-            self.__json = self.__client.get(self.__json['ref']).json()
+            if '_resolved' in self.__json:
+                self.__json = self.__json['_resolved']
+            else:
+                self.__json = self.__client.get(self.__json['ref']).json()
             self.is_ref = False
         return self
+
+    @property
+    def id(self):
+        '''Return the id for the object if it has a useful ID, or else None.
+
+Note: unlike uri, an id is Not fully unique within some collections returnable
+by API methods.  For example, searches can return different types of objects, and
+agents have unique ids per agent_type, not across all agents.'''
+        candidate = self.__json.get('uri', self.__json.get('ref', None))
+        if candidate:
+            val = candidate.split('/')[-1]
+            if val.isdigit(): return(int(val))
 
     def __dir__(self):
         self.reify()
@@ -73,7 +88,7 @@ If neither is present, the method raises an AttributeError.'''
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
             if isinstance(self.__json[key], list):
-                if len(self.__json[key]) < 1 or isinstance(self.__json[key][0], dict):
+                if len(self.__json[key]) < 1 or (isinstance(self.__json[key][0], dict) and 'jsonmodel_type' in self.__json[key][0]):
                     return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
@@ -127,9 +142,17 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         for jm in self.client.get_paged(self.uri, params=self.params):
             yield JSONModelObject(jm, self.client)
 
-    def __call__(self, myid):
+    def __call__(self, myid, **params):
         '''Fetch a JSONModelObject from the relation by id.'''
-        return JSONModelObject(self.client.get("/".join((self.uri.rstrip("/"), str(myid),))).json(), self.client)
+        # Special handling for resolve because it takes a string or an array and requires [] for array
+        if 'resolve' in params:
+            params['resolve[]'] = params['resolve']
+            del params['resolve']
+        return JSONModelObject(self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params).json(), self.client)
+
+    def with_params(self, **params):
+        '''Return JSONModelRelation with same uri and client, but add kwargs to params.'''
+        return JSONModelRelation(self.uri, {**self.params, **params}, self.client)
 
     def __getattr__(self, key):
         return type(self)("/".join((self.uri, key,)), params=self.params, client=self.client)
