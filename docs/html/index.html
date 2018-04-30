@@ -170,54 +170,19 @@
 
 </dd></dl>
 
-<dl class="class">
-<dt id="asnake.aspace.AgentRelation">
-<em class="property">class </em><code class="descclassname">asnake.aspace.</code><code class="descname">AgentRelation</code><span class="sig-paren">(</span><em>uri</em>, <em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation" title="Permalink to this definition">¶</a></dt>
-<dd><p>subtype of JSONModelRelation for handling the <cite>/agents</cite> route hierarchy.</p>
-<p>Usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span>                        <span class="c1"># all agents of all types</span>
-<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">corporate_entities</span>     <span class="c1"># JSONModelRelation of corporate entities</span>
-<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;corporate_entities&quot;</span><span class="p">]</span>  <span class="c1"># see above</span>
-<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;people&quot;</span><span class="p">,</span> <span class="s2">&quot;families&quot;</span><span class="p">]</span>  <span class="c1"># Multiple types of agents</span>
-</pre></div>
-</div>
-<dl class="method">
-<dt id="asnake.aspace.AgentRelation.__getitem__">
-<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>only</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#AgentRelation.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation.__getitem__" title="Permalink to this definition">¶</a></dt>
-<dd><p>filter the AgentRelation to only the type or types passed in</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="asnake.aspace.ASNakeBadAgentType">
-<em class="property">exception </em><code class="descclassname">asnake.aspace.</code><code class="descname">ASNakeBadAgentType</code><a class="reference internal" href="_modules/asnake/aspace.html#ASNakeBadAgentType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.ASNakeBadAgentType" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="asnake.aspace.ASNakeBadAgentType.with_traceback">
-<code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.aspace.ASNakeBadAgentType.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt>
-<em class="property">class </em><code class="descclassname">asnake.aspace.</code><code class="descname">AgentRelation</code><span class="sig-paren">(</span><em>uri</em>, <em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#AgentRelation"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>subtype of JSONModelRelation for handling the <cite>/agents</cite> route hierarchy.</p>
-<p>Usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span>                        <span class="c1"># all agents of all types</span>
-<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">corporate_entities</span>     <span class="c1"># JSONModelRelation of corporate entities</span>
-<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;corporate_entities&quot;</span><span class="p">]</span>  <span class="c1"># see above</span>
-<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;people&quot;</span><span class="p">,</span> <span class="s2">&quot;families&quot;</span><span class="p">]</span>  <span class="c1"># Multiple types of agents</span>
-</pre></div>
-</div>
-</dd></dl>
-
 <span class="target" id="module-asnake.jsonmodel"></span><dl class="class">
 <dt id="asnake.jsonmodel.JSONModelObject">
 <em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">JSONModelObject</code><span class="sig-paren">(</span><em>json_rep</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper over the JSONModel representation of a single object in ArchivesSpace.</p>
+<dl class="attribute">
+<dt id="asnake.jsonmodel.JSONModelObject.id">
+<code class="descname">id</code><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the id for the object if it has a useful ID, or else None.</p>
+<p>Note: unlike uri, an id is Not fully unique within some collections returnable
+by API methods.  For example, searches can return different types of objects, and
+agents have unique ids per agent_type, not across all agents.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="asnake.jsonmodel.JSONModelObject.json">
 <code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject.json" title="Permalink to this definition">¶</a></dt>
@@ -259,10 +224,53 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="method">
 <dt id="asnake.jsonmodel.JSONModelRelation.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>myid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__call__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>myid</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a JSONModelObject from the relation by id.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="asnake.jsonmodel.JSONModelRelation.with_params">
+<code class="descname">with_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.with_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="asnake.aspace.AgentRelation">
+<em class="property">class </em><code class="descclassname">asnake.aspace.</code><code class="descname">AgentRelation</code><span class="sig-paren">(</span><em>uri</em>, <em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>subtype of JSONModelRelation for handling the <cite>/agents</cite> route hierarchy.</p>
+<p>Usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span>                        <span class="c1"># all agents of all types</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">corporate_entities</span>     <span class="c1"># JSONModelRelation of corporate entities</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;corporate_entities&quot;</span><span class="p">]</span>  <span class="c1"># see above</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;people&quot;</span><span class="p">,</span> <span class="s2">&quot;families&quot;</span><span class="p">]</span>  <span class="c1"># Multiple types of agents</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="asnake.aspace.AgentRelation.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>only</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>filter the AgentRelation to only the type or types passed in</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="asnake.jsonmodel.ASNakeBadAgentType">
+<em class="property">exception </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">ASNakeBadAgentType</code><a class="reference internal" href="_modules/asnake/jsonmodel.html#ASNakeBadAgentType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ASNakeBadAgentType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="asnake.jsonmodel.AgentRelation">
+<em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">AgentRelation</code><span class="sig-paren">(</span><em>uri</em>, <em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.AgentRelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>subtype of JSONModelRelation for handling the <cite>/agents</cite> route hierarchy.</p>
+<p>Usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span>                        <span class="c1"># all agents of all types</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">corporate_entities</span>     <span class="c1"># JSONModelRelation of corporate entities</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;corporate_entities&quot;</span><span class="p">]</span>  <span class="c1"># see above</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;people&quot;</span><span class="p">,</span> <span class="s2">&quot;families&quot;</span><span class="p">]</span>  <span class="c1"># Multiple types of agents</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="class">
@@ -281,6 +289,15 @@ set self.__traceback__ to tb and return self.</p>
 <dt>
 <em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">JSONModelObject</code><span class="sig-paren">(</span><em>json_rep</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A wrapper over the JSONModel representation of a single object in ArchivesSpace.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Return the id for the object if it has a useful ID, or else None.</p>
+<p>Note: unlike uri, an id is Not fully unique within some collections returnable
+by API methods.  For example, searches can return different types of objects, and
+agents have unique ids per agent_type, not across all agents.</p>
+</dd></dl>
+
 <dl class="method">
 <dt>
 <code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a></dt>
@@ -315,6 +332,12 @@ set self.__traceback__ to tb and return self.</p>
 </div>
 <p>This object wraps the route and parameters, and does no caching - each iteration through a relation fetches data from ASpace fresh.</p>
 <p>Additionally, JSONModelRelations implement <cite>__getattr__</cite>, in order to handle nested and subsidiary routes, such as the routes for individual types of agents.</p>
+<dl class="method">
+<dt>
+<code class="descname">with_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
+</dd></dl>
+
 </dd></dl>
 
 <span class="target" id="module-asnake.client"></span><dl class="class">

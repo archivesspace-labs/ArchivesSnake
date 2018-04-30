@@ -154,19 +154,21 @@
             
   <h1>Source code for asnake.aspace</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">asnake.client</span> <span class="k">import</span> <span class="n">ASnakeClient</span>
-<span class="kn">from</span> <span class="nn">asnake.jsonmodel</span> <span class="k">import</span> <span class="n">JSONModelObject</span><span class="p">,</span> <span class="n">JSONModelRelation</span>
+<span class="kn">from</span> <span class="nn">asnake.jsonmodel</span> <span class="k">import</span> <span class="n">JSONModelObject</span><span class="p">,</span> <span class="n">JSONModelRelation</span><span class="p">,</span> <span class="n">AgentRelation</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Sequence</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">boltons.setutils</span> <span class="k">import</span> <span class="n">IndexedSet</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
+<span class="k">class</span> <span class="nc">ASnakeBadReturnCode</span><span class="p">:</span> <span class="k">pass</span>
 <div class="viewcode-block" id="ASpace"><a class="viewcode-back" href="../../index.html#asnake.aspace.ASpace">[docs]</a><span class="k">class</span> <span class="nc">ASpace</span><span class="p">():</span>
     <span class="c1"># this happens when you call ASpace()</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
         <span class="c1"># Connect to ASpace using .archivessnake.yml</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__client</span> <span class="o">=</span> <span class="n">ASnakeClient</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\(v?(.+\))&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">ASnakeClient</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\(v?(.+\))&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -175,65 +177,40 @@
 <div class="viewcode-block" id="ASpace.__getattr__"><a class="viewcode-back" href="../../index.html#asnake.aspace.ASpace.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns the JSONModelRelation representing the route with the same name as the attribute requested.&#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;return all resources from every repo.&#39;&#39;&#39;</span>
 
-        <span class="n">repo_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;repositories&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
-        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="o">.</span><span class="n">get_paged</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/resources&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span> <span class="k">for</span> <span class="n">uri</span> <span class="ow">in</span> <span class="n">repo_uris</span><span class="p">]):</span>
-            <span class="k">yield</span> <span class="n">JSONModelObject</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="p">)</span>
+        <span class="n">repo_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;repositories&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_paged</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/resources&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span> <span class="k">for</span> <span class="n">uri</span> <span class="ow">in</span> <span class="n">repo_uris</span><span class="p">]):</span>
+            <span class="k">yield</span> <span class="n">JSONModelObject</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">agents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns an AgentRelation.&#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">AgentRelation</span><span class="p">(</span><span class="s2">&quot;/agents&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="bp">self</span><span class="o">.</span><span class="n">__client</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">AgentRelation</span><span class="p">(</span><span class="s2">&quot;/agents&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ASNakeBadAgentType"><a class="viewcode-back" href="../../index.html#asnake.aspace.ASNakeBadAgentType">[docs]</a><span class="k">class</span> <span class="nc">ASNakeBadAgentType</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
 
-<span class="n">agent_types</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;corporate_entities&quot;</span><span class="p">,</span> <span class="s2">&quot;people&quot;</span><span class="p">,</span> <span class="s2">&quot;families&quot;</span><span class="p">,</span> <span class="s2">&quot;software&quot;</span><span class="p">,)</span>
-<span class="n">agent_types_set</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">agent_types</span><span class="p">)</span>
-<div class="viewcode-block" id="AgentRelation"><a class="viewcode-back" href="../../index.html#asnake.aspace.AgentRelation">[docs]</a><span class="k">class</span> <span class="nc">AgentRelation</span><span class="p">(</span><span class="n">JSONModelRelation</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;subtype of JSONModelRelation for handling the `/agents` route hierarchy.</span>
+    <span class="k">def</span> <span class="nf">by_external_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_id</span><span class="p">,</span> <span class="n">record_types</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;return any resources fetched from the &#39;by-external-id&#39; route.</span>
 
-<span class="sd">Usage:</span>
+<span class="sd">Note: while the route will return differently depending on how many records are returned,</span>
+<span class="sd">this method deliberately flattens that out - it will _always_ return a generator, even if only</span>
+<span class="sd">one record is found.&#39;&#39;&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;eid&quot;</span><span class="p">:</span> <span class="n">external_id</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">record_types</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;type[]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">record_types</span>
 
-<span class="sd">.. code-block:: python</span>
-
-<span class="sd">    ASpace().agents                        # all agents of all types</span>
-<span class="sd">    ASpace().agents.corporate_entities     # JSONModelRelation of corporate entities</span>
-<span class="sd">    ASpace().agents[&quot;corporate_entities&quot;]  # see above</span>
-<span class="sd">    ASpace().agents[&quot;people&quot;, &quot;families&quot;]  # Multiple types of agents</span>
-
-<span class="sd">&#39;&#39;&#39;</span>
-
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">agent_type</span> <span class="ow">in</span> <span class="n">agent_types</span><span class="p">:</span>
-            <span class="k">yield from</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">agent_type</span><span class="p">,)),</span>
-                                         <span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
-
-<div class="viewcode-block" id="AgentRelation.__getitem__"><a class="viewcode-back" href="../../index.html#asnake.aspace.AgentRelation.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">only</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;filter the AgentRelation to only the type or types passed in&#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">only</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">only</span> <span class="ow">in</span> <span class="n">agent_types_set</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ASnakeBadAgentType</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not a type of agent ASnake knows about&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">only</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">only</span><span class="p">,)),</span>
-                                         <span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">only</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">only</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">agent_types_set</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">JSONModelRelation</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">agent_type</span><span class="p">,)),</span>
-                                             <span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-                                             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span> <span class="k">for</span> <span class="n">agent_type</span> <span class="ow">in</span> <span class="n">only</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;by-external-id&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">300</span><span class="p">:</span> <span class="c1"># multiple returns, bare list of uris</span>
+            <span class="k">yield from</span> <span class="p">(</span><span class="n">JSONModelObject</span><span class="p">({</span><span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="n">uri</span><span class="p">},</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span> <span class="k">for</span> <span class="n">uri</span> <span class="ow">in</span> <span class="n">IndexedSet</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()))</span>
+        <span class="k">elif</span> <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span> <span class="c1"># single obj, redirects to obj with 303-&gt;200</span>
+            <span class="k">yield</span> <span class="n">JSONModelObject</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ASnakeBadAgentType</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not a type resolvable to an agent type or set of agent types&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">only</span><span class="p">))</span></div>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;#&lt;AgentRelation:/agents&gt;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;__call__ is not implemented on AgentRelation&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">ASnakeBadReturnCode</span><span class="p">(</span><span class="s2">&quot;by-external-id call returned &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span></div>
 </pre></div>
 
            </div>

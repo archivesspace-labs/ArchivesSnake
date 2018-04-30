@@ -81,14 +81,14 @@ If neither is present, the method raises an AttributeError.'''
                 # This works, at the cost of a "wasted" full call if not a JSONModelObject
                 if self.__client.head(uri, params={"all_ids":True}).status_code == 200:
                     resp = self.__client.get(uri, params={"all_ids":True})
-                    if 'jsonmodel_type' in resp.json():
+                    if any(k in resp.json() for k in ('jsonmodel_type', 'ref',)):
                         return JSONModelObject(resp.json(), client=self.__client)
                     return JSONModelRelation(uri, client=self.__client)
                 else:
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
             if isinstance(self.__json[key], list):
-                if len(self.__json[key]) < 1 or (isinstance(self.__json[key][0], dict) and any(map(lambda x: x in self.__json[key][0], ("ref", "jsonmodel_type",)))):
+                if len(self.__json[key]) < 1 or (isinstance(self.__json[key][0], dict) and any(k in self.__json[key][0] for k in ("ref", "jsonmodel_type",))):
                     return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
@@ -156,3 +156,49 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
 
     def __getattr__(self, key):
         return type(self)("/".join((self.uri, key,)), params=self.params, client=self.client)
+
+
+class ASNakeBadAgentType(Exception): pass
+
+agent_types = ("corporate_entities", "people", "families", "software",)
+agent_types_set = frozenset(agent_types)
+class AgentRelation(JSONModelRelation):
+    '''subtype of JSONModelRelation for handling the `/agents` route hierarchy.
+
+Usage:
+
+.. code-block:: python
+
+    ASpace().agents                        # all agents of all types
+    ASpace().agents.corporate_entities     # JSONModelRelation of corporate entities
+    ASpace().agents["corporate_entities"]  # see above
+    ASpace().agents["people", "families"]  # Multiple types of agents
+
+'''
+
+    def __iter__(self):
+        for agent_type in agent_types:
+            yield from JSONModelRelation("/".join((self.uri.rstrip("/"), agent_type,)),
+                                         {"all_ids": True},
+                                         self.client)
+
+    def __getitem__(self, only):
+        '''filter the AgentRelation to only the type or types passed in'''
+        if isinstance(only, str):
+            if not only in agent_types_set:
+                raise ASnakeBadAgentType("'{}' is not a type of agent ASnake knows about".format(only))
+            return JSONModelRelation("/".join((self.uri.rstrip("/"), only,)),
+                                         {"all_ids": True},
+                                         self.client)
+        elif isinstance(only, Sequence) and set(only) < agent_types_set:
+            return chain(*(JSONModelRelation("/".join((self.uri.rstrip("/"), agent_type,)),
+                                             {"all_ids": True},
+                                             self.client) for agent_type in only))
+        else:
+            raise ASnakeBadAgentType("'{}' is not a type resolvable to an agent type or set of agent types".format(only))
+
+    def __repr__(self):
+        return "#<AgentRelation:/agents>"
+
+    def __call__(self, *args, **kwargs):
+        raise NotImplementedError("__call__ is not implemented on AgentRelation")

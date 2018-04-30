@@ -1,5 +1,5 @@
 from asnake.client import ASnakeClient
-from asnake.jsonmodel import JSONModelObject, JSONModelRelation
+from asnake.jsonmodel import JSONModelObject, JSONModelRelation, AgentRelation
 from collections.abc import Sequence
 from itertools import chain
 from boltons.setutils import IndexedSet
@@ -56,49 +56,3 @@ one record is found.'''
             yield JSONModelObject(res.json(), self.client)
         else:
             raise ASnakeBadReturnCode("by-external-id call returned '{}'".format(res.status_code))
-
-
-class ASNakeBadAgentType(Exception): pass
-
-agent_types = ("corporate_entities", "people", "families", "software",)
-agent_types_set = frozenset(agent_types)
-class AgentRelation(JSONModelRelation):
-    '''subtype of JSONModelRelation for handling the `/agents` route hierarchy.
-
-Usage:
-
-.. code-block:: python
-
-    ASpace().agents                        # all agents of all types
-    ASpace().agents.corporate_entities     # JSONModelRelation of corporate entities
-    ASpace().agents["corporate_entities"]  # see above
-    ASpace().agents["people", "families"]  # Multiple types of agents
-
-'''
-
-    def __iter__(self):
-        for agent_type in agent_types:
-            yield from JSONModelRelation("/".join((self.uri.rstrip("/"), agent_type,)),
-                                         {"all_ids": True},
-                                         self.client)
-
-    def __getitem__(self, only):
-        '''filter the AgentRelation to only the type or types passed in'''
-        if isinstance(only, str):
-            if not only in agent_types_set:
-                raise ASnakeBadAgentType("'{}' is not a type of agent ASnake knows about".format(only))
-            return JSONModelRelation("/".join((self.uri.rstrip("/"), only,)),
-                                         {"all_ids": True},
-                                         self.client)
-        elif isinstance(only, Sequence) and set(only) < agent_types_set:
-            return chain(*(JSONModelRelation("/".join((self.uri.rstrip("/"), agent_type,)),
-                                             {"all_ids": True},
-                                             self.client) for agent_type in only))
-        else:
-            raise ASnakeBadAgentType("'{}' is not a type resolvable to an agent type or set of agent types".format(only))
-
-    def __repr__(self):
-        return "#<AgentRelation:/agents>"
-
-    def __call__(self, *args, **kwargs):
-        raise NotImplementedError("__call__ is not implemented on AgentRelation")

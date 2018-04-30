@@ -20,10 +20,6 @@ Welcome to ArchivesSnake's documentation!
 
       .. automethod:: asnake.aspace.ASpace.__getattr__
 
-   .. autoclass:: asnake.aspace.AgentRelation
-
-      .. automethod:: asnake.aspace.AgentRelation.__getitem__
-
 .. automodule:: asnake.jsonmodel
    :members:
 
@@ -36,6 +32,11 @@ Welcome to ArchivesSnake's documentation!
       .. automethod:: asnake.jsonmodel.JSONModelRelation.__getattr__
 
       .. automethod:: asnake.jsonmodel.JSONModelRelation.__call__
+
+   .. autoclass:: asnake.aspace.AgentRelation
+
+      .. automethod:: asnake.aspace.AgentRelation.__getitem__
+
 
 .. automodule:: asnake.client
    :members:
