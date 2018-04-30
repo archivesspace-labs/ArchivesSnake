@@ -88,7 +88,7 @@ If neither is present, the method raises an AttributeError.'''
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
             if isinstance(self.__json[key], list):
-                if len(self.__json[key]) < 1 or (isinstance(self.__json[key][0], dict) and 'jsonmodel_type' in self.__json[key][0]):
+                if len(self.__json[key]) < 1 or (isinstance(self.__json[key][0], dict) and any(map(lambda x: x in self.__json[key][0], ("ref", "jsonmodel_type",)))):
                     return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
