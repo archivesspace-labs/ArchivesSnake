@@ -27,6 +27,22 @@ def test_ordered_records():
     assert len(getem) > 0
     assert all(isinstance(x, JSONModelObject) for x in getem)
 
+@vcr.use_cassette
+def test_stays_ref_on_repr():
+    aspace = ASpace()
+    agent = aspace.repositories(2).agent_representation
+    assert(agent.is_ref)
+    agent.__repr__()
+    assert(agent.is_ref)
+
+@vcr.use_cassette
+def test_agent_subroute():
+    aspace = ASpace()
+    corp_ent = aspace.agents.corporate_entities
+    assert isinstance(corp_ent, JSONModelRelation)
+    # raised prior due to subroutes getting AgentRelation type
+    agent = aspace.agents.corporate_entities(1)
+
 def teardown():
     '''Undo the thing from setup'''
     if conf_file:

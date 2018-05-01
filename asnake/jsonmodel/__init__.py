@@ -202,3 +202,7 @@ Usage:
 
     def __call__(self, *args, **kwargs):
         raise NotImplementedError("__call__ is not implemented on AgentRelation")
+
+    # override parent __getattr__ because needs to return base class impl for descendant urls
+    def __getattr__(self, key):
+        return type(self).__bases__[0]("/".join((self.uri, key,)), params=self.params, client=self.client)
