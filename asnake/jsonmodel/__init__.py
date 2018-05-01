@@ -55,7 +55,7 @@ agents have unique ids per agent_type, not across all agents.'''
         result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'] if not self.is_ref else "ref" )
 
         if 'uri' in self.__json:
-            result += ':' + self.uri
+            result += ':' + self.__json['uri']
         elif self.is_ref:
             result += ':' + self.__json['ref']
         return result + '>'
