@@ -79,8 +79,8 @@ If neither is present, the method raises an AttributeError.'''
                 # Existence of route isn't enough, need to discriminate by type
                 # example: .../resources/:id/ordered_records which ALSO ought to be maybe treated as plural?
                 # This works, at the cost of a "wasted" full call if not a JSONModelObject
-                if self.__client.head(uri, params={"all_ids":True}).status_code == 200:
-                    resp = self.__client.get(uri, params={"all_ids":True})
+                resp = self.__client.get(uri, params={"all_ids":True})
+                if resp.status_code == 200:
                     if any(k in resp.json() for k in ('jsonmodel_type', 'ref',)):
                         return JSONModelObject(resp.json(), client=self.__client)
                     return JSONModelRelation(uri, client=self.__client)
