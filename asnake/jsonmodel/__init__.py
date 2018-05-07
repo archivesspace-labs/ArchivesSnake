@@ -14,6 +14,10 @@ class JSONModel(type):
             cls.__default_client = ASnakeClient()
         return cls.__default_client
 
+jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
+def is_jmtype(obj):
+    '''Determines if object is JSON suitable for wrapping with a JSONModelObject.'''
+    return isinstance(obj, dict) and jmtype_signifiers.intersection(jmtype_signifiers)
 
 # Classes dealing with JSONModel imports
 class JSONModelObject(metaclass=JSONModel):
@@ -60,6 +64,7 @@ agents have unique ids per agent_type, not across all agents.'''
             result += ':' + self.__json['ref']
         return result + '>'
 
+
     def __getattr__(self, key):
         '''Access to properties on the JSONModel object and objects from  descendant API routes.
 
@@ -81,19 +86,19 @@ If neither is present, the method raises an AttributeError.'''
                 # This works, at the cost of a "wasted" full call if not a JSONModelObject
                 resp = self.__client.get(uri, params={"all_ids":True})
                 if resp.status_code == 200:
-                    if any(k in resp.json() for k in ('jsonmodel_type', 'ref',)):
+                    if is_jmtype(resp.json()):
                         return JSONModelObject(resp.json(), client=self.__client)
                     return JSONModelRelation(uri, client=self.__client)
                 else:
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
             if isinstance(self.__json[key], list):
-                if len(self.__json[key]) < 1 or (isinstance(self.__json[key][0], dict) and any(k in self.__json[key][0] for k in ("ref", "jsonmodel_type",))):
+                if len(self.__json[key]) == 0 or is_jmtype(self.__json[key][0]):
                     return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
                     return self.__json[key]
-            elif isinstance(self.__json[key], dict):
+            elif is_jmtype(self.__json[key]):
                 return JSONModelObject(self.__json[key], self.__client)
             else:
                 return self.__json[key]
