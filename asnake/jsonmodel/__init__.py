@@ -112,6 +112,7 @@ If neither is present, the method raises an AttributeError.'''
 
     def json(self):
         '''return wrapped dict representing JSONModelObject contents.'''
+        self.reify()
         return self.__json
 
 class JSONModelRelation(metaclass=JSONModel):
