@@ -17,7 +17,7 @@ class JSONModel(type):
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
 def is_jmtype(obj):
     '''Determines if object is JSON suitable for wrapping with a JSONModelObject.'''
-    return isinstance(obj, dict) and jmtype_signifiers.intersection(jmtype_signifiers)
+    return isinstance(obj, dict) and jmtype_signifiers.intersection(obj.keys())
 
 # Classes dealing with JSONModel imports
 class JSONModelObject(metaclass=JSONModel):
