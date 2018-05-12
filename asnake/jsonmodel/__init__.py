@@ -1,5 +1,20 @@
 from itertools import chain
 
+jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
+node_signifiers = frozenset({"node_type", "resource_uri"})
+
+def dispatch_type(obj):
+    '''Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
+Returns either the correct class or False if no class is suitable.'''
+    value = False
+    if isinstance(obj, dict):
+        if jmtype_signifiers.intersection(obj.keys()):
+            value = JSONModelObject
+        elif node_signifiers.intersection(obj.keys()):
+            value = TreeNode
+    return value
+
+
 # Base metaclass for shared functionality
 class JSONModel(type):
     '''Mixin providing functionality shared by JSONModel and JSONModelRelation classes.'''
@@ -14,27 +29,22 @@ class JSONModel(type):
             cls.__default_client = ASnakeClient()
         return cls.__default_client
 
-jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
-def is_jmtype(obj):
-    '''Determines if object is JSON suitable for wrapping with a JSONModelObject.'''
-    return isinstance(obj, dict) and jmtype_signifiers.intersection(obj.keys())
-
 # Classes dealing with JSONModel imports
 class JSONModelObject(metaclass=JSONModel):
     '''A wrapper over the JSONModel representation of a single object in ArchivesSpace.'''
 
     def __init__(self, json_rep, client = None):
-        self.__json = json_rep
-        self.__client = client or type(self).default_client()
+        self._json = json_rep
+        self._client = client or type(self).default_client()
         self.is_ref = 'ref' in json_rep
 
     def reify(self):
         '''Convert object from a ref into a realized object.'''
         if self.is_ref:
-            if '_resolved' in self.__json:
-                self.__json = self.__json['_resolved']
+            if '_resolved' in self._json:
+                self._json = self._json['_resolved']
             else:
-                self.__json = self.__client.get(self.__json['ref']).json()
+                self._json = self._client.get(self._json['ref']).json()
             self.is_ref = False
         return self
 
@@ -45,23 +55,23 @@ class JSONModelObject(metaclass=JSONModel):
 Note: unlike uri, an id is Not fully unique within some collections returnable
 by API methods.  For example, searches can return different types of objects, and
 agents have unique ids per agent_type, not across all agents.'''
-        candidate = self.__json.get('uri', self.__json.get('ref', None))
+        candidate = self._json.get('uri', self._json.get('ref', None))
         if candidate:
             val = candidate.split('/')[-1]
             if val.isdigit(): return(int(val))
 
     def __dir__(self):
         self.reify()
-        return sorted(chain(self.__json.keys(),
-                    (x for x in self.__dict__.keys() if not x.startswith("_JSONModelObject__"))))
+        return sorted(chain(self._json.keys(),
+                    (x for x in self.__dict__.keys() if not x.startswith("_{}__".format(type(self).__name__)))))
 
     def __repr__(self):
-        result = "#<JSONModel:{}".format(self.__json['jsonmodel_type'] if not self.is_ref else "ref" )
+        result = "#<JSONModel:{}".format(self._json['jsonmodel_type'] if not self.is_ref else "ref" )
 
-        if 'uri' in self.__json:
-            result += ':' + self.__json['uri']
+        if 'uri' in self._json:
+            result += ':' + self._json['uri']
         elif self.is_ref:
-            result += ':' + self.__json['ref']
+            result += ':' + self._json['ref']
         return result + '>'
 
 
@@ -75,37 +85,39 @@ attr lookup for JSONModel object is provided from the following sources:
 
 If neither is present, the method raises an AttributeError.'''
         if self.is_ref:
-            if key == 'uri': return self.__json['ref']
+            if key == 'uri': return self._json['ref']
             self.reify()
 
         if not key.startswith('_') and not key == 'is_ref':
-            if not key in self.__json.keys() and 'uri' in self.__json:
-                uri = "/".join((self.__json['uri'].rstrip("/"), key,))
+            if not key in self._json.keys() and 'uri' in self._json:
+                uri = "/".join((self._json['uri'].rstrip("/"), key,))
                 # Existence of route isn't enough, need to discriminate by type
                 # example: .../resources/:id/ordered_records which ALSO ought to be maybe treated as plural?
                 # This works, at the cost of a "wasted" full call if not a JSONModelObject
-                resp = self.__client.get(uri, params={"all_ids":True})
+                resp = self._client.get(uri, params={"all_ids":True})
                 if resp.status_code == 200:
-                    if is_jmtype(resp.json()):
-                        return JSONModelObject(resp.json(), client=self.__client)
-                    return JSONModelRelation(uri, client=self.__client)
+                    jmtype = dispatch_type(resp.json())
+                    if (jmtype):
+                        return jmtype(resp.json(), client=self._client)
+                    return JSONModelRelation(uri, client=self._client)
                 else:
                     raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
 
-            if isinstance(self.__json[key], list):
-                if len(self.__json[key]) == 0 or is_jmtype(self.__json[key][0]):
-                    return [JSONModelObject(obj, self.__client) for obj in self.__json[key]]
+            if isinstance(self._json[key], list) and len(self._json[key]) > 0:
+                jmtype = dispatch_type(self._json[key][0])
+                if len(self._json[key]) == 0 or jmtype:
+                    return [jmtype(obj, self._client) for obj in self._json[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
-                    return self.__json[key]
-            elif is_jmtype(self.__json[key]):
-                return JSONModelObject(self.__json[key], self.__client)
+                    return self._json[key]
+            elif dispatch_type(self._json[key]):
+                return dispatch_type(self._json[key])(self._json[key], self._client)
             else:
-                return self.__json[key]
+                return self._json[key]
         else: return self.__getattribute__(key)
 
     def __str__(self):
-        return json.dumps(self.__json, indent=2)
+        return json.dumps(self._json, indent=2)
 
     def __bytes__(self):
         return str(self).encode('utf8')
@@ -113,7 +125,21 @@ If neither is present, the method raises an AttributeError.'''
     def json(self):
         '''return wrapped dict representing JSONModelObject contents.'''
         self.reify()
-        return self.__json
+        return self._json
+
+class TreeNode(JSONModelObject):
+    def __repr__(self):
+        result = "#<TreeNode:{}".format(self._json['node_type'])
+        if "resource_uri" in self._json:
+            result += ":" + self._json['resource_uri']
+        return result + ">"
+
+    @property
+    def record(self):
+        resp = self._client.get(self.record_uri)
+        jmtype = dispatch_type(resp.json())
+        return jmtype(resp.json(), self._client)
+
 
 class JSONModelRelation(metaclass=JSONModel):
     '''A wrapper over index routes and other routes that represent groups of items in ASpace.
