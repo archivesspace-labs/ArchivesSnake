@@ -1,5 +1,6 @@
 from itertools import chain
 
+component_signifiers = ["resource", "archival_object", "classification_tree"]
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
 node_signifiers = frozenset({"node_type", "resource_uri"})
 
@@ -8,11 +9,24 @@ def dispatch_type(obj):
 Returns either the correct class or False if no class is suitable.'''
     value = False
     if isinstance(obj, dict):
-        if jmtype_signifiers.intersection(obj.keys()):
+        if "jsonmodel_type" in obj.keys() and obj["jsonmodel_type"] in component_signifiers:
+            value = ComponentObject
+        elif jmtype_signifiers.intersection(obj.keys()):
             value = JSONModelObject
         elif node_signifiers.intersection(obj.keys()):
             value = TreeNode
     return value
+
+def find_child(tree, uri, children):
+    '''Navigates a tree object to get a list of children of a specified archival object uri.'''
+    for child in tree["children"]:
+        if child["record_uri"] == uri:
+            children = child
+        elif len(child["children"]) < 1:
+            pass
+        else:
+            children = find_child(child, uri, children)
+    return children
 
 
 # Base metaclass for shared functionality
@@ -127,15 +141,51 @@ If neither is present, the method raises an AttributeError.'''
         self.reify()
         return self._json
 
+class ComponentObject(JSONModelObject):
+    def __repr__(self):
+        result = "#<ComponentObject:{}".format(self._json['jsonmodel_type'] if not self.is_ref else "ref" )
+        if 'uri' in self._json:
+            result += ':' + self._json['uri']
+        elif self.is_ref:
+            result += ':' + self._json['ref']
+        return result + '>'
+    
+    @property
+    def tree(self):
+        '''Returns a TreeNode object for children of resources, archival objects, and classifications'''
+        if self._json["jsonmodel_type"] == "resource" or self._json["jsonmodel_type"] == "classification":
+            resp = self._client.get(self._json["uri"] + "/tree")
+            if resp.status_code == 200:
+                tree_object = resp.json()
+            else:
+                raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
+        elif self._json["jsonmodel_type"] == "archival_object":
+            resp = self._client.get(self._json["resource"]["ref"] + "/tree")
+            if resp.status_code == 200:
+                tree_object = find_child(resp.json(), self._json["uri"], None)
+            else:
+                raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
+        else:
+            raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
+        jmtype = dispatch_type(tree_object)
+        return jmtype(tree_object, self._client)
+
+
 class TreeNode(JSONModelObject):
     def __repr__(self):
-        result = "#<TreeNode:{}".format(self._json['node_type'])
+        if self._json["jsonmodel_type"] == "classification":
+            result = "#<TreeNode:{}".format(self._json['jsonmodel_type'])
+        else:
+            result = "#<TreeNode:{}".format(self._json['node_type'])
         if "resource_uri" in self._json:
             result += ":" + self._json['resource_uri']
+        elif "identifier" in self._json:
+            result += ":" + self._json['identifier']
         return result + ">"
 
     @property
     def record(self):
+        '''returns the full JSONModelObject for a node'''
         resp = self._client.get(self.record_uri)
         jmtype = dispatch_type(resp.json())
         return jmtype(resp.json(), self._client)
@@ -180,7 +230,11 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         if 'resolve' in params:
             params['resolve[]'] = params['resolve']
             del params['resolve']
-        return JSONModelObject(self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params).json(), self.client)
+        resp = self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params)
+        jmtype = dispatch_type(resp.json())
+        if (jmtype):
+            return jmtype(resp.json(), client=self.client)
+        return JSONModelObject(resp.json(), self.client)
 
     def with_params(self, **params):
         '''Return JSONModelRelation with same uri and client, but add kwargs to params.'''
