@@ -1,6 +1,7 @@
 from itertools import chain
+import json
 
-component_signifiers = ["resource", "archival_object", "classification_tree"]
+component_signifiers = frozenset({"archival_object", "archival_objects"})
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
 node_signifiers = frozenset({"node_type", "resource_uri"})
 
@@ -9,24 +10,29 @@ def dispatch_type(obj):
 Returns either the correct class or False if no class is suitable.'''
     value = False
     if isinstance(obj, dict):
-        if "jsonmodel_type" in obj.keys() and obj["jsonmodel_type"] in component_signifiers:
+        ref_type = [x for x in obj['ref'].split("/") if not x.isdigit()][-1] if 'ref' in obj else None
+
+        if obj.get("jsonmodel_type", ref_type) in component_signifiers:
             value = ComponentObject
-        elif jmtype_signifiers.intersection(obj.keys()):
-            value = JSONModelObject
         elif node_signifiers.intersection(obj.keys()):
             value = TreeNode
+        elif jmtype_signifiers.intersection(obj.keys()):
+            value = JSONModelObject
+
     return value
 
-def find_child(tree, uri, children):
+def find_subtree(tree, uri):
     '''Navigates a tree object to get a list of children of a specified archival object uri.'''
-    for child in tree["children"]:
+    subtree = None
+    for child in tree['children']:
         if child["record_uri"] == uri:
-            children = child
-        elif len(child["children"]) < 1:
-            pass
+            subtree = child
+            break # subtree found, all done!
         else:
-            children = find_child(child, uri, children)
-    return children
+            if not child['has_children']:
+                continue # this is a leaf, do not recurse
+            subtree = find_subtree(child['children'], uri) # recurse!
+    return subtree
 
 
 # Base metaclass for shared functionality
@@ -80,7 +86,7 @@ agents have unique ids per agent_type, not across all agents.'''
                     (x for x in self.__dict__.keys() if not x.startswith("_{}__".format(type(self).__name__)))))
 
     def __repr__(self):
-        result = "#<JSONModel:{}".format(self._json['jsonmodel_type'] if not self.is_ref else "ref" )
+        result = "#<{}".format(self._json['jsonmodel_type'] if not self.is_ref else "ref" )
 
         if 'uri' in self._json:
             result += ':' + self._json['uri']
@@ -142,41 +148,23 @@ If neither is present, the method raises an AttributeError.'''
         return self._json
 
 class ComponentObject(JSONModelObject):
-    def __repr__(self):
-        result = "#<ComponentObject:{}".format(self._json['jsonmodel_type'] if not self.is_ref else "ref" )
-        if 'uri' in self._json:
-            result += ':' + self._json['uri']
-        elif self.is_ref:
-            result += ':' + self._json['ref']
-        return result + '>'
-    
     @property
     def tree(self):
-        '''Returns a TreeNode object for children of resources, archival objects, and classifications'''
-        if self._json["jsonmodel_type"] == "resource" or self._json["jsonmodel_type"] == "classification":
-            resp = self._client.get(self._json["uri"] + "/tree")
-            if resp.status_code == 200:
-                tree_object = resp.json()
-            else:
-                raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
-        elif self._json["jsonmodel_type"] == "archival_object":
-            resp = self._client.get(self._json["resource"]["ref"] + "/tree")
-            if resp.status_code == 200:
-                tree_object = find_child(resp.json(), self._json["uri"], None)
-            else:
-                raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
-        else:
+        '''Returns a TreeNode object for children of archival objects'''
+
+
+        try:
+            tree_object = find_subtree(self.resource.tree.json(), self.uri)
+        except:
             raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
+
         jmtype = dispatch_type(tree_object)
         return jmtype(tree_object, self._client)
 
 
 class TreeNode(JSONModelObject):
     def __repr__(self):
-        if self._json["jsonmodel_type"] == "classification":
-            result = "#<TreeNode:{}".format(self._json['jsonmodel_type'])
-        else:
-            result = "#<TreeNode:{}".format(self._json['node_type'])
+        result = "#<TreeNode:{}".format(self._json['node_type'])
         if "resource_uri" in self._json:
             result += ":" + self._json['resource_uri']
         elif "identifier" in self._json:

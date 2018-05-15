@@ -1,5 +1,6 @@
 from .common import vcr
-from asnake.aspace import ASpace, JSONModelRelation, JSONModelObject
+from asnake.aspace import ASpace, JSONModelRelation
+from asnake.jsonmodel import JSONModelObject
 import os
 
 conf_file = None
