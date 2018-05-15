@@ -1,4 +1,5 @@
 from itertools import chain
+from more_itertools import flatten
 import json
 
 component_signifiers = frozenset({"archival_object", "archival_objects"})
@@ -14,7 +15,7 @@ Returns either the correct class or False if no class is suitable.'''
 
         if obj.get("jsonmodel_type", ref_type) in component_signifiers:
             value = ComponentObject
-        elif node_signifiers.intersection(obj.keys()):
+        elif node_signifiers.intersection(obj.keys()) or ref_type == "tree":
             value = TreeNode
         elif jmtype_signifiers.intersection(obj.keys()):
             value = JSONModelObject
@@ -92,6 +93,8 @@ agents have unique ids per agent_type, not across all agents.'''
             result += ':' + self._json['uri']
         elif self.is_ref:
             result += ':' + self._json['ref']
+        elif 'resource_uri' in self._json:
+            result += ':' + self._json['resource_uri']
         return result + '>'
 
 
@@ -152,7 +155,6 @@ class ComponentObject(JSONModelObject):
     def tree(self):
         '''Returns a TreeNode object for children of archival objects'''
 
-
         try:
             tree_object = find_subtree(self.resource.tree.json(), self.uri)
         except:
@@ -160,6 +162,7 @@ class ComponentObject(JSONModelObject):
 
         jmtype = dispatch_type(tree_object)
         return jmtype(tree_object, self._client)
+
 
 
 class TreeNode(JSONModelObject):
@@ -177,6 +180,12 @@ class TreeNode(JSONModelObject):
         resp = self._client.get(self.record_uri)
         jmtype = dispatch_type(resp.json())
         return jmtype(resp.json(), self._client)
+
+    @property
+    def walk(self):
+        '''Serial walk of all objects in tree and children (depth-first traversal)'''
+        yield self.record
+        yield from flatten(child.walk for child in self.children)
 
 
 class JSONModelRelation(metaclass=JSONModel):
@@ -210,7 +219,8 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
 
     def __iter__(self):
         for jm in self.client.get_paged(self.uri, params=self.params):
-            yield JSONModelObject(jm, self.client)
+            jmtype = dispatch_type(jm)
+            yield jmtype(jm, self.client)
 
     def __call__(self, myid, **params):
         '''Fetch a JSONModelObject from the relation by id.'''
@@ -222,7 +232,7 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         jmtype = dispatch_type(resp.json())
         if (jmtype):
             return jmtype(resp.json(), client=self.client)
-        return JSONModelObject(resp.json(), self.client)
+        return resp.json()
 
     def with_params(self, **params):
         '''Return JSONModelRelation with same uri and client, but add kwargs to params.'''
