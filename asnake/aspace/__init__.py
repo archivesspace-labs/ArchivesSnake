@@ -1,5 +1,5 @@
 from asnake.client import ASnakeClient
-from asnake.jsonmodel import dispatch_type, JSONModelRelation, AgentRelation
+from asnake.jsonmodel import wrap_json_object, JSONModelRelation, AgentRelation
 from collections.abc import Sequence
 from itertools import chain
 from boltons.setutils import IndexedSet
@@ -30,7 +30,7 @@ class ASpace():
 
         repo_uris = [r['uri'] for r in self.client.get('repositories').json()]
         for resource in chain(*[self.client.get_paged('{}/resources'.format(uri)) for uri in repo_uris]):
-            yield dispatch_type(resource)(resource, self.client)
+            yield wrap_json_object(resource, self.client)
 
     @property
     def agents(self):
@@ -51,8 +51,8 @@ one record is found.'''
         if res.status_code == 404:
             return []
         elif res.status_code == 300: # multiple returns, bare list of uris
-            yield from (dispatch_type({"ref": uri})({"ref": uri}, self.client) for uri in IndexedSet(res.json()))
+            yield from (wrap_json_object({"ref": uri}, self.client) for uri in IndexedSet(res.json()))
         elif res.status_code == 200: # single obj, redirects to obj with 303->200
-            yield dispatch_type(res.json())(res.json(), self.client)
+            yield wrap_json_object(res.json(), self.client)
         else:
             raise ASnakeBadReturnCode("by-external-id call returned '{}'".format(res.status_code))

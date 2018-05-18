@@ -1,6 +1,6 @@
 from .common import vcr
-from asnake.aspace import ASpace, JSONModelRelation
-from asnake.jsonmodel import JSONModelObject
+from asnake.aspace import ASpace
+from asnake.jsonmodel import JSONModelObject, TreeNode, ComponentObject, JSONModelRelation
 import os
 
 conf_file = None
@@ -43,6 +43,23 @@ def test_agent_subroute():
     assert isinstance(corp_ent, JSONModelRelation)
     # raised prior due to subroutes getting AgentRelation type
     agent = aspace.agents.corporate_entities(1)
+
+@vcr.use_cassette
+def test_by_external_id():
+    aspace = ASpace()
+    result = next(aspace.by_external_id('thingumie'))
+    assert isinstance(result, JSONModelObject)
+
+@vcr.use_cassette
+def test_trees():
+    aspace = ASpace()
+    resource_tree = aspace.repositories(2).resources(1).tree
+    assert isinstance(resource_tree.children[0], TreeNode)
+    records_via_walk = list(resource_tree.walk)
+    assert aspace.repositories(2).resources(1).json() == records_via_walk[0].json()
+    assert isinstance(records_via_walk[1], ComponentObject)
+    subtree_walk = list(records_via_walk[1].tree.walk)
+    assert records_via_walk[1].uri == subtree_walk[0].uri
 
 def teardown():
     '''Undo the thing from setup'''

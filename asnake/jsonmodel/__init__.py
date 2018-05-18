@@ -22,6 +22,13 @@ Returns either the correct class or False if no class is suitable.'''
 
     return value
 
+def wrap_json_object(obj, client=None):
+    '''Classify object, and either wrap it in the correct JSONModel type or return it as is.'''
+    jmtype = dispatch_type(obj)
+    if jmtype:
+        obj = jmtype(obj, client)
+    return obj
+
 def find_subtree(tree, uri):
     '''Navigates a tree object to get a list of children of a specified archival object uri.'''
     subtree = None

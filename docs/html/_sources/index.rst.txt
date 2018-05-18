@@ -26,6 +26,10 @@ Welcome to ArchivesSnake's documentation!
    .. autoclass:: asnake.jsonmodel.JSONModelObject
       :members:
 
+   .. autoclass:: asnake.jsonmodel.ComponentObject
+      :members:
+      :inherited-members:
+
    .. autoclass:: asnake.jsonmodel.JSONModelRelation
       :members:
 

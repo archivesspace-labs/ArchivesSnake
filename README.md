@@ -12,7 +12,7 @@ most important classes to understand are:
 
 - asnake.aspace.ASpace
 - asnake.client.ASnakeClient
-- asnake.jsonmodel.JSONModelObject
+- asnake.jsonmodel.JSONModelObject (and its subclasses ComponentObject and TreeNode)
 - asnake.jsonmodel.JSONModelRelation
 
 ## Prior Art
@@ -109,7 +109,7 @@ client.get(uri) # gets the agent!
 ### Abstraction Layer
 The other way to use ASnake right now is a higher level, more convenient abstraction over the whole repo.  It lets you mostly ignore the details of JSON and API, other than structure.
 
-There are two base classes; a JSONModelObject class that represents individual objects, and a JSONModelRelation class that represents groups of objects.
+There are two base classes; a JSONModelObject class that represents individual objects, and a JSONModelRelation class that represents routes that return groups of objects. Both classes have subtypes for representing various exceptional cases in the API.
 
 To use it, import the asnake.aspace.ASpace class.
 
@@ -127,6 +127,18 @@ So, for a JSONModelObject named `obj` wrapping this JSON:
 ```
 
 `obj.name` would return `"International Repository of Pancakes"`, and `obj.resources` would return a JSONModelRelation of the route `/repositories/2/resources`
+
+JSONModelObjects representing resource or classification trees or nodes within those trees have specialized representation; specifically, they support two specialized properties:
+
+``` python
+a_tree.record # this returns the JSONModel object pointed to by that tree or node
+
+a_tree.walk # this returns a generator that returns the record, followed by all records in the tree below it
+
+# Usage example: printing a resource and all its subsidiary objects
+for record in a_tree.walk:
+    print(record.uri)
+```
 
 JSONModelRelation objects "wrap" an API route representing either a collection of objects or an intermediate route (a route such as `/agents` that has child routes but no direct results.  A JSONModelRelation can be iterated over like a list, like so:
 

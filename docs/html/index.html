@@ -198,6 +198,38 @@ agents have unique ids per agent_type, not across all agents.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="asnake.jsonmodel.ComponentObject">
+<em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">ComponentObject</code><span class="sig-paren">(</span><em>json_rep</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ComponentObject" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="asnake.jsonmodel.ComponentObject.id">
+<code class="descname">id</code><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the id for the object if it has a useful ID, or else None.</p>
+<p>Note: unlike uri, an id is Not fully unique within some collections returnable
+by API methods.  For example, searches can return different types of objects, and
+agents have unique ids per agent_type, not across all agents.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="asnake.jsonmodel.ComponentObject.json">
+<code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>return wrapped dict representing JSONModelObject contents.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="asnake.jsonmodel.ComponentObject.reify">
+<code class="descname">reify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.reify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert object from a ref into a realized object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="asnake.jsonmodel.ComponentObject.tree">
+<code class="descname">tree</code><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a TreeNode object for children of archival objects</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="asnake.jsonmodel.JSONModelRelation">
 <em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">JSONModelRelation</code><span class="sig-paren">(</span><em>uri</em>, <em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper over index routes and other routes that represent groups of items in ASpace.</p>
@@ -274,6 +306,17 @@ agents have unique ids per agent_type, not across all agents.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">ComponentObject</code><span class="sig-paren">(</span><em>json_rep</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a></dt>
+<dd><dl class="attribute">
+<dt>
+<code class="descname">tree</code></dt>
+<dd><p>Returns a TreeNode object for children of archival objects</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="asnake.jsonmodel.JSONModel">
 <em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">JSONModel</code><span class="sig-paren">(</span><em>name</em>, <em>parents</em>, <em>dct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mixin providing functionality shared by JSONModel and JSONModelRelation classes.</p>
@@ -338,6 +381,42 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="asnake.jsonmodel.TreeNode">
+<em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">TreeNode</code><span class="sig-paren">(</span><em>json_rep</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="asnake.jsonmodel.TreeNode.record">
+<code class="descname">record</code><a class="headerlink" href="#asnake.jsonmodel.TreeNode.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the full JSONModelObject for a node</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="asnake.jsonmodel.TreeNode.walk">
+<code class="descname">walk</code><a class="headerlink" href="#asnake.jsonmodel.TreeNode.walk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serial walk of all objects in tree and children (depth-first traversal)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="asnake.jsonmodel.dispatch_type">
+<code class="descclassname">asnake.jsonmodel.</code><code class="descname">dispatch_type</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#dispatch_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.dispatch_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
+Returns either the correct class or False if no class is suitable.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="asnake.jsonmodel.find_subtree">
+<code class="descclassname">asnake.jsonmodel.</code><code class="descname">find_subtree</code><span class="sig-paren">(</span><em>tree</em>, <em>uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#find_subtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.find_subtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Navigates a tree object to get a list of children of a specified archival object uri.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="asnake.jsonmodel.wrap_json_object">
+<code class="descclassname">asnake.jsonmodel.</code><code class="descname">wrap_json_object</code><span class="sig-paren">(</span><em>obj</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#wrap_json_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.wrap_json_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify object, and either wrap it in the correct JSONModel type or return it as is.</p>
 </dd></dl>
 
 <span class="target" id="module-asnake.client"></span><dl class="class">
