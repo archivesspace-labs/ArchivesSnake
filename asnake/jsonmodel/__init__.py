@@ -119,19 +119,20 @@ If neither is present, the method raises an AttributeError.'''
             self.reify()
 
         if not key.startswith('_') and not key == 'is_ref':
-            if not key in self._json.keys() and 'uri' in self._json:
+            if (not key in self._json.keys()) and 'uri' in self._json:
                 uri = "/".join((self._json['uri'].rstrip("/"), key,))
                 # Existence of route isn't enough, need to discriminate by type
                 # example: .../resources/:id/ordered_records which ALSO ought to be maybe treated as plural?
                 # This works, at the cost of a "wasted" full call if not a JSONModelObject
                 resp = self._client.get(uri, params={"all_ids":True})
-                if resp.status_code == 200:
+                if resp.status_code == 404:
+                    raise AttributeError("'{}' has no attribute or route named '{}'".format(repr(self), key))
+                else:
                     jmtype = dispatch_type(resp.json())
                     if (jmtype):
                         return jmtype(resp.json(), client=self._client)
                     return JSONModelRelation(uri, client=self._client)
-                else:
-                    raise AttributeError("'{}' has no attribute '{}'".format(repr(self), key))
+
 
             if isinstance(self._json[key], list) and len(self._json[key]) > 0:
                 jmtype = dispatch_type(self._json[key][0])
@@ -242,7 +243,16 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         return resp.json()
 
     def with_params(self, **params):
-        '''Return JSONModelRelation with same uri and client, but add kwargs to params.'''
+        '''Return JSONModelRelation with same uri and client, but add kwargs to params.
+
+Usage:
+
+.. code-block:: python
+
+    for thing in ASpace().repositories(2).search.with_params(q="primary_type:resource", fq="publish:true"):
+        # do something with the things
+
+'''
         merged = {}
         merged.update(self.params, **params)
         return JSONModelRelation(self.uri, merged, self.client)

@@ -61,6 +61,10 @@ def test_trees():
     subtree_walk = list(records_via_walk[1].tree.walk)
     assert records_via_walk[1].uri == subtree_walk[0].uri
 
+def test_with_params():
+    aspace = ASpace()
+    list(aspace.repositories(2).search.with_params(q="primary_type:resource", fq="publish:true"))
+
 def teardown():
     '''Undo the thing from setup'''
     if conf_file:

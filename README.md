@@ -72,16 +72,16 @@ repos = client.get("repositories").json()
 # do what thou wilt with some repos
 ```
 
-The return values from these methods are raw requests.models.Response objects - you have to call `.json()` on them to get the actual JSON object.
+The return values from these methods are raw `requests.models.Response` objects - you have to call `.json()` on them to get the actual JSON object.
 
-There's also a get_paged method, which handles index methods (`repositories`, `repositories/:id/resources`, etc) and returns JSON for each object in the collection.
+There's also a `get_paged method`, which handles index methods (`repositories`, `repositories/:id/resources`, etc) and returns JSON for each object in the collection.
 
 ``` python
 for repo in client.get_paged('repositories'):
     print(repo['name'])
 ```
 
-ASnakeClient, is a convenience wrapper over the [requests](http://docs.python-requests.org/en/master/) module.  The additional functionality it provides is:
+The `ASnakeClient` class is a convenience wrapper over the [requests](http://docs.python-requests.org/en/master/) module.  The additional functionality it provides is:
 - handles configuration,
 - handles and persists authorization across multiple requests
 - prepends a baseurl to API paths.
@@ -107,11 +107,14 @@ client.get(uri) # gets the agent!
 
 
 ### Abstraction Layer
-The other way to use ASnake right now is a higher level, more convenient abstraction over the whole repo.  It lets you mostly ignore the details of JSON and API, other than structure.
 
-There are two base classes; a JSONModelObject class that represents individual objects, and a JSONModelRelation class that represents routes that return groups of objects. Both classes have subtypes for representing various exceptional cases in the API.
+The other way to use ASnake right now is a higher level, more convenient abstraction over the whole API.  It lets you ignore some of the low level details of the API, though you still need to know its structure.
 
-To use it, import the asnake.aspace.ASpace class.
+There are three base classes involved: an `ASpace` class that represents the instance of ArchivesSpace you're connecting to, a `JSONModelObject` class that represents individual objects, and a `JSONModelRelation` class that represents routes that return groups of objects. Both JSONModel classes have subtypes for representing various exceptional cases in the API.
+
+To use it, import the `asnake.aspace.ASpace` class.
+
+#### JSONModelObject
 
 JSONModelObjects wrap a single ASpace JSONModel object.  Method calls on JSONModelObjects will return either the value stored in the object's JSON representation, or will try to make a call to the API to fetch a subsidiary route.
 
@@ -128,6 +131,8 @@ So, for a JSONModelObject named `obj` wrapping this JSON:
 
 `obj.name` would return `"International Repository of Pancakes"`, and `obj.resources` would return a JSONModelRelation of the route `/repositories/2/resources`
 
+##### Trees
+
 JSONModelObjects representing resource or classification trees or nodes within those trees have specialized representation; specifically, they support two specialized properties:
 
 ``` python
@@ -139,6 +144,8 @@ a_tree.walk # this returns a generator that returns the record, followed by all 
 for record in a_tree.walk:
     print(record.uri)
 ```
+
+#### JSONModelRelation
 
 JSONModelRelation objects "wrap" an API route representing either a collection of objects or an intermediate route (a route such as `/agents` that has child routes but no direct results.  A JSONModelRelation can be iterated over like a list, like so:
 
@@ -153,13 +160,21 @@ You can get the wrapped JSON by doing:
 obj.json()
 ```
 
-If you know the id of a particular thing in the collection, you can also treat JSONModelRelation objects as functions and pass the ids to get that specific thing, like so.
+If you know the id of a particular thing in the collection, you can also treat `JSONModelRelation` objects as functions and pass the ids to get that specific thing, like so.
 
 ``` python
 aspace.repositories(101) # repository with id 101
 ```
 
-A short full example using ASnake to print the title for all finding aids in ASpace, for example:
+If you need to pass parameters to a route, you can add them using the `with_params` method; here's an example using the `/repositories/:repo_id/search` route to find published resources within a repository:
+
+``` python
+repo = aspace.repositories(101)
+for resource in repo.search.with_params(q="primary_type:resource", fq="publish:true"):
+    # do things with published resources from repo 101
+```
+
+A short full example using ASnake to print the title for all finding aids in ArchivesSpace, for example:
 
 ``` python
 from asnake.aspace import ASpace
@@ -171,8 +186,8 @@ for repo in aspace.repositories:
         print(resource.title)
 ```
 
-Currently, the ASpace interface is effectively read-only; if you need to create or update records (or just do something we haven't implemented yet), you'll have to drop down to the low-level
-interface - for convenience, the client used by the ASpace object is accessible like so:
+Currently, the `ASpace` interface is effectively read-only; if you need to create or update records (or just do something we haven't implemented yet), you'll have to drop down to the low-level
+interface - for convenience, the `ASnakeClient` used by an `ASpace` object is accessible like so:
 
 ``` python
 aspace.client.get('/repositories/2/resources/1')
