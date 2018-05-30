@@ -243,7 +243,9 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
 
     def with_params(self, **params):
         '''Return JSONModelRelation with same uri and client, but add kwargs to params.'''
-        return JSONModelRelation(self.uri, {**self.params, **params}, self.client)
+        merged = {}
+        merged.update(self.params, **params)
+        return JSONModelRelation(self.uri, merged, self.client)
 
     def __getattr__(self, key):
         return type(self)("/".join((self.uri, key,)), params=self.params, client=self.client)
