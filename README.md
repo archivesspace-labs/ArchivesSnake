@@ -209,11 +209,12 @@ As per the example above, you can configure the client object by passing it argu
 
 Allowed configuration values are:
 
-| **Setting** | **Description**                                                               |
-|-------------|-------------------------------------------------------------------------------|
-| baseurl     | The location (including port if not on port 80) of your archivesspace backend |
-| username    | Username for authorization                                                    |
-| password    | Password for authorization                                                    |
+| **Setting**     | **Description**                                                               | **Default Value**     |
+|-----------------|-------------------------------------------------------------------------------|-----------------------|
+| baseurl         | The location (including port if not on port 80) of your archivesspace backend | http://localhost:4567 |
+| username        | Username for authorization                                                    | admin                 |
+| password        | Password for authorization                                                    | admin                 |
+| retry_with_auth | Whether to respond to 403 errors by trying to authorize and retrying          | True                  |
 
 You can also define a configuration file, formatted in the [YAML](http://yaml.org/) markup language.  By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
 

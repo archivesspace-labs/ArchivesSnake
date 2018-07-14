@@ -11,10 +11,12 @@ def ConfigSources(yaml_path):
     omd = OMD()
     # Fallback to defaults for local devserver
     omd.update({
-        'baseurl': 'http://localhost:4567',
-        'username': 'admin',
-        'password': 'admin'
+        'baseurl'         : 'http://localhost:4567',
+        'username'        : 'admin',
+        'password'        : 'admin',
+        'retry_with_auth' : True
     })
+
 
     if exists(yaml_path):
         with open(yaml_path, 'r') as f:

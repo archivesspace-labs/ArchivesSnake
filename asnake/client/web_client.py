@@ -1,6 +1,7 @@
 from requests import Session
 from urllib.parse import urljoin, quote
 from numbers import Number
+from collections.abc import Sequence, Mapping
 
 import json
 import asnake.configurator as conf
@@ -11,14 +12,25 @@ log = logging.get_logger(__name__)
 class ASnakeAuthError(Exception): pass
 class ASnakeWeirdReturnError(Exception): pass
 
+def listlike_seq(seq):
+    '''Determine if a thing is a list-like (sequence of values) sequence that's not string-like.'''
+    return isinstance(seq, Sequence) and not isinstance(seq, (str, bytes, Mapping,))
+
 def http_meth_factory(meth):
     '''Utility method for producing HTTP proxy methods for ASnakeProxyMethods mixin class.
 
     Urls are prefixed with the value of baseurl from the client's ASnakeConfig.  Arguments are
     passed unaltered to the matching requests.Session method.'''
     def http_method(self, url, *args, **kwargs):
+        # aspace uses the PHP convention where array-typed form values use names with '[]' appended
+        if 'params' in kwargs:
+            kwargs['params'] = {k + '[]' if listlike_seq(v) and k[-2:] != '[]' else k:v for k,v in kwargs['params'].items()}
+
         full_url = urljoin(self.config['baseurl'], url)
         result = getattr(self.session, meth)(full_url, *args, **kwargs)
+        if result.status_code == 403 and self.config['retry_with_auth']:
+            self.authorize()
+            result = getattr(self.session, meth)(full_url, *args, **kwargs)
         log.debug("proxied http method", method=meth.upper(), url=full_url, status=result.status_code)
         return result
     return http_method

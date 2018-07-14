@@ -1,10 +1,14 @@
 from itertools import chain
 from more_itertools import flatten
 import json
+import re
 
 component_signifiers = frozenset({"archival_object", "archival_objects"})
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
 node_signifiers = frozenset({"node_type", "resource_uri"})
+solr_route_regexes = [
+    re.compile(r'/?repositories/\d+/top_containers/search/?')
+]
 
 def dispatch_type(obj):
     '''Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
@@ -12,7 +16,6 @@ Returns either the correct class or False if no class is suitable.'''
     value = False
     if isinstance(obj, dict):
         ref_type = [x for x in obj['ref'].split("/") if not x.isdigit()][-1] if 'ref' in obj else None
-
         if obj.get("jsonmodel_type", ref_type) in component_signifiers:
             value = ComponentObject
         elif node_signifiers.intersection(obj.keys()) or ref_type == "tree":
@@ -131,6 +134,8 @@ If neither is present, the method raises an AttributeError.'''
                     jmtype = dispatch_type(resp.json())
                     if (jmtype):
                         return jmtype(resp.json(), client=self._client)
+                    if any(r.match(uri) for r in solr_route_regexes):
+                        return SolrRelation(uri, slient=self._client)
                     return JSONModelRelation(uri, client=self._client)
 
 
@@ -255,10 +260,13 @@ Usage:
 '''
         merged = {}
         merged.update(self.params, **params)
-        return JSONModelRelation(self.uri, merged, self.client)
+        return type(self)(self.uri, merged, self.client)
 
     def __getattr__(self, key):
-        return type(self)("/".join((self.uri, key,)), params=self.params, client=self.client)
+        full_uri = "/".join((self.uri, key,))
+        if any(r.match(full_uri) for r in solr_route_regexes):
+            return SolrRelation(full_uri, params=self.params, client=self.client)
+        return type(self)(full_uri, params=self.params, client=self.client)
 
 
 class ASNakeBadAgentType(Exception): pass
@@ -309,3 +317,43 @@ Usage:
     # override parent __getattr__ because needs to return base class impl for descendant urls
     def __getattr__(self, key):
         return type(self).__bases__[0]("/".join((self.uri, key,)), params=self.params, client=self.client)
+
+def parse_jsondoc(doc, client):
+    return wrap_json_object(json.loads(doc['json']), client)
+
+class SolrRelation(JSONModelRelation):
+    '''Sometimes, the API returns solr responses, so we have to handle that. Facets are still tbd, but should be doable, but also I'm not sure if they're widely used and thus need to be handled?.'''
+    def __iter__(self):
+        res = self.client.get(self.uri, params=self.params).json()
+        for doc in res['response']['docs']:
+            yield parse_jsondoc(doc, self.client)
+
+    def __call__(self, *args, **kwargs):
+        raise NotImplementedError("__call__ is not implemented for SolrRelations")
+
+    def with_params(self, **params):
+        merged = {}
+        merged.update(self.params, **params)
+        res = self.client.get(self.uri, params=self.params).json()
+        return type(self)(self.uri, self.params, self.client)
+
+class _JMeta(type):
+    def __getattr__(self, key):
+        def jsonmodel_wrapper(**kwargs):
+            out = {"jsonmodel_type": key}
+            out.update(**kwargs)
+            return out
+        return jsonmodel_wrapper
+
+class JM(metaclass=_JMeta):
+    '''Helper class for creating hashes suitable for POSTing to ArchivesSpace.
+
+Usage:
+
+.. code-block:: python
+
+    JM.resource(title="A Resource's Title", ...) == {"jsonmodel_type": "resource", "title": "A Resource's Title", ...}
+    JM.agent_software(name="ArchivesSnake") == {"jsonmodel_type": "agent_software", "name": "ArchivesSnake"}
+
+'''
+    pass # all functionality is provided by _JMeta

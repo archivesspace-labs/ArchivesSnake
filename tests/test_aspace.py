@@ -61,9 +61,15 @@ def test_trees():
     subtree_walk = list(records_via_walk[1].tree.walk)
     assert records_via_walk[1].uri == subtree_walk[0].uri
 
+@vcr.use_cassette
 def test_with_params():
     aspace = ASpace()
     list(aspace.repositories(2).search.with_params(q="primary_type:resource", fq="publish:true"))
+
+@vcr.use_cassette
+def test_solr_route():
+    aspace = ASpace()
+    list(aspace.repositories(2).top_containers.search.with_params(q="barcode_field:1234"))
 
 def teardown():
     '''Undo the thing from setup'''

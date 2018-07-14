@@ -156,10 +156,14 @@
 <span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">more_itertools</span> <span class="k">import</span> <span class="n">flatten</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="n">component_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;archival_object&quot;</span><span class="p">,</span> <span class="s2">&quot;archival_objects&quot;</span><span class="p">})</span>
 <span class="n">jmtype_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;ref&quot;</span><span class="p">,</span> <span class="s2">&quot;jsonmodel_type&quot;</span><span class="p">})</span>
 <span class="n">node_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;node_type&quot;</span><span class="p">,</span> <span class="s2">&quot;resource_uri&quot;</span><span class="p">})</span>
+<span class="n">solr_route_regexes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/?repositories/\d+/top_containers/search/?&#39;</span><span class="p">)</span>
+<span class="p">]</span>
 
 <div class="viewcode-block" id="dispatch_type"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.dispatch_type">[docs]</a><span class="k">def</span> <span class="nf">dispatch_type</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.</span>
@@ -167,7 +171,6 @@
     <span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">ref_type</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;ref&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;ref&#39;</span> <span class="ow">in</span> <span class="n">obj</span> <span class="k">else</span> <span class="kc">None</span>
-
         <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;jsonmodel_type&quot;</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">)</span> <span class="ow">in</span> <span class="n">component_signifiers</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">ComponentObject</span>
         <span class="k">elif</span> <span class="n">node_signifiers</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="n">ref_type</span> <span class="o">==</span> <span class="s2">&quot;tree&quot;</span><span class="p">:</span>
@@ -274,19 +277,22 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">reify</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;is_ref&#39;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;uri&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">and</span> <span class="s1">&#39;uri&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">:</span>
                 <span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">key</span><span class="p">,))</span>
                 <span class="c1"># Existence of route isn&#39;t enough, need to discriminate by type</span>
                 <span class="c1"># example: .../resources/:id/ordered_records which ALSO ought to be maybe treated as plural?</span>
                 <span class="c1"># This works, at the cost of a &quot;wasted&quot; full call if not a JSONModelObject</span>
                 <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">})</span>
-                <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; has no attribute or route named &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">key</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
                     <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">jmtype</span><span class="p">):</span>
                         <span class="k">return</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">solr_route_regexes</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">SolrRelation</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">slient</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">key</span><span class="p">))</span>
+
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
@@ -397,11 +403,25 @@
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="JSONModelRelation.with_params"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation.with_params">[docs]</a>    <span class="k">def</span> <span class="nf">with_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return JSONModelRelation with same uri and client, but add kwargs to params.&#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">},</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="sd">&#39;&#39;&#39;Return JSONModelRelation with same uri and client, but add kwargs to params.</span>
+
+<span class="sd">Usage:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    for thing in ASpace().repositories(2).search.with_params(q=&quot;primary_type:resource&quot;, fq=&quot;publish:true&quot;):</span>
+<span class="sd">        # do something with the things</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">merged</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">merged</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="JSONModelRelation.__getattr__"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">key</span><span class="p">,)),</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div></div>
+        <span class="n">full_uri</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">key</span><span class="p">,))</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">full_uri</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">solr_route_regexes</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SolrRelation</span><span class="p">(</span><span class="n">full_uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">full_uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ASNakeBadAgentType"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.ASNakeBadAgentType">[docs]</a><span class="k">class</span> <span class="nc">ASNakeBadAgentType</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
@@ -452,6 +472,46 @@
     <span class="c1"># override parent __getattr__ because needs to return base class impl for descendant urls</span>
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">key</span><span class="p">,)),</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">parse_jsondoc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]),</span> <span class="n">client</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SolrRelation"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.SolrRelation">[docs]</a><span class="k">class</span> <span class="nc">SolrRelation</span><span class="p">(</span><span class="n">JSONModelRelation</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Sometimes, the API returns solr responses, so we have to handle that. Facets are still tbd, but should be doable, but also I&#39;m not sure if they&#39;re widely used and thus need to be handled?.&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">][</span><span class="s1">&#39;docs&#39;</span><span class="p">]:</span>
+            <span class="k">yield</span> <span class="n">parse_jsondoc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;__call__ is not implemented for SolrRelations&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SolrRelation.with_params"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.SolrRelation.with_params">[docs]</a>    <span class="k">def</span> <span class="nf">with_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">merged</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div></div>
+
+<span class="k">class</span> <span class="nc">_JMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">jsonmodel_wrapper</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;jsonmodel_type&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">}</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">return</span> <span class="n">jsonmodel_wrapper</span>
+
+<div class="viewcode-block" id="JM"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JM">[docs]</a><span class="k">class</span> <span class="nc">JM</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">_JMeta</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Helper class for creating hashes suitable for POSTing to ArchivesSpace.</span>
+
+<span class="sd">Usage:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    JM.resource(title=&quot;A Resource&#39;s Title&quot;, ...) == {&quot;jsonmodel_type&quot;: &quot;resource&quot;, &quot;title&quot;: &quot;A Resource&#39;s Title&quot;, ...}</span>
+<span class="sd">    JM.agent_software(name=&quot;ArchivesSnake&quot;) == {&quot;jsonmodel_type&quot;: &quot;agent_software&quot;, &quot;name&quot;: &quot;ArchivesSnake&quot;}</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">pass</span> <span class="c1"># all functionality is provided by _JMeta</span></div>
 </pre></div>
 
            </div>
