@@ -230,7 +230,7 @@ Default values corresponding to the admin account of an unaltered local developm
 
 ### Logging
 
-ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  All of this can be configured; note that configuration must happen prior to loading asnake.client.ASnakeClient, or any module or class that uses it, like so:
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is universally under INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; note that configuration must happen prior to loading asnake.client.ASnakeClient, or any module or class that uses it, like so:
 
 ``` python
 import asnake.logging as logging
@@ -251,9 +251,34 @@ The provided configurations are:
 | DEBUG_TO_STDERR     | DEBUG | sys.stderr |                          |
 | DEBUG_TO_STDOUT     | DEBUG | sys.stdout |                          |
 
-By setting the `ASNAKE_LOG_CONFIG` variable to one of these names, you can set that config as the default.
+By setting the `ASNAKE_LOG_CONFIG` environment variable to one of these names, you can set that config as the default.
 
-To directly get ahold of a logger for use in your own application, you can call `asnake.logging.get_logger`.
+To directly get ahold of a logger for use in your own application, you can call `asnake.logging.get_logger`. An example of using this to print your own logs to a file:
+
+``` python
+import aspace.logging as logging
+logfile = open('my_cool_logfile.log', 'w')
+logging.setup_logging(stream=logfile)
+logger = logging.get_logger("my_script_log") 
+
+# do stuff
+logger.info("my_event_name", property1="a property", anything={"json": "serializable"})
+# do more stuff
+
+logfile.close() # end of script
+```
+
+This will leave the following in `my_cool_logfile.log` (pretty-printed below, but all on one line in practice):
+
+``` javascript
+{ "property1": "a property", 
+  "anything": {"json": "serializable"}, 
+  "event": "my_event_name", 
+  "logger": "my_script_log", 
+  "level": "info", 
+  "timestamp": "2018-07-18T00:06:49.636482Z"
+}
+```
 
 ## Documentation
 Documentation is generated using [Sphinx](http://www.sphinx-doc.org/en/stable/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), and is available [here](https://archivesspace-labs.github.io/ArchivesSnake)
