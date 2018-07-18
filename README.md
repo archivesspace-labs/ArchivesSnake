@@ -15,8 +15,13 @@ most important classes to understand are:
 - asnake.jsonmodel.JSONModelObject (and its subclasses ComponentObject and TreeNode)
 - asnake.jsonmodel.JSONModelRelation
 
-## Prior Art
-Here are listed several examples of pre-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
+## Scripts and Projects using ASnake
+Here are some examples scripts and projects that make use of ASnake
+
+* [Python scripts to support ongoing ArchivesSpace work at Harvard](https://github.com/harvard-library/aspace_pyscripts)
+
+## Other API Scripts
+Here are listed several examples of non-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
 own via pull request!
 
 * [University of Denver links](Denver_links.md)
