@@ -261,7 +261,7 @@ By setting the `ASNAKE_LOG_CONFIG` environment variable to one of these names, y
 To directly get ahold of a logger for use in your own application, you can call `asnake.logging.get_logger`. An example of using this to print your own logs to a file:
 
 ``` python
-import aspace.logging as logging
+import asnake.logging as logging
 logfile = open('my_cool_logfile.log', 'w')
 logging.setup_logging(stream=logfile)
 logger = logging.get_logger("my_script_log") 
