@@ -236,12 +236,15 @@ Default values corresponding to the admin account of an unaltered local developm
 
 ### Logging
 
-ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is universally under INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; note that configuration must happen prior to loading asnake.client.ASnakeClient, or any module or class that uses it, like so:
+
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is universally under INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; note that configuration must happen prior to importing **ANY** module that configures logging (e.g. asnake.client, asnake.aspace, **ANY** module that imports one of them), like so:
 
 ``` python
 import asnake.logging as logging
 
 logging.setup_logging(level='DEBUG') # logging takes several arguments, provides defaults, etc
+
+# NOW it is safe to import any ASnake stuff
 from asnake.client import ASnakeClient
 ```
 
@@ -265,7 +268,7 @@ To directly get ahold of a logger for use in your own application, you can call 
 import asnake.logging as logging
 logfile = open('my_cool_logfile.log', 'w')
 logging.setup_logging(stream=logfile)
-logger = logging.get_logger("my_script_log") 
+logger = logging.get_logger("my_script_log")
 
 # do stuff
 logger.info("my_event_name", property1="a property", anything={"json": "serializable"})
@@ -277,11 +280,11 @@ logfile.close() # end of script
 This will leave the following in `my_cool_logfile.log` (pretty-printed below, but all on one line in practice):
 
 ``` javascript
-{ "property1": "a property", 
-  "anything": {"json": "serializable"}, 
-  "event": "my_event_name", 
-  "logger": "my_script_log", 
-  "level": "info", 
+{ "property1": "a property",
+  "anything": {"json": "serializable"},
+  "event": "my_event_name",
+  "logger": "my_script_log",
+  "level": "info",
   "timestamp": "2018-07-18T00:06:49.636482Z"
 }
 ```
