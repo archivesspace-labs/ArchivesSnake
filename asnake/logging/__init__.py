@@ -22,22 +22,31 @@ level_re = re.compile(
 )
 
 already_configured = False
-def setup_logging(config=None, level=None, stream=None):
+def setup_logging(config=None, level=None, stream=None, filename=None, filemode=None):
     '''sets up both logging and structlog.'''
     global already_configured
+    if stream and filename:
+        raise RuntimeError("stream and filename are mutually exclusive and cannot be combined, pick one or the other")
     if not already_configured:
         from_env = os.environ.get('ASNAKE_LOG_CONFIG', None)
         default = configurations.get(from_env, DEFAULT_CONFIG)
 
         if not config:
-            config = copy_config(DEFAULT_CONFIG)
+            config = copy_config(default)
+            if filename:
+                del config['logging']['stream']
 
         level = level or config.get('level', None) or logging.INFO
         if isinstance(level, str) and level_re.match(level):
             level = getattr(logging, level.upper())
 
+        # Forward what's needed to put the log places
         if stream:
             config['logging']['stream'] = stream
+        if filename:
+            config['logging']['filename'] = filename
+        if filemode:
+            config['logging']['filemode'] = filemode
 
         logging.basicConfig(**config['logging'])
         l = logging.getLogger('asnake')
