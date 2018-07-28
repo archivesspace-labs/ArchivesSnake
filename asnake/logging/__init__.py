@@ -85,7 +85,7 @@ def default_structlog_conf(**overrides):
 
 def default_logging_conf(**overrides):
     '''Generate a default stdlib logging configuration.'''
-    conf = {"level": logging.INFO, "format": "%(message)s", "stream": sys.stderr}
+    conf = {"level": logging.INFO, "format": "%(message)s"}
     conf.update(**overrides)
     return conf
 
@@ -93,7 +93,7 @@ def default_logging_conf(**overrides):
 configurations = {}
 
 configurations['INFO_TO_STDERR'] = {
-    "logging": default_logging_conf(),
+    "logging": default_logging_conf(stream=sys.stderr),
     "structlog": default_structlog_conf()
 }
 
@@ -102,8 +102,16 @@ configurations['INFO_TO_STDOUT'] = {
     "structlog": default_structlog_conf()
 }
 
+configurations['INFO_TO_FILE'] = {
+    "logging": default_logging_conf(level=logging.INFO,
+                                    filename=os.path.expanduser("~/archivessnake.log"),
+                                    filemode="a"),
+    "structlog": default_structlog_conf(),
+    'level': 'INFO',
+}
+
 configurations['DEBUG_TO_STDERR'] = {
-    "logging": default_logging_conf(level=logging.DEBUG),
+    "logging": default_logging_conf(level=logging.DEBUG, stream=sys.stderr),
     "structlog": default_structlog_conf(),
     "level": "DEBUG"
 }
@@ -112,6 +120,14 @@ configurations['DEBUG_TO_STDOUT'] = {
     "logging": default_logging_conf(level=logging.DEBUG, stream=sys.stdout),
     "structlog": default_structlog_conf(),
     "level": "DEBUG"
+}
+
+configurations['DEBUG_TO_FILE'] = {
+    "logging": default_logging_conf(level=logging.DEBUG,
+                                    filename=os.path.expanduser("~/archivessnake.log"),
+                                    filemode="a"),
+    "structlog": default_structlog_conf(),
+    'level': 'DEBUG',
 }
 
 configurations['DEFAULT_CONFIG'] = configurations['INFO_TO_STDERR']

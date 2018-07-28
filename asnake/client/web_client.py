@@ -7,7 +7,7 @@ import json
 import asnake.configurator as conf
 import asnake.logging as logging
 
-log = logging.get_logger(__name__)
+log = None # initialized on first client init
 
 class ASnakeAuthError(Exception): pass
 class ASnakeWeirdReturnError(Exception): pass
@@ -50,8 +50,35 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
     '''ArchivesSnake Web Client'''
 
     def __init__(self, **config):
-        self.config = conf.ASnakeConfig()
+        global log
+
+        if 'config_file' in config:
+            self.config = conf.ASnakeConfig(config['config_file'])
+        else:
+            self.config = conf.ASnakeConfig()
+
         self.config.update(config)
+
+        # Only a subset of logging config can be supported in config
+        # For more complex setups (configuring output format, say),
+        # configure logs in Python code prior to loading
+        #
+        # Properties supported are:
+        #    filename, filemode, level, and default_config
+        # Default config can be any of the default configurations exposed in logging
+        if not log:
+            if not logging.already_configured and 'logging_config' in self.config:
+                if 'default_config' in self.config['logging_config']:
+                    default_logging_config = logging.configurations.get(
+                        self.config['logging_config']['default_config'])
+                    del self.config['logging_config']['default_config']
+                else:
+                    default_logging_config = None
+
+                logging.setup_logging(config = default_logging_config,
+                                      **self.config['logging_config'])
+
+            log = logging.get_logger(__name__)
 
         if not hasattr(self, 'session'): self.session = Session()
         self.session.headers.update({'Accept': 'application/json',
