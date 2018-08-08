@@ -266,7 +266,7 @@ logging.setup_logging(level='DEBUG') # logging takes several arguments, provides
 client = ASnakeClient()
 ```
 
-There are a number of provided configurations, available in dict `asnake.logging.configurations` and exposed as toplevel constants in the module (e.g. `asnake.logging.DEBUG_TO_STDERR`, `asnake.logging.DEFAULT_CONFIG`).  Log level and the stream/filename to be printed to can be overriden by passing `level` and *either* the `stream` or `filename` arguments to `setup_logging`. Mode of a file can be controlled by passing `filename`.
+There are a number of provided configurations, available in dict `asnake.logging.configurations` and exposed as toplevel constants in the module (e.g. `asnake.logging.DEBUG_TO_STDERR`, `asnake.logging.DEFAULT_CONFIG`).  Log level and the stream/filename to be printed to can be overriden by passing `level` and *either* the `stream` or `filename` arguments to `setup_logging`. Mode of a file can be controlled by passing `filemode`.
 
 For example:
 
