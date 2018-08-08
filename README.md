@@ -65,7 +65,7 @@ You'll need an internet connection to fetch ASnake's dependencies.
 
 ## Usage
 ### Low level API
-The low level API allows full access to the ArchivesSpace API; it's essentially "what if requests knew enough about an ASpace instance to manage authorization, turning uris into full URLs, and handling paged resources.
+The low level API allows full access to the ArchivesSpace API; it's essentially "what if requests knew enough about an ASpace instance to manage authorization, turn uris into full URLs, and handle paged resources.
 
 To start, here's a simple, fairly complete example - fetching the JSON representation of all the repositories from an ArchivesSpace instance and saving it to a variable.
 
