@@ -154,7 +154,7 @@
             
   <h1>Source code for asnake.client.web_client</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">requests</span> <span class="k">import</span> <span class="n">Session</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">quote</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">quote</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Number</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Mapping</span>
 
@@ -162,7 +162,7 @@
 <span class="kn">import</span> <span class="nn">asnake.configurator</span> <span class="k">as</span> <span class="nn">conf</span>
 <span class="kn">import</span> <span class="nn">asnake.logging</span> <span class="k">as</span> <span class="nn">logging</span>
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># initialized on first client init</span>
 
 <div class="viewcode-block" id="ASnakeAuthError"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeAuthError">[docs]</a><span class="k">class</span> <span class="nc">ASnakeAuthError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
 <div class="viewcode-block" id="ASnakeWeirdReturnError"><a class="viewcode-back" href="../../../index.html#asnake.client.ASnakeWeirdReturnError">[docs]</a><span class="k">class</span> <span class="nc">ASnakeWeirdReturnError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
@@ -181,7 +181,7 @@
         <span class="k">if</span> <span class="s1">&#39;params&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;[]&#39;</span> <span class="k">if</span> <span class="n">listlike_seq</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;[]&#39;</span> <span class="k">else</span> <span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-        <span class="n">full_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;baseurl&#39;</span><span class="p">],</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">full_url</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;baseurl&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">url</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)])</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">full_url</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">403</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;retry_with_auth&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
@@ -205,8 +205,35 @@
     <span class="sd">&#39;&#39;&#39;ArchivesSnake Web Client&#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">ASnakeConfig</span><span class="p">()</span>
+        <span class="k">global</span> <span class="n">log</span>
+
+        <span class="k">if</span> <span class="s1">&#39;config_file&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">ASnakeConfig</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;config_file&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">ASnakeConfig</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="c1"># Only a subset of logging config can be supported in config</span>
+        <span class="c1"># For more complex setups (configuring output format, say),</span>
+        <span class="c1"># configure logs in Python code prior to loading</span>
+        <span class="c1">#</span>
+        <span class="c1"># Properties supported are:</span>
+        <span class="c1">#    filename, filemode, level, and default_config</span>
+        <span class="c1"># Default config can be any of the default configurations exposed in logging</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">log</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">logging</span><span class="o">.</span><span class="n">already_configured</span> <span class="ow">and</span> <span class="s1">&#39;logging_config&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;default_config&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging_config&#39;</span><span class="p">]:</span>
+                    <span class="n">default_logging_config</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">configurations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging_config&#39;</span><span class="p">][</span><span class="s1">&#39;default_config&#39;</span><span class="p">])</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging_config&#39;</span><span class="p">][</span><span class="s1">&#39;default_config&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">default_logging_config</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="n">logging</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">config</span> <span class="o">=</span> <span class="n">default_logging_config</span><span class="p">,</span>
+                                      <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;logging_config&#39;</span><span class="p">])</span>
+
+            <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
@@ -226,7 +253,7 @@
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;authorizing against ArchivesSpace&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;baseurl&#39;</span><span class="p">],</span> <span class="s1">&#39;users/</span><span class="si">{username}</span><span class="s1">/login&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="n">username</span><span class="p">))),</span>
+            <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;baseurl&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="s1">&#39;users/</span><span class="si">{username}</span><span class="s1">/login&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="n">username</span><span class="p">)),</span>
             <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s2">&quot;expiring&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
         <span class="p">)</span>
 
@@ -268,7 +295,7 @@
                         <span class="k">yield</span> <span class="n">obj</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">current_json</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Number</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">current_json</span><span class="p">:</span>
-                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">ASnakeWeirdReturnError</span><span class="p">(</span><span class="s2">&quot;get_paged doesn&#39;t know how to handle </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">current_json</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
