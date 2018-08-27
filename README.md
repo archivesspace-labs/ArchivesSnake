@@ -24,6 +24,8 @@ Here are some examples scripts and projects that make use of ASnake
 * [ASpaceASnake](https://github.com/ruthtillman/ASpaceASnake)
 * [ArchivesSpace scripts for University of Maryland Special Collections and University Archives](https://github.com/brialparker/ArchivesSpace_scripts)
 
+For more examples on working with ASnake, please check the [Wiki page](https://github.com/archivesspace-labs/ArchivesSnake/wiki)
+
 ## Other API Scripts
 Here are listed several examples of non-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
 own via pull request!
