@@ -56,3 +56,7 @@ one record is found.'''
             yield wrap_json_object(res.json(), self.client)
         else:
             raise ASnakeBadReturnCode("by-external-id call returned '{}'".format(res.status_code))
+
+    def from_uri(self, uri):
+        '''returns a JSONModelObject representing the URI passed in'''
+        return wrap_json_object(self.client.get(uri).json(), self.client)
