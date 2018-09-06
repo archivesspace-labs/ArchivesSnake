@@ -337,6 +337,25 @@ class SolrRelation(JSONModelRelation):
         res = self.client.get(self.uri, params=self.params).json()
         return type(self)(self.uri, self.params, self.client)
 
+class UserRelation(JSONModelRelation):
+    '''"Custom" relation to deal with the API's failure to properly populate permissions for the `/users` index route'''
+    def __iter__(self):
+        for user in self.client.get_paged('/users', params=self.params):
+            yield wrap_json_object(self.client.get(user['uri']).json(), self.client)
+
+    @property
+    def current_user(self):
+        '''`/users/current-user` route.'''
+        return wrap_json_object(self.client.get('users/current-user', params=self.params).json(), self.client)
+
+    # override parent __getattr__ because needs to return base class impl for descendant urls
+    def __getattr__(self, key):
+        p = {k:v for k, v in self.params.items()}
+        if len(p) == 0:
+            p['all_ids'] = True
+
+        return type(self).__bases__[0]("/".join((self.uri, key,)), params=p, client=self.client)
+
 class _JMeta(type):
     def __getattr__(self, key):
         def jsonmodel_wrapper(**kwargs):
