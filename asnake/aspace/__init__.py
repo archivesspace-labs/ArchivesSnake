@@ -1,5 +1,5 @@
 from asnake.client import ASnakeClient
-from asnake.jsonmodel import wrap_json_object, JSONModelRelation, AgentRelation
+from asnake.jsonmodel import wrap_json_object, JSONModelRelation, AgentRelation, UserRelation
 from collections.abc import Sequence
 from itertools import chain
 from boltons.setutils import IndexedSet
@@ -37,6 +37,10 @@ class ASpace():
         '''returns an AgentRelation.'''
         return AgentRelation("/agents", {}, self.client)
 
+    @property
+    def users(self):
+        '''returns a UserRelation.'''
+        return UserRelation("/users", {}, self.client)
 
     def by_external_id(self, external_id, record_types=None):
         '''return any resources fetched from the 'by-external-id' route.
