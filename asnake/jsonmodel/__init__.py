@@ -5,6 +5,7 @@ import re
 
 component_signifiers = frozenset({"archival_object", "archival_objects"})
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
+searchdoc_signifiers = frozenset({"primary_type", "types", "id", "json"})
 node_signifiers = frozenset({"node_type", "resource_uri"})
 solr_route_regexes = [
     re.compile(r'/?repositories/\d+/top_containers/search/?')
@@ -15,6 +16,10 @@ def dispatch_type(obj):
 Returns either the correct class or False if no class is suitable.'''
     value = False
     if isinstance(obj, dict):
+        # Handle wrapped objects returned by searches
+        if set(obj) >= searchdoc_signifiers:
+            obj = json.loads(obj['json'])
+
         ref_type = [x for x in obj['ref'].split("/") if not x.isdigit()][-1] if 'ref' in obj else None
         if obj.get("jsonmodel_type", ref_type) in component_signifiers:
             value = ComponentObject
