@@ -23,8 +23,9 @@ Here are some examples scripts and projects that make use of ASnake
 * [API gateway for microservices](https://github.com/RockefellerArchiveCenter/zodiac)
 * [ASpaceASnake](https://github.com/ruthtillman/ASpaceASnake)
 * [ArchivesSpace scripts for University of Maryland Special Collections and University Archives](https://github.com/brialparker/ArchivesSpace_scripts)
+* [Reporting and cleanup scripts for Rice University's Woodson Special Collections](https://github.com/scottythered/ASpace-Reporting-Cleanup)
 
-For more examples on working with ASnake, please check the [Wiki page](https://github.com/archivesspace-labs/ArchivesSnake/wiki)
+For more examples on working with ASnake, please check the [Wiki page](https://github.com/archivesspace-labs/ArchivesSnake/wiki).
 
 ## Other API Scripts
 Here are listed several examples of non-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
