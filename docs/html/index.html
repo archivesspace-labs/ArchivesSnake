@@ -455,6 +455,21 @@ agents have unique ids per agent_type, not across all agents.</p>
 <code class="descclassname">asnake.jsonmodel.</code><code class="descname">dispatch_type</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#dispatch_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.dispatch_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
 Returns either the correct class or False if no class is suitable.</p>
+<p>Note: IN GENERAL, it is safe to use this to test if a thing is a JSONModel subtype, but you should
+STRONGLY prefer <a class="reference internal" href="#asnake.jsonmodel.wrap_json_object" title="asnake.jsonmodel.wrap_json_object"><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap_json_object()</span></code></a> for constructing objects, because some objects are wrapped,
+and would need to be manually unwrapped otherwise.  So, usage like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">jmtype</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is fine and expected, but the following is dangerous:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">jmtype</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>because it will break on wrapped or otherwise odd objects.</p>
 </dd></dl>
 
 <dl class="function">
@@ -467,6 +482,7 @@ Returns either the correct class or False if no class is suitable.</p>
 <dt id="asnake.jsonmodel.wrap_json_object">
 <code class="descclassname">asnake.jsonmodel.</code><code class="descname">wrap_json_object</code><span class="sig-paren">(</span><em>obj</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#wrap_json_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.wrap_json_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classify object, and either wrap it in the correct JSONModel type or return it as is.</p>
+<p>Prefer this STRONGLY to directly using the output of <a class="reference internal" href="#asnake.jsonmodel.dispatch_type" title="asnake.jsonmodel.dispatch_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">dispatch_type()</span></code></a></p>
 </dd></dl>
 
 <span class="target" id="module-asnake.client"></span><dl class="class">
