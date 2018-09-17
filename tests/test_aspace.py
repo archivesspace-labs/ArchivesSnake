@@ -1,6 +1,6 @@
 from .common import vcr
 from asnake.aspace import ASpace
-from asnake.jsonmodel import JSONModelObject, TreeNode, ComponentObject, JSONModelRelation
+from asnake.jsonmodel import JSONModelObject, TreeNode, ComponentObject, JSONModelRelation, searchdoc_signifiers
 import os
 
 conf_file = None
@@ -72,6 +72,17 @@ def test_from_uri():
     assert isinstance(repo, JSONModelObject)
     assert repo.uri == '/repositories/2'
     repo.name # just making sure a known present method works
+
+@vcr.use_cassette
+def test_users_route():
+    for user in  aspace.users:
+        assert isinstance(user.permissions, dict)
+
+@vcr.use_cassette
+def test_search_route_unwrapping():
+    # Get first ao, just really care that it ends up Not Wrapped
+    ao = next(iter(aspace.repositories(2).search.with_params(q="*:* and primary_type:archival_object")))
+    assert set(ao.json().keys()).isdisjoint(searchdoc_signifiers)
 
 def teardown():
     '''Undo the thing from setup'''
