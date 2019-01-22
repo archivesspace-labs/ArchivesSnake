@@ -29,6 +29,7 @@ own via pull request!
 * [Duke Examples](Duke_links.md)
 * [Harvard/Smith Ingest Client/Scripts](HarvardSmithLinks.md)
 * [Johns Hopkins University links](Johns_Hopkins_University_links.md)
+* [Penn State University Links](PSU_links.md)
 * [RAC Examples](RAC_links.md)
 * [Smith archivesspace Python Module](https://smithcollegelibraries.github.io/archivesspace-python/)
 * [Outline of UAlbany Draft Library](ualbanyExample.md)
@@ -265,7 +266,7 @@ To directly get ahold of a logger for use in your own application, you can call 
 import asnake.logging as logging
 logfile = open('my_cool_logfile.log', 'w')
 logging.setup_logging(stream=logfile)
-logger = logging.get_logger("my_script_log") 
+logger = logging.get_logger("my_script_log")
 
 # do stuff
 logger.info("my_event_name", property1="a property", anything={"json": "serializable"})
@@ -277,11 +278,11 @@ logfile.close() # end of script
 This will leave the following in `my_cool_logfile.log` (pretty-printed below, but all on one line in practice):
 
 ``` javascript
-{ "property1": "a property", 
-  "anything": {"json": "serializable"}, 
-  "event": "my_event_name", 
-  "logger": "my_script_log", 
-  "level": "info", 
+{ "property1": "a property",
+  "anything": {"json": "serializable"},
+  "event": "my_event_name",
+  "logger": "my_script_log",
+  "level": "info",
   "timestamp": "2018-07-18T00:06:49.636482Z"
 }
 ```
