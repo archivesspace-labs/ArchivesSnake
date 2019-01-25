@@ -1,4 +1,5 @@
 from .common import vcr
+from requests.exceptions import ConnectionError
 from asnake.aspace import ASpace
 from asnake.jsonmodel import JSONModelObject, TreeNode, ComponentObject, JSONModelRelation, searchdoc_signifiers
 import os
@@ -13,7 +14,14 @@ def setup():
         conf_file = os.environ.pop('ASNAKE_CONFIG_FILE')
     except: pass
     os.environ['ASNAKE_CONFIG_FILE'] = "NONSENSEFILETHATDOESNOTEXIST"
-    aspace = ASpace()
+    try:
+        aspace = ASpace()
+    except ConnectionError:
+        aspace = aspace_fallback()
+
+@vcr.use_cassette
+def aspace_fallback():
+    return ASpace()
 
 @vcr.use_cassette
 def test_fetch():
