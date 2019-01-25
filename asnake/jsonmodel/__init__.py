@@ -101,7 +101,8 @@ class JSONModelObject(metaclass=JSONModel):
     def __init__(self, json_rep, client = None):
         self._json = json_rep
         self._client = client or type(self).default_client()
-        self.is_ref = 'ref' in json_rep
+        object.__setattr__(self, 'is_ref', 'ref' in json_rep)
+        self._diff = None
 
     def reify(self):
         '''Convert object from a ref into a realized object.'''
@@ -112,6 +113,11 @@ class JSONModelObject(metaclass=JSONModel):
                 self._json = self._client.get(self._json['ref']).json()
             self.is_ref = False
         return self
+
+    @property
+    def dirty(self):
+        '''Have changes been made to the object?'''
+        return True if self._diff else False
 
     @property
     def id(self):
@@ -185,6 +191,28 @@ If neither is present, the method raises an AttributeError.'''
             else:
                 return self._json[key]
         else: return self.__getattribute__(key)
+
+    # Write setattr that works
+    def __setattr__(self, key, val):
+        if key in self.__dict__ or key.startswith('_'):
+            object.__setattr__(self, key, val)
+        else:
+            if not self._diff:
+                self._diff = {}
+            if isinstance(val, JSONModelObject):
+                val = val.json()
+            elif isinstance(val, JSONModelRelation):
+                val = [{'ref': x.uri} for x in val]
+
+            self._diff[key] = val
+
+    def save(self):
+        self._json.update(self._diff)
+        res = self._client.post(self.uri, json=self._json)
+        if res.status_code == 200:
+            self._diff = None
+            return True
+
 
     def __str__(self):
         return json.dumps(self._json, indent=2)
@@ -266,9 +294,11 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         for jm in self.client.get_paged(self.uri, params=self.params):
             yield wrap_json_object(jm, self.client)
 
-    def __call__(self, myid, **params):
-        '''Fetch a JSONModelObject from the relation by id.'''
+    def __call__(self, myid=None, **params):
+        '''Fetch a JSONModelObject from the relation by id, or pass parameters as per :meth:`with_params`'''
         # Special handling for resolve because it takes a string or an array and requires [] for array
+        if not myid:
+            return self.with_params(**params)
         if 'resolve' in params:
             params['resolve[]'] = params['resolve']
             del params['resolve']
