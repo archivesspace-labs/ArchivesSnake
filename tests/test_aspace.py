@@ -92,6 +92,20 @@ def test_search_route_unwrapping():
     ao = next(iter(aspace.repositories(2).search.with_params(q="*:* and primary_type:archival_object")))
     assert set(ao.json().keys()).isdisjoint(searchdoc_signifiers)
 
+@vcr.use_cassette
+def test_save_function():
+    newname = "Glorious Repository of Gloriousness"
+    repo = aspace.repositories(2)
+    assert repo.name != newname
+    assert repo.dirty == False
+    repo.name = newname
+    assert repo.dirty == True
+    repo.save()
+    assert repo.dirty == False
+    assert repo.name == newname
+    repo = aspace.repositories(2)
+    assert repo.name == newname
+
 def teardown():
     '''Undo the thing from setup'''
     if conf_file:
