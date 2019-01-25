@@ -207,12 +207,17 @@ If neither is present, the method raises an AttributeError.'''
             self._diff[key] = val
 
     def save(self):
+        '''Update record in ASpace, return True if successful, or False if failed to update for any reason.'''
+        if not self.dirty: return False
+
         self._json.update(self._diff)
         res = self._client.post(self.uri, json=self._json)
         if res.status_code == 200:
             self._diff = None
+            # re-fetch because otherwise object is unusable for writing and may be out of date
+            self._json = self._client.get(self.uri).json()
             return True
-
+        return False
 
     def __str__(self):
         return json.dumps(self._json, indent=2)
