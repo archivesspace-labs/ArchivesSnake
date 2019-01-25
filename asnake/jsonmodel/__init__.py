@@ -5,6 +5,7 @@ import re
 
 component_signifiers = frozenset({"archival_object", "archival_objects"})
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
+searchdoc_signifiers = frozenset({"primary_type", "types", "id", "json"})
 node_signifiers = frozenset({"node_type", "resource_uri"})
 solr_route_regexes = [
     re.compile(r'/?repositories/\d+/top_containers/search/?')
@@ -12,9 +13,34 @@ solr_route_regexes = [
 
 def dispatch_type(obj):
     '''Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
-Returns either the correct class or False if no class is suitable.'''
+Returns either the correct class or False if no class is suitable.
+
+Note: IN GENERAL, it is safe to use this to test if a thing is a JSONModel subtype, but you should
+STRONGLY prefer :func:`wrap_json_object` for constructing objects, because some objects are wrapped,
+and would need to be manually unwrapped otherwise.  So, usage like this:
+
+.. code-block:: python
+
+    jmtype = dispatch_type(obj, self.client)
+    if jmtype:
+        return wrap_json_object(obj, self.client)
+
+is fine and expected, but the following is dangerous:
+
+.. code-block:: python
+
+    jmtype = dispatch_type(obj, self.client)
+    if jmtype:
+        return jmtype(obj, self.client)
+
+because it will break on wrapped or otherwise odd objects.'''
+
     value = False
     if isinstance(obj, dict):
+        # Handle wrapped objects returned by searches
+        if searchdoc_signifiers.issubset(set(obj)):
+            obj = json.loads(obj['json'])
+
         ref_type = [x for x in obj['ref'].split("/") if not x.isdigit()][-1] if 'ref' in obj else None
         if obj.get("jsonmodel_type", ref_type) in component_signifiers:
             value = ComponentObject
@@ -26,7 +52,15 @@ Returns either the correct class or False if no class is suitable.'''
     return value
 
 def wrap_json_object(obj, client=None):
-    '''Classify object, and either wrap it in the correct JSONModel type or return it as is.'''
+    '''Classify object, and either wrap it in the correct JSONModel type or return it as is.
+
+Prefer this STRONGLY to directly using the output of :func:`dispatch_type`'''
+    if isinstance(obj, dict):
+        # Handle wrapped objects returned by searches
+        if searchdoc_signifiers.issubset(set(obj)):
+            obj = json.loads(obj['json'])
+
+
     jmtype = dispatch_type(obj)
     if jmtype:
         obj = jmtype(obj, client)
@@ -133,21 +167,21 @@ If neither is present, the method raises an AttributeError.'''
                 else:
                     jmtype = dispatch_type(resp.json())
                     if (jmtype):
-                        return jmtype(resp.json(), client=self._client)
+                        return wrap_json_object(resp.json(), client=self._client)
                     if any(r.match(uri) for r in solr_route_regexes):
-                        return SolrRelation(uri, slient=self._client)
+                        return SolrRelation(uri, client=self._client)
                     return JSONModelRelation(uri, client=self._client)
 
 
             if isinstance(self._json[key], list) and len(self._json[key]) > 0:
                 jmtype = dispatch_type(self._json[key][0])
                 if len(self._json[key]) == 0 or jmtype:
-                    return [jmtype(obj, self._client) for obj in self._json[key]]
+                    return [wrap_json_object(obj, self._client) for obj in self._json[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
                     return self._json[key]
             elif dispatch_type(self._json[key]):
-                return dispatch_type(self._json[key])(self._json[key], self._client)
+                return wrap_json_object(self._json[key], self._client)
             else:
                 return self._json[key]
         else: return self.__getattribute__(key)
@@ -173,8 +207,7 @@ class ComponentObject(JSONModelObject):
         except:
             raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
 
-        jmtype = dispatch_type(tree_object)
-        return jmtype(tree_object, self._client)
+        return wrap_json_object(tree_object, self._client)
 
 
 
@@ -191,8 +224,7 @@ class TreeNode(JSONModelObject):
     def record(self):
         '''returns the full JSONModelObject for a node'''
         resp = self._client.get(self.record_uri)
-        jmtype = dispatch_type(resp.json())
-        return jmtype(resp.json(), self._client)
+        return wrap_json_object(resp.json(), self._client)
 
     @property
     def walk(self):
@@ -232,8 +264,7 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
 
     def __iter__(self):
         for jm in self.client.get_paged(self.uri, params=self.params):
-            jmtype = dispatch_type(jm)
-            yield jmtype(jm, self.client)
+            yield wrap_json_object(jm, self.client)
 
     def __call__(self, myid, **params):
         '''Fetch a JSONModelObject from the relation by id.'''
@@ -244,7 +275,7 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         resp = self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params)
         jmtype = dispatch_type(resp.json())
         if (jmtype):
-            return jmtype(resp.json(), client=self.client)
+            return wrap_json_object(resp.json(), client=self.client)
         return resp.json()
 
     def with_params(self, **params):
@@ -336,6 +367,25 @@ class SolrRelation(JSONModelRelation):
         merged.update(self.params, **params)
         res = self.client.get(self.uri, params=self.params).json()
         return type(self)(self.uri, self.params, self.client)
+
+class UserRelation(JSONModelRelation):
+    '''"Custom" relation to deal with the API's failure to properly populate permissions for the `/users` index route'''
+    def __iter__(self):
+        for user in self.client.get_paged('/users', params=self.params):
+            yield wrap_json_object(self.client.get(user['uri']).json(), self.client)
+
+    @property
+    def current_user(self):
+        '''`/users/current-user` route.'''
+        return wrap_json_object(self.client.get('users/current-user', params=self.params).json(), self.client)
+
+    # override parent __getattr__ because needs to return base class impl for descendant urls
+    def __getattr__(self, key):
+        p = {k:v for k, v in self.params.items()}
+        if len(p) == 0:
+            p['all_ids'] = True
+
+        return type(self).__bases__[0]("/".join((self.uri, key,)), params=p, client=self.client)
 
 class _JMeta(type):
     def __getattr__(self, key):

@@ -20,6 +20,12 @@ Here are some examples scripts and projects that make use of ASnake
 
 * [Python scripts to support ongoing ArchivesSpace work at Harvard](https://github.com/harvard-library/aspace_pyscripts)
 * [GUI container location updater](https://gitlab.com/macasaurusrex/lsf)
+* [API gateway for microservices](https://github.com/RockefellerArchiveCenter/zodiac)
+* [ASpaceASnake](https://github.com/ruthtillman/ASpaceASnake)
+* [ArchivesSpace scripts for University of Maryland Special Collections and University Archives](https://github.com/brialparker/ArchivesSpace_scripts)
+* [Reporting and cleanup scripts for Rice University's Woodson Special Collections](https://github.com/scottythered/ASpace-Reporting-Cleanup)
+
+For more examples on working with ASnake, please check the [Wiki page](https://github.com/archivesspace-labs/ArchivesSnake/wiki).
 
 ## Other API Scripts
 Here are listed several examples of non-ASnake scripts that operate on ArchivesSpace - please feel free to submit your
@@ -63,7 +69,7 @@ You'll need an internet connection to fetch ASnake's dependencies.
 
 ## Usage
 ### Low level API
-The low level API allows full access to the ArchivesSpace API; it's essentially "what if requests knew enough about an ASpace instance to manage authorization, turning uris into full URLs, and handling paged resources.
+The low level API allows full access to the ArchivesSpace API; it's essentially "what if requests knew enough about an ASpace instance to manage authorization, turn uris into full URLs, and handle paged resources.
 
 To start, here's a simple, fairly complete example - fetching the JSON representation of all the repositories from an ArchivesSpace instance and saving it to a variable.
 
@@ -222,6 +228,17 @@ Allowed configuration values are:
 | username        | Username for authorization                                                    | admin                 |
 | password        | Password for authorization                                                    | admin                 |
 | retry_with_auth | Whether to respond to 403 errors by trying to authorize and retrying          | True                  |
+| logging_config  | Hash with various config values for the logging subsystem                     | **see below**         |
+
+The logging config allows the following settings, none of which are present by default:
+
+| **Setting**    | **Description**                                                           | **Notes**                          |
+|----------------|---------------------------------------------------------------------------|------------------------------------|
+| default_config | A default configuration to start from, see                                | [Logging](#logging) for more info  |
+| stream         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | cannot be combined with stream     |
+| filename       | name of file to be printed to                                             | cannot be combined with filename   |
+| filemode       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | only useful combined with filename |
+| level          | level to log at (e.g. 'INFO', 'DEBUG', 'WARNING')                         |                                    |
 
 You can also define a configuration file, formatted in the [YAML](http://yaml.org/) markup language.  By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
 
@@ -231,32 +248,48 @@ An example configuration file:
 baseurl: http://localhost:4567
 username: admin
 password: admin
+retry_with_auth: false
+logging_config:
+    default_config: INFO_TO_STDERR
 ```
 
 Default values corresponding to the admin account of an unaltered local development instance of ASpace are included as fallback values.
 
 ### Logging
 
-ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is universally under INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; note that configuration must happen prior to loading asnake.client.ASnakeClient, or any module or class that uses it, like so:
+
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is by default universally below INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; note that configuration must happen prior to creating an `asnake.client.ASnakeClient` or `asnake.aspace.ASpace` object
 
 ``` python
+from asnake.client import ASnakeClient
 import asnake.logging as logging
 
 logging.setup_logging(level='DEBUG') # logging takes several arguments, provides defaults, etc
-from asnake.client import ASnakeClient
+
+# NOW it is safe to initialize any ASnake stuff
+client = ASnakeClient()
 ```
 
-There are a number of provided configurations, available in dict `asnake.logging.configurations` and exposed as toplevel constants in the module (e.g. `asnake.logging.DEBUG_TO_STDERR`, `asnake.logging.DEFAULT_CONFIG`).  Log level and stream to be printed to can be overriden by passing `level` and `stream` arguments to `setup_logging`.
+There are a number of provided configurations, available in dict `asnake.logging.configurations` and exposed as toplevel constants in the module (e.g. `asnake.logging.DEBUG_TO_STDERR`, `asnake.logging.DEFAULT_CONFIG`).  Log level and the stream/filename to be printed to can be overriden by passing `level` and *either* the `stream` or `filename` arguments to `setup_logging`. Mode of a file can be controlled by passing `filemode`.
+
+For example:
+
+``` python
+logging.setup_logging(filename="my_precious.log", filemode="a") # write to my_precious.log, appending if it already exists
+logging.setup_logging(stream=sys.stdout, level="DEBUG") # log to stdout, showing all log entry levels
+```
 
 The provided configurations are:
 
-| Configuration Names | Level | Output To  | Notes                    |
-|---------------------|-------|------------|--------------------------|
-| DEFAULT_CONFIG      | INFO  | sys.stderr | Alias for INFO_TO_STDERR |
-| INFO_TO_STDERR      | INFO  | sys.stderr |                          |
-| INFO_TO_STDOUT      | INFO  | sys.stdout |                          |
-| DEBUG_TO_STDERR     | DEBUG | sys.stderr |                          |
-| DEBUG_TO_STDOUT     | DEBUG | sys.stdout |                          |
+| Configuration Names | Level | Output To           | Notes                    |
+|---------------------|-------|---------------------|--------------------------|
+| DEFAULT_CONFIG      | INFO  | sys.stderr          | Alias for INFO_TO_STDERR |
+| INFO_TO_STDERR      | INFO  | sys.stderr          |                          |
+| INFO_TO_STDOUT      | INFO  | sys.stdout          |                          |
+| INFO_TO_FILE        | INFO  | ~/archivessnake.log |                          |
+| DEBUG_TO_STDERR     | DEBUG | sys.stderr          |                          |
+| DEBUG_TO_STDOUT     | DEBUG | sys.stdout          |                          |
+| DEBUG_TO_FILE       | DEBUG | ~/archivessnake.log |                          |
 
 By setting the `ASNAKE_LOG_CONFIG` environment variable to one of these names, you can set that config as the default.
 
@@ -264,15 +297,13 @@ To directly get ahold of a logger for use in your own application, you can call 
 
 ``` python
 import asnake.logging as logging
-logfile = open('my_cool_logfile.log', 'w')
-logging.setup_logging(stream=logfile)
+
+logging.setup_logging(filename='my_cool_logfile.log')
 logger = logging.get_logger("my_script_log")
 
 # do stuff
 logger.info("my_event_name", property1="a property", anything={"json": "serializable"})
 # do more stuff
-
-logfile.close() # end of script
 ```
 
 This will leave the following in `my_cool_logfile.log` (pretty-printed below, but all on one line in practice):

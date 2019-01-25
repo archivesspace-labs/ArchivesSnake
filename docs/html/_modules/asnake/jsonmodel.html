@@ -160,6 +160,7 @@
 
 <span class="n">component_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;archival_object&quot;</span><span class="p">,</span> <span class="s2">&quot;archival_objects&quot;</span><span class="p">})</span>
 <span class="n">jmtype_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;ref&quot;</span><span class="p">,</span> <span class="s2">&quot;jsonmodel_type&quot;</span><span class="p">})</span>
+<span class="n">searchdoc_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;primary_type&quot;</span><span class="p">,</span> <span class="s2">&quot;types&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">})</span>
 <span class="n">node_signifiers</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;node_type&quot;</span><span class="p">,</span> <span class="s2">&quot;resource_uri&quot;</span><span class="p">})</span>
 <span class="n">solr_route_regexes</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/?repositories/\d+/top_containers/search/?&#39;</span><span class="p">)</span>
@@ -167,9 +168,34 @@
 
 <div class="viewcode-block" id="dispatch_type"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.dispatch_type">[docs]</a><span class="k">def</span> <span class="nf">dispatch_type</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.</span>
-<span class="sd">Returns either the correct class or False if no class is suitable.&#39;&#39;&#39;</span>
+<span class="sd">Returns either the correct class or False if no class is suitable.</span>
+
+<span class="sd">Note: IN GENERAL, it is safe to use this to test if a thing is a JSONModel subtype, but you should</span>
+<span class="sd">STRONGLY prefer :func:`wrap_json_object` for constructing objects, because some objects are wrapped,</span>
+<span class="sd">and would need to be manually unwrapped otherwise.  So, usage like this:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    jmtype = dispatch_type(obj, self.client)</span>
+<span class="sd">    if jmtype:</span>
+<span class="sd">        return wrap_json_object(obj, self.client)</span>
+
+<span class="sd">is fine and expected, but the following is dangerous:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    jmtype = dispatch_type(obj, self.client)</span>
+<span class="sd">    if jmtype:</span>
+<span class="sd">        return jmtype(obj, self.client)</span>
+
+<span class="sd">because it will break on wrapped or otherwise odd objects.&#39;&#39;&#39;</span>
+
     <span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># Handle wrapped objects returned by searches</span>
+        <span class="k">if</span> <span class="n">searchdoc_signifiers</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">obj</span><span class="p">)):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">])</span>
+
         <span class="n">ref_type</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;ref&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;ref&#39;</span> <span class="ow">in</span> <span class="n">obj</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;jsonmodel_type&quot;</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">)</span> <span class="ow">in</span> <span class="n">component_signifiers</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">ComponentObject</span>
@@ -181,7 +207,15 @@
     <span class="k">return</span> <span class="n">value</span></div>
 
 <div class="viewcode-block" id="wrap_json_object"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.wrap_json_object">[docs]</a><span class="k">def</span> <span class="nf">wrap_json_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Classify object, and either wrap it in the correct JSONModel type or return it as is.&#39;&#39;&#39;</span>
+    <span class="sd">&#39;&#39;&#39;Classify object, and either wrap it in the correct JSONModel type or return it as is.</span>
+
+<span class="sd">Prefer this STRONGLY to directly using the output of :func:`dispatch_type`&#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># Handle wrapped objects returned by searches</span>
+        <span class="k">if</span> <span class="n">searchdoc_signifiers</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">obj</span><span class="p">)):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">])</span>
+
+
     <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">jmtype</span><span class="p">:</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -288,21 +322,21 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">jmtype</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
                     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">solr_route_regexes</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="n">SolrRelation</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">slient</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">SolrRelation</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
 
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">jmtype</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="p">[</span><span class="n">jmtype</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="n">wrap_json_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="k">elif</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
-                <span class="k">return</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">])(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -328,8 +362,7 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="s2">&quot;tree&quot;</span><span class="p">))</span>
 
-        <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">tree_object</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">tree_object</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">tree_object</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
 
 
 
@@ -346,8 +379,7 @@
     <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns the full JSONModelObject for a node&#39;&#39;&#39;</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">record_uri</span><span class="p">)</span>
-        <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">walk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -387,8 +419,7 @@
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">jm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_paged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">):</span>
-            <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">jm</span><span class="p">)</span>
-            <span class="k">yield</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">jm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">jm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 
 <div class="viewcode-block" id="JSONModelRelation.__call__"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">myid</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Fetch a JSONModelObject from the relation by id.&#39;&#39;&#39;</span>
@@ -399,7 +430,7 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">myid</span><span class="p">),)),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="n">jmtype</span> <span class="o">=</span> <span class="n">dispatch_type</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">jmtype</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">jmtype</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="JSONModelRelation.with_params"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.JSONModelRelation.with_params">[docs]</a>    <span class="k">def</span> <span class="nf">with_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
@@ -491,6 +522,25 @@
         <span class="n">merged</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="UserRelation"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.UserRelation">[docs]</a><span class="k">class</span> <span class="nc">UserRelation</span><span class="p">(</span><span class="n">JSONModelRelation</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;&quot;Custom&quot; relation to deal with the API&#39;s failure to properly populate permissions for the `/users` index route&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_paged</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;`/users/current-user` route.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;users/current-user&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="c1"># override parent __getattr__ because needs to return base class impl for descendant urls</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="s1">&#39;all_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">key</span><span class="p">,)),</span> <span class="n">params</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
 
 <span class="k">class</span> <span class="nc">_JMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>

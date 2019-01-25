@@ -1,5 +1,5 @@
 from requests import Session
-from urllib.parse import urljoin, quote
+from urllib.parse import quote
 from numbers import Number
 from collections.abc import Sequence, Mapping
 
@@ -7,7 +7,7 @@ import json
 import asnake.configurator as conf
 import asnake.logging as logging
 
-log = logging.get_logger(__name__)
+log = None # initialized on first client init
 
 class ASnakeAuthError(Exception): pass
 class ASnakeWeirdReturnError(Exception): pass
@@ -26,7 +26,7 @@ def http_meth_factory(meth):
         if 'params' in kwargs:
             kwargs['params'] = {k + '[]' if listlike_seq(v) and k[-2:] != '[]' else k:v for k,v in kwargs['params'].items()}
 
-        full_url = urljoin(self.config['baseurl'], url)
+        full_url = "/".join([self.config['baseurl'].rstrip("/"), url.lstrip("/")])
         result = getattr(self.session, meth)(full_url, *args, **kwargs)
         if result.status_code == 403 and self.config['retry_with_auth']:
             self.authorize()
@@ -50,8 +50,35 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
     '''ArchivesSnake Web Client'''
 
     def __init__(self, **config):
-        self.config = conf.ASnakeConfig()
+        global log
+
+        if 'config_file' in config:
+            self.config = conf.ASnakeConfig(config['config_file'])
+        else:
+            self.config = conf.ASnakeConfig()
+
         self.config.update(config)
+
+        # Only a subset of logging config can be supported in config
+        # For more complex setups (configuring output format, say),
+        # configure logs in Python code prior to loading
+        #
+        # Properties supported are:
+        #    filename, filemode, level, and default_config
+        # Default config can be any of the default configurations exposed in logging
+        if not log:
+            if not logging.already_configured and 'logging_config' in self.config:
+                if 'default_config' in self.config['logging_config']:
+                    default_logging_config = logging.configurations.get(
+                        self.config['logging_config']['default_config'])
+                    del self.config['logging_config']['default_config']
+                else:
+                    default_logging_config = None
+
+                logging.setup_logging(config = default_logging_config,
+                                      **self.config['logging_config'])
+
+            log = logging.get_logger(__name__)
 
         if not hasattr(self, 'session'): self.session = Session()
         self.session.headers.update({'Accept': 'application/json',
@@ -71,7 +98,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
         log.debug("authorizing against ArchivesSpace", user=username)
 
         resp = self.session.post(
-            urljoin(self.config['baseurl'], 'users/{username}/login'.format(username=quote(username))),
+            "/".join([self.config['baseurl'].rstrip("/"), 'users/{username}/login']).format(username=quote(username)),
             params={"password": password, "expiring": False}
         )
 
@@ -113,7 +140,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
                         yield obj
                 elif isinstance(current_json[0], Number):
                     for i in current_json:
-                        yield self.get(urljoin(url, str(i))).json()
+                        yield self.get("/".join([url, str(i)])).json()
                 else:
                     raise ASnakeWeirdReturnError("get_paged doesn't know how to handle {}".format(current_json))
         else:
