@@ -35,6 +35,7 @@ own via pull request!
 * [Duke Examples](Duke_links.md)
 * [Harvard/Smith Ingest Client/Scripts](HarvardSmithLinks.md)
 * [Johns Hopkins University links](Johns_Hopkins_University_links.md)
+* [Penn State University Links](PSU_links.md)
 * [RAC Examples](RAC_links.md)
 * [Smith archivesspace Python Module](https://smithcollegelibraries.github.io/archivesspace-python/)
 * [Outline of UAlbany Draft Library](ualbanyExample.md)
@@ -296,6 +297,7 @@ To directly get ahold of a logger for use in your own application, you can call 
 
 ``` python
 import asnake.logging as logging
+
 logging.setup_logging(filename='my_cool_logfile.log')
 logger = logging.get_logger("my_script_log")
 
