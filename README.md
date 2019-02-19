@@ -258,7 +258,7 @@ Default values corresponding to the admin account of an unaltered local developm
 ### Logging
 
 
-ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is by default universally below INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; note that configuration must happen prior to creating an `asnake.client.ASnakeClient` or `asnake.aspace.ASpace` object
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is by default universally below INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; if you want to capture all possible logging from ASnake, that configuration should happen prior to creating an `asnake.client.ASnakeClient` or `asnake.aspace.ASpace` object
 
 ``` python
 from asnake.client import ASnakeClient

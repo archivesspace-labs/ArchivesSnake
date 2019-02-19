@@ -21,40 +21,52 @@ level_re = re.compile(
     re.I
 )
 
+handler = None
 already_configured = False
 def setup_logging(config=None, level=None, stream=None, filename=None, filemode=None):
     '''sets up both logging and structlog.'''
-    global already_configured
+    global handler, already_configured
+
+    asnake_root_logger = logging.getLogger('asnake')
+
+    if handler:
+        asnake_root_logger.removeHandler(handler)
+
     if stream and filename:
         raise RuntimeError("stream and filename are mutually exclusive and cannot be combined, pick one or the other")
-    if not already_configured:
-        from_env = os.environ.get('ASNAKE_LOG_CONFIG', None)
-        default = configurations.get(from_env, DEFAULT_CONFIG)
+    from_env = os.environ.get('ASNAKE_LOG_CONFIG', None)
+    default = configurations.get(from_env, DEFAULT_CONFIG)
 
-        if not config:
-            config = copy_config(default)
-            if filename:
-                del config['logging']['stream']
-
-        level = level or config.get('level', None) or logging.INFO
-        if isinstance(level, str) and level_re.match(level):
-            level = getattr(logging, level.upper())
-
-        # Forward what's needed to put the log places
-        if stream:
-            config['logging']['stream'] = stream
+    if not config:
+        config = copy_config(default)
         if filename:
-            config['logging']['filename'] = filename
-        if filemode:
-            config['logging']['filemode'] = filemode
+            del config['logging']['stream']
 
-        logging.basicConfig(**config['logging'])
-        l = logging.getLogger('asnake')
-        l.setLevel(level)
-        structlog.configure(**config['structlog'])
-        already_configured = True
-    else:
-        raise RuntimeError("Attempted to configure logging when it has already been configured")
+    level = level or config.get('level', None) or logging.INFO
+    if isinstance(level, str) and level_re.match(level):
+        level = getattr(logging, level.upper())
+
+    # Forward what's needed to put the log places
+    if stream:
+        config['logging']['stream'] = stream
+    if filemode:
+        config['logging']['filemode'] = filemode
+    if filename:
+        config['logging']['filename'] = filename
+
+
+    if 'filename' in config['logging']:
+        handler = logging.FileHandler(config['logging']['filename'],
+                                      mode=config['logging'].get('filemode', 'a'))
+    if 'stream' in config['logging']:
+        handler = logging.StreamHandler(config['logging']['stream'])
+
+
+    asnake_root_logger.addHandler(handler)
+    asnake_root_logger.setLevel(level)
+    structlog.reset_defaults()
+    structlog.configure(**config['structlog'])
+    already_configured = True
 
 def get_logger(name=None):
     if not already_configured:
