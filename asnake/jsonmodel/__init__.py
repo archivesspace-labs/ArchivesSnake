@@ -1,3 +1,4 @@
+from boltons.dictutils import OMD
 from itertools import chain
 from more_itertools import flatten
 import json
@@ -161,9 +162,13 @@ If neither is present, the method raises an AttributeError.'''
             if key == 'uri': return self._json['ref']
             self.reify()
 
+        json_dict = OMD(self._json) if self.dirty else self._json
+        if self.dirty:
+            json_dict.update_extend(self._diff)
+
         if not key.startswith('_') and not key == 'is_ref':
-            if (not key in self._json.keys()) and 'uri' in self._json:
-                uri = "/".join((self._json['uri'].rstrip("/"), key,))
+            if (not key in json_dict.keys()) and 'uri' in json_dict:
+                uri = "/".join((json_dict['uri'].rstrip("/"), key,))
                 # Existence of route isn't enough, need to discriminate by type
                 # example: .../resources/:id/ordered_records which ALSO ought to be maybe treated as plural?
                 # This works, at the cost of a "wasted" full call if not a JSONModelObject
@@ -179,17 +184,17 @@ If neither is present, the method raises an AttributeError.'''
                     return JSONModelRelation(uri, client=self._client)
 
 
-            if isinstance(self._json[key], list) and len(self._json[key]) > 0:
-                jmtype = dispatch_type(self._json[key][0])
-                if len(self._json[key]) == 0 or jmtype:
-                    return [wrap_json_object(obj, self._client) for obj in self._json[key]]
+            if isinstance(json_dict[key], list) and len(json_dict[key]) > 0:
+                jmtype = dispatch_type(json_dict[key][0])
+                if len(json_dict[key]) == 0 or jmtype:
+                    return [wrap_json_object(obj, self._client) for obj in json_dict[key]]
                 else:
                     # bare lists of Not Jsonmodel Stuff, ding dang note contents and suchlike
-                    return self._json[key]
-            elif dispatch_type(self._json[key]):
-                return wrap_json_object(self._json[key], self._client)
+                    return json_dict[key]
+            elif dispatch_type(json_dict[key]):
+                return wrap_json_object(json_dict[key], self._client)
             else:
-                return self._json[key]
+                return json_dict[key]
         else: return self.__getattribute__(key)
 
     # Write setattr that works
