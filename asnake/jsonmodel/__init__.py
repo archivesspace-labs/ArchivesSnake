@@ -204,7 +204,6 @@ If neither is present, the method raises an AttributeError.'''
             elif isinstance(val, JSONModelRelation):
                 val = [{'ref': x.uri} for x in val]
 
-            self._json[key] = val
             self._diff[key] = val
 
     def save(self):
