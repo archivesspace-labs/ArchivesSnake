@@ -215,8 +215,7 @@ If neither is present, the method raises an AttributeError.'''
         '''Update record in ASpace, return True if successful, or False if failed to update for any reason.'''
         if not self.dirty: return False
 
-        self._json.update(self._diff)
-        res = self._client.post(self.uri, json=self._json)
+        res = self._client.post(self.uri, json=self.json())
         if res.status_code == 200:
             self._diff = None
             # re-fetch because otherwise object is unusable for writing and may be out of date
@@ -225,7 +224,7 @@ If neither is present, the method raises an AttributeError.'''
         return False
 
     def __str__(self):
-        return json.dumps(self._json, indent=2)
+        return json.dumps(self.json(), indent=2)
 
     def __bytes__(self):
         return str(self).encode('utf8')
@@ -233,6 +232,11 @@ If neither is present, the method raises an AttributeError.'''
     def json(self):
         '''return wrapped dict representing JSONModelObject contents.'''
         self.reify()
+        if self.dirty:
+            output = {}
+            output.update(self._json)
+            output.update(self._diff)
+            return output
         return self._json
 
 class ComponentObject(JSONModelObject):
