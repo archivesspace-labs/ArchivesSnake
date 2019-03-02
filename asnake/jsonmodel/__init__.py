@@ -1,6 +1,7 @@
 from boltons.dictutils import OMD
 from itertools import chain
 from more_itertools import flatten
+from copy import deepcopy
 import json
 import re
 
@@ -230,14 +231,14 @@ If neither is present, the method raises an AttributeError.'''
         return str(self).encode('utf8')
 
     def json(self):
-        '''return wrapped dict representing JSONModelObject contents.'''
+        '''return safe-to-edit copy wrapped dict representing JSONModelObject contents.'''
         self.reify()
         if self.dirty:
             output = {}
             output.update(self._json)
             output.update(self._diff)
-            return output
-        return self._json
+            return deepcopy(output)
+        return deepcopy(self._json)
 
 class ComponentObject(JSONModelObject):
     @property
