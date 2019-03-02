@@ -1,5 +1,6 @@
 from itertools import chain
 from more_itertools import flatten
+from copy import deepcopy
 import json
 import re
 from asnake.logging import get_logger
@@ -194,9 +195,9 @@ If neither is present, the method raises an AttributeError.'''
         return str(self).encode('utf8')
 
     def json(self):
-        '''return wrapped dict representing JSONModelObject contents.'''
+        '''return safe-to-edit copy wrapped dict representing JSONModelObject contents.'''
         self.reify()
-        return self._json
+        return deepcopy(self._json)
 
 class ComponentObject(JSONModelObject):
     @property
