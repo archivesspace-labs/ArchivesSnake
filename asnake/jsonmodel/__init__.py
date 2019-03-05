@@ -4,6 +4,7 @@ from more_itertools import flatten
 from copy import deepcopy
 import json
 import re
+from asnake.logging import get_logger
 
 component_signifiers = frozenset({"archival_object", "archival_objects"})
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
@@ -159,7 +160,7 @@ attr lookup for JSONModel object is provided from the following sources:
     - API methods matching the object's URI + the attribute requested
 
 If neither is present, the method raises an AttributeError.'''
-        if self.is_ref:
+        if key not in self._json and self.is_ref:
             if key == 'uri': return self._json['ref']
             self.reify()
 
@@ -222,6 +223,7 @@ If neither is present, the method raises an AttributeError.'''
             # re-fetch because otherwise object is unusable for writing and may be out of date
             self._json = self._client.get(self.uri).json()
             return True
+        get_logger(__name__).error('Save failure', status=res.status_code, body=res.content)
         return False
 
     def __str__(self):
