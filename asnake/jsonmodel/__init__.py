@@ -2,6 +2,8 @@ from boltons.dictutils import OMD
 from itertools import chain
 from more_itertools import flatten
 from copy import deepcopy
+from collections.abc import Sequence
+
 import json
 import re
 from asnake.logging import get_logger
