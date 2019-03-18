@@ -167,11 +167,19 @@ for repo in aspace.repositories:
     # do stuff with repo which is a JSONModelObject
 ```
 
-You can get the wrapped JSON by doing:
+You can get a copy of the wrapped JSON by doing:
 
 ``` python
 obj.json()
 ```
+
+The `.json` method makes a _deep copy_ of the object; otherwise, changes to the returned JSON would also affect the values inside the `JSONModelObject`.  If you run into memory issues, and are sure that you're not going to reuse the object you retrieved the JSON from, you can use:
+
+``` python
+obj._json
+```
+
+Which is the original wrapped JSON as returned from the API.
 
 If you know the id of a particular thing in the collection, you can also treat `JSONModelRelation` objects as functions and pass the ids to get that specific thing, like so.
 
