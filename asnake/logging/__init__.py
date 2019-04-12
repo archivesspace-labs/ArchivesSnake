@@ -71,6 +71,11 @@ def setup_logging(config=None, level=None, stream=None, filename=None, filemode=
 def get_logger(name=None):
     if not already_configured:
         setup_logging()
+
+    # Make sure it's under the root logger
+    if name and not name.startswith('asnake.'):
+        name = 'asnake.' + name
+
     return structlog.get_logger(name)
 
 # Log format is standard across all provided defaults
