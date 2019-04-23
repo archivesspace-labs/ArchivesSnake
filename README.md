@@ -19,6 +19,7 @@ most important classes to understand are:
 Here are some examples scripts and projects that make use of ASnake
 
 * [Python scripts to support ongoing ArchivesSpace work at Harvard](https://github.com/harvard-library/aspace_pyscripts)
+* [Python scripts to support container and instance data migration, also at Harvard](https://github.com/harvard-library/aspace_container_mgmt_scripts)
 * [GUI container location updater](https://gitlab.com/macasaurusrex/lsf)
 * [API gateway for microservices](https://github.com/RockefellerArchiveCenter/zodiac)
 * [ASpaceASnake](https://github.com/ruthtillman/ASpaceASnake)
