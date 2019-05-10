@@ -270,13 +270,16 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
         for jm in self.client.get_paged(self.uri, params=self.params):
             yield wrap_json_object(jm, self.client)
 
-    def __call__(self, myid, **params):
+    def __call__(self, myid=None, **params):
         '''Fetch a JSONModelObject from the relation by id.'''
         # Special handling for resolve because it takes a string or an array and requires [] for array
         if 'resolve' in params:
             params['resolve[]'] = params['resolve']
             del params['resolve']
-        resp = self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params)
+        if myid:
+            resp = self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params)
+        else:
+            return self.with_params(**params)
         jmtype = dispatch_type(resp.json())
         if (jmtype):
             return wrap_json_object(resp.json(), client=self.client)

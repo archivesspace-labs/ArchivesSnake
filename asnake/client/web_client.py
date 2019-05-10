@@ -112,12 +112,19 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
             return session_token
 
 
-    def get_paged(self, url, *args, page_size=10, **kwargs):
+    def get_paged(self, url, *args, page_size=100, **kwargs):
         '''get list of json objects from urls of paged items'''
-        params = {"page_size": page_size, "page": 1}
+        params = {}
+
         if "params" in kwargs:
             params.update(**kwargs['params'])
             del kwargs['params']
+
+        # special-cased bc all_ids doesn't work on repositories index route
+        if "all_ids" in params and url in {"/repositories", "repositories"}:
+            del params['all_ids']
+
+        params.update(page_size=page_size, page=1)
 
         current_page = self.get(url, params=params, **kwargs)
         current_json = current_page.json()
