@@ -68,6 +68,8 @@ This is assuming a standard Python 3 install, which provides `pip3` and `python3
 
 You'll need an internet connection to fetch ASnake's dependencies.
 
+For an overview of setup and configuration, see the [Getting Started Guide on the Wiki](https://github.com/archivesspace-labs/ArchivesSnake/wiki/Getting-Started-Guide).
+
 ## Usage
 ### Low level API
 The low level API allows full access to the ArchivesSpace API; it's essentially "what if requests knew enough about an ASpace instance to manage authorization, turn uris into full URLs, and handle paged resources.
