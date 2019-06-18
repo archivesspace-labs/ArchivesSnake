@@ -278,12 +278,13 @@ Additionally, JSONModelRelations implement `__getattr__`, in order to handle nes
             del params['resolve']
         if myid:
             resp = self.client.get("/".join((self.uri.rstrip("/"), str(myid),)), params=params)
+            jmtype = dispatch_type(resp.json())
+            if (jmtype):
+                return wrap_json_object(resp.json(), client=self.client)
+            return resp.json()
         else:
             return self.with_params(**params)
-        jmtype = dispatch_type(resp.json())
-        if (jmtype):
-            return wrap_json_object(resp.json(), client=self.client)
-        return resp.json()
+
 
     def with_params(self, **params):
         '''Return JSONModelRelation with same uri and client, but add kwargs to params.
@@ -297,6 +298,7 @@ Usage:
 
 '''
         merged = {}
+
         merged.update(self.params, **params)
         return type(self)(self.uri, merged, self.client)
 
@@ -306,6 +308,46 @@ Usage:
             return SolrRelation(full_uri, params=self.params, client=self.client)
         return type(self)(full_uri, params=self.params, client=self.client)
 
+
+class ResourceRelation(JSONModelRelation):
+    '''subtype of JSONModelRelation for returning all resources from every repository
+
+Usage:
+
+.. code-block:: python
+
+    ASpace().resources      # all resources from every repository
+    ASpace().resources(42)  # resource with id=42, regardless of what repo it's in
+'''
+    def __init__(self, params={}, client = None):
+        super().__init__(None, params, client)
+
+    def __iter__(self):
+        repo_uris = [r['uri'] for r in self.client.get('repositories').json()]
+        for resource in chain(*[self.client.get_paged('{}/resources'.format(uri), params=self.params) for uri in repo_uris]):
+            yield wrap_json_object(resource, self.client)
+
+    def __call__(self, myid=None, **params):
+        if 'resolve' in params:
+            params['resolve[]'] = params['resolve']
+            del params['resolve']
+        if myid:
+            repo_uris = [r['uri'] for r in self.client.get('repositories').json()]
+            for uri in repo_uris:
+                if myid in self.client.get(uri + '/resources', params={'all_ids': True}).json():
+                    resp = self.client.get(uri + '/resources/{}'.format(myid), params=params)
+                    jmtype = dispatch_type(resp.json())
+                    if (jmtype):
+                        return wrap_json_object(resp.json(), client=self.client)
+                    return resp.json()
+            return {'error': 'Resource not found'}
+        else:
+            return self.with_params(**params)
+
+    def with_params(self, **params):
+        merged = {}
+        merged.update(self.params, **params)
+        return type(self)(self.params, self.client)
 
 class ASNakeBadAgentType(Exception): pass
 
@@ -368,12 +410,6 @@ class SolrRelation(JSONModelRelation):
 
     def __call__(self, *args, **kwargs):
         raise NotImplementedError("__call__ is not implemented for SolrRelations")
-
-    def with_params(self, **params):
-        merged = {}
-        merged.update(self.params, **params)
-        res = self.client.get(self.uri, params=self.params).json()
-        return type(self)(self.uri, self.params, self.client)
 
 class UserRelation(JSONModelRelation):
     '''"Custom" relation to deal with the API's failure to properly populate permissions for the `/users` index route'''

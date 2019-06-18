@@ -1,5 +1,6 @@
 from asnake.client import ASnakeClient
-from asnake.jsonmodel import wrap_json_object, JSONModelRelation, AgentRelation, UserRelation
+import asnake.jsonmodel as jm
+from asnake.jsonmodel import *
 from collections.abc import Sequence
 from itertools import chain
 from boltons.setutils import IndexedSet
@@ -27,10 +28,8 @@ class ASpace():
     @property
     def resources(self):
         '''return all resources from every repo.'''
+        return ResourceRelation({}, self.client)
 
-        repo_uris = [r['uri'] for r in self.client.get('repositories').json()]
-        for resource in chain(*[self.client.get_paged('{}/resources'.format(uri)) for uri in repo_uris]):
-            yield wrap_json_object(resource, self.client)
 
     @property
     def agents(self):
