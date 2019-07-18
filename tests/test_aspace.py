@@ -60,7 +60,7 @@ def test_trees():
 
 @vcr.use_cassette
 def test_with_params():
-    list(aspace.repositories(2).search.with_params(q="primary_type:resource", fq="publish:true"))
+    list(aspace.repositories(2).search.with_params(q="primary_type:resource AND publish:true"))
 
 @vcr.use_cassette
 def test_solr_route():

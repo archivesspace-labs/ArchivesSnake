@@ -194,7 +194,7 @@ If you need to pass parameters to a route, you can add them using the `with_para
 
 ``` python
 repo = aspace.repositories(101)
-for resource in repo.search.with_params(q="primary_type:resource", fq="publish:true"):
+for resource in repo.search.with_params(q="primary_type:resource AND publish:true"):
     # do things with published resources from repo 101
 ```
 

@@ -293,7 +293,7 @@ Usage:
 
 .. code-block:: python
 
-    for thing in ASpace().repositories(2).search.with_params(q="primary_type:resource", fq="publish:true"):
+    for thing in ASpace().repositories(2).search.with_params(q="primary_type:resource"):
         # do something with the things
 
 '''

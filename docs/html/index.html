@@ -17,40 +17,34 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="ArchivesSnake 0.1 documentation" href="#"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -103,7 +97,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">ArchivesSnake</a>
@@ -111,9 +105,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -186,7 +181,7 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="method">
 <dt id="asnake.jsonmodel.JSONModelObject.json">
 <code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject.json" title="Permalink to this definition">¶</a></dt>
-<dd><p>return wrapped dict representing JSONModelObject contents.</p>
+<dd><p>return safe-to-edit copy wrapped dict representing JSONModelObject contents.</p>
 </dd></dl>
 
 <dl class="method">
@@ -212,7 +207,7 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="method">
 <dt id="asnake.jsonmodel.ComponentObject.json">
 <code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.json" title="Permalink to this definition">¶</a></dt>
-<dd><p>return wrapped dict representing JSONModelObject contents.</p>
+<dd><p>return safe-to-edit copy wrapped dict representing JSONModelObject contents.</p>
 </dd></dl>
 
 <dl class="method">
@@ -256,7 +251,7 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 <dl class="method">
 <dt id="asnake.jsonmodel.JSONModelRelation.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>myid</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__call__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>myid=None</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a JSONModelObject from the relation by id.</p>
 </dd></dl>
 
@@ -265,7 +260,7 @@ agents have unique ids per agent_type, not across all agents.</p>
 <code class="descname">with_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.with_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
 <p>Usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">,</span> <span class="n">fq</span><span class="o">=</span><span class="s2">&quot;publish:true&quot;</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">):</span>
     <span class="c1"># do something with the things</span>
 </pre></div>
 </div>
@@ -360,7 +355,7 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="method">
 <dt>
 <code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>return wrapped dict representing JSONModelObject contents.</p>
+<dd><p>return safe-to-edit copy wrapped dict representing JSONModelObject contents.</p>
 </dd></dl>
 
 <dl class="method">
@@ -396,7 +391,29 @@ agents have unique ids per agent_type, not across all agents.</p>
 <code class="descname">with_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
 <p>Usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">,</span> <span class="n">fq</span><span class="o">=</span><span class="s2">&quot;publish:true&quot;</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">):</span>
+    <span class="c1"># do something with the things</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="asnake.jsonmodel.ResourceRelation">
+<em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">ResourceRelation</code><span class="sig-paren">(</span><em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ResourceRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ResourceRelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>subtype of JSONModelRelation for returning all resources from every repository</p>
+<p>Usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">resources</span>      <span class="c1"># all resources from every repository</span>
+<span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">resources</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># resource with id=42, regardless of what repo it&#39;s in</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="asnake.jsonmodel.ResourceRelation.with_params">
+<code class="descname">with_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ResourceRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ResourceRelation.with_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
+<p>Usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">):</span>
     <span class="c1"># do something with the things</span>
 </pre></div>
 </div>
@@ -408,17 +425,6 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dt id="asnake.jsonmodel.SolrRelation">
 <em class="property">class </em><code class="descclassname">asnake.jsonmodel.</code><code class="descname">SolrRelation</code><span class="sig-paren">(</span><em>uri</em>, <em>params={}</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#SolrRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.SolrRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sometimes, the API returns solr responses, so we have to handle that. Facets are still tbd, but should be doable, but also I’m not sure if they’re widely used and thus need to be handled?.</p>
-<dl class="method">
-<dt id="asnake.jsonmodel.SolrRelation.with_params">
-<code class="descname">with_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#SolrRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.SolrRelation.with_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
-<p>Usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">,</span> <span class="n">fq</span><span class="o">=</span><span class="s2">&quot;publish:true&quot;</span><span class="p">):</span>
-    <span class="c1"># do something with the things</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -500,43 +506,43 @@ Asks for a “non-expiring” session, which isn’t truly immortal, just long-l
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.delete" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.delete" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.get" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.get" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.get_paged">
-<code class="descname">get_paged</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>page_size=10</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_paged</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>page_size=100</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
 <dd><p>get list of json objects from urls of paged items</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.head">
 <code class="descname">head</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.head" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.head" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.options">
 <code class="descname">options</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.options" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.options" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.post">
 <code class="descname">post</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.post" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.post" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.ASnakeClient.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.put" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.put" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -568,43 +574,43 @@ Asks for a “non-expiring” session, which isn’t truly immortal, just long-l
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.delete" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.delete" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.get" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.get" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.get_paged">
-<code class="descname">get_paged</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>page_size=10</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_paged</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>page_size=100</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
 <dd><p>get list of json objects from urls of paged items</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.head">
 <code class="descname">head</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.head" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.head" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.options">
 <code class="descname">options</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.options" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.options" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.post">
 <code class="descname">post</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.post" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.post" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>url</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.put" title="(in Requests v2.19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<dd><p>Proxied <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session.put" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="https://2.python-requests.org//en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -615,8 +621,8 @@ Asks for a “non-expiring” session, which isn’t truly immortal, just long-l
 <dd><p>Metaclass to set up proxy methods for all requests-supported HTTP methods</p>
 <dl class="method">
 <dt id="asnake.client.web_client.ASnakeProxyMethods.mro">
-<code class="descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#asnake.client.web_client.ASnakeProxyMethods.mro" title="Permalink to this definition">¶</a></dt>
-<dd><p>return a type’s method resolution order</p>
+<code class="descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeProxyMethods.mro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a type’s method resolution order.</p>
 </dd></dl>
 
 </dd></dl>
@@ -649,8 +655,8 @@ passed unaltered to the matching requests.Session method.</p>
 
 <span class="target" id="module-asnake"></span><dl class="class">
 <dt id="asnake.ASnakeConfig">
-<em class="property">class </em><code class="descclassname">asnake.</code><code class="descname">ASnakeConfig</code><span class="sig-paren">(</span><em>config=NOTHING</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configuration object.  Essentially a convenience wrapper over an instance of <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict" title="(in boltons v18.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict</span></code></a></p>
+<em class="property">class </em><code class="descclassname">asnake.</code><code class="descname">ASnakeConfig</code><span class="sig-paren">(</span><em>config=NOTHING</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configuration object.  Essentially a convenience wrapper over an instance of <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict" title="(in boltons v19.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict</span></code></a></p>
 <span class="target" id="module-asnake.logging"></span><dl class="function">
 <dt id="asnake.logging.ASnakeConfig.copy_config">
 <code class="descname">copy_config</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.copy_config" title="Permalink to this definition">¶</a></dt>
@@ -678,7 +684,7 @@ passed unaltered to the matching requests.Session method.</p>
 <dl class="method">
 <dt id="asnake.ASnakeConfig.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>adds a set of configuration values in ‘most preferred’ position (i.e. last updated wins). See <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict.update_extend" title="(in boltons v18.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict.update_extend()</span></code></a>
+<dd><p>adds a set of configuration values in ‘most preferred’ position (i.e. last updated wins). See <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict.update_extend" title="(in boltons v19.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict.update_extend()</span></code></a>
 in the OMD docs</p>
 </dd></dl>
 
@@ -696,9 +702,7 @@ in the OMD docs</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -707,11 +711,11 @@ in the OMD docs</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Various Artists.
+        &copy; Copyright 2018, Various Artists
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -724,36 +728,15 @@ in the OMD docs</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
