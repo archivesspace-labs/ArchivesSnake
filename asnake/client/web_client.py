@@ -131,7 +131,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
         # Regular paged object
         if hasattr(current_json, 'keys') and \
            {'results', 'this_page', 'last_page'} <= set(current_json.keys()):
-            while current_json['this_page'] <= current_json['last_page']:
+            while current_json['this_page'] < current_json['last_page']:
                 for obj in current_json['results']:
                     yield obj
                 if current_json['this_page'] == current_json['last_page']: break
