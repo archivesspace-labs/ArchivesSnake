@@ -11,12 +11,13 @@ component_signifiers = frozenset({"archival_object", "archival_objects"})
 jmtype_signifiers = frozenset({"ref", "jsonmodel_type"})
 searchdoc_signifiers = frozenset({"primary_type", "types", "id", "json"})
 node_signifiers = frozenset({"node_type", "resource_uri"})
+node_data_signifiers = frozenset({"child_count", "waypoints", "waypoint_size"})
 solr_route_regexes = [
     re.compile(r'/?repositories/\d+/top_containers/search/?')
 ]
 
 def dispatch_type(obj):
-    '''Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
+    '''Determines if object is JSON suitable for wrapping with a JSONModelObject, or a narrower subtype.
 Returns either the correct class or False if no class is suitable.
 
 Note: IN GENERAL, it is safe to use this to test if a thing is a JSONModel subtype, but you should
@@ -47,7 +48,10 @@ because it will break on wrapped or otherwise odd objects.'''
 
         ref_type = [x for x in obj['ref'].split("/") if not x.isdigit()][-1] if 'ref' in obj else None
         if obj.get("jsonmodel_type", ref_type) in component_signifiers:
-            value = ComponentObject
+            if node_data_signifiers.issubset(set(obj)):
+                return TreeNodeData
+            else:
+                value = ComponentObject
         elif node_signifiers.intersection(obj.keys()) or ref_type == "tree":
             value = TreeNode
         elif jmtype_signifiers.intersection(obj.keys()):
@@ -213,8 +217,6 @@ class ComponentObject(JSONModelObject):
 
         return wrap_json_object(tree_object, self._client)
 
-
-
 class TreeNode(JSONModelObject):
     def __repr__(self):
         result = "#<TreeNode:{}".format(self._json['node_type'])
@@ -236,6 +238,28 @@ class TreeNode(JSONModelObject):
         yield self.record
         yield from flatten(child.walk for child in self.children)
 
+    def node(self, node_uri):
+        self.reify()
+        if self._json['node_type'] != 'resource':
+            raise NotImplementedError('This route only exists on resources')
+        else:
+            resp = self._client.get("/".join((self._json['record_uri'], 'tree/node',)), params={"node_uri": node_uri})
+            return wrap_json_object(resp.json(), self._client)
+
+class TreeNodeData(JSONModelObject):
+    def __repr__(self):
+        return "#<TreeNodeData:{}:{}>".format(self._json['jsonmodel_type'], self._json['uri'])
+
+    def __getattr__(self, key):
+        if key not in self._json:
+            raise AttributeError("Property not present in tree data - it may exist on the record instead")
+        else:
+            return self._json[key]
+
+    @property
+    def record(self):
+        resp = self._client.get(self.uri)
+        return wrap_json_object(resp.json(), self._client)
 
 class JSONModelRelation(metaclass=JSONModel):
     '''A wrapper over index routes and other routes that represent groups of items in ASpace.
