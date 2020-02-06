@@ -195,7 +195,8 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="class">
 <dt id="asnake.jsonmodel.ComponentObject">
 <em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ComponentObject</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ComponentObject" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Specialized JSONModel subclass representing Archival Objects. Mostly exists to provide a way to get TreeNodes from AOs rather than having to start at the resource.</p>
+<dl class="method">
 <dt id="asnake.jsonmodel.ComponentObject.id">
 <em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the id for the object if it has a useful ID, or else None.</p>
@@ -308,7 +309,8 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="class">
 <dt>
 <em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ComponentObject</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a></dt>
-<dd><dl class="method">
+<dd><p>Specialized JSONModel subclass representing Archival Objects. Mostly exists to provide a way to get TreeNodes from AOs rather than having to start at the resource.</p>
+<dl class="method">
 <dt>
 <em class="property">property </em><code class="sig-name descname">tree</code></dt>
 <dd><p>Returns a TreeNode object for children of archival objects</p>
@@ -430,7 +432,16 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="class">
 <dt id="asnake.jsonmodel.TreeNode">
 <em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">TreeNode</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Specialized JSONModel subclass representing nodes in trees, as returned
+from <a class="reference external" href="https://archivesspace.github.io/archivesspace/api/#get-a-resource-tree">/repositories/:repo_id/resources/:id/tree</a>.</p>
+<dl class="method">
+<dt id="asnake.jsonmodel.TreeNode.node">
+<code class="sig-name descname">node</code><span class="sig-paren">(</span><em class="sig-param">node_uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode.node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode.node" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sub-route existing on resources, which returns info on the node passed in.</p>
+<p>Returned as an instance of <a class="reference internal" href="#asnake.jsonmodel.TreeNodeData" title="asnake.jsonmodel.TreeNodeData"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeNodeData</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="asnake.jsonmodel.TreeNode.record">
 <em class="property">property </em><code class="sig-name descname">record</code><a class="headerlink" href="#asnake.jsonmodel.TreeNode.record" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the full JSONModelObject for a node</p>
@@ -442,6 +453,12 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dd><p>Serial walk of all objects in tree and children (depth-first traversal)</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="asnake.jsonmodel.TreeNodeData">
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">TreeNodeData</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNodeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNodeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representing data about a node in a tree.</p>
 </dd></dl>
 
 <dl class="class">
@@ -459,7 +476,7 @@ agents have unique ids per agent_type, not across all agents.</p>
 <dl class="function">
 <dt id="asnake.jsonmodel.dispatch_type">
 <code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">dispatch_type</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#dispatch_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.dispatch_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines if object is JSON suitable for wrapping with a JSONModelObject or TreeNode.
+<dd><p>Determines if object is JSON suitable for wrapping with a JSONModelObject, or a narrower subtype.
 Returns either the correct class or False if no class is suitable.</p>
 <p>Note: IN GENERAL, it is safe to use this to test if a thing is a JSONModel subtype, but you should
 STRONGLY prefer <a class="reference internal" href="#asnake.jsonmodel.wrap_json_object" title="asnake.jsonmodel.wrap_json_object"><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap_json_object()</span></code></a> for constructing objects, because some objects are wrapped,
