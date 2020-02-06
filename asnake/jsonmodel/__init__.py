@@ -206,6 +206,7 @@ If neither is present, the method raises an AttributeError.'''
         return deepcopy(self._json)
 
 class ComponentObject(JSONModelObject):
+    '''Specialized JSONModel subclass representing Archival Objects. Mostly exists to provide a way to get TreeNodes from AOs rather than having to start at the resource.'''
     @property
     def tree(self):
         '''Returns a TreeNode object for children of archival objects'''
@@ -218,6 +219,9 @@ class ComponentObject(JSONModelObject):
         return wrap_json_object(tree_object, self._client)
 
 class TreeNode(JSONModelObject):
+    '''Specialized JSONModel subclass representing nodes in trees, as returned
+from `/repositories/:repo_id/resources/:id/tree <https://archivesspace.github.io/archivesspace/api/#get-a-resource-tree>`_.'''
+
     def __repr__(self):
         result = "#<TreeNode:{}".format(self._json['node_type'])
         if "resource_uri" in self._json:
@@ -239,6 +243,10 @@ class TreeNode(JSONModelObject):
         yield from flatten(child.walk for child in self.children)
 
     def node(self, node_uri):
+        '''A sub-route existing on resources, which returns info on the node passed in.
+
+Returned as an instance of :class:`TreeNodeData`.'''
+
         self.reify()
         if self._json['node_type'] != 'resource':
             raise NotImplementedError('This route only exists on resources')
@@ -247,6 +255,7 @@ class TreeNode(JSONModelObject):
             return wrap_json_object(resp.json(), self._client)
 
 class TreeNodeData(JSONModelObject):
+    '''Object representing data about a node in a tree.'''
     def __repr__(self):
         return "#<TreeNodeData:{}:{}>".format(self._json['jsonmodel_type'], self._json['uri'])
 
