@@ -436,7 +436,11 @@ class _JMeta(type):
             out = {"jsonmodel_type": key}
             out.update(**kwargs)
             return out
-        return jsonmodel_wrapper
+
+        if key.startswith('_'):
+            return super().__getattr__(self, key)
+        else:
+            return jsonmodel_wrapper
 
 class JM(metaclass=_JMeta):
     '''Helper class for creating hashes suitable for POSTing to ArchivesSpace.

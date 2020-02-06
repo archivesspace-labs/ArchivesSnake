@@ -145,19 +145,19 @@
            <div itemprop="articleBody">
             
   <h1>Source code for asnake.aspace</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">asnake.client</span> <span class="k">import</span> <span class="n">ASnakeClient</span>
+<span></span><span class="kn">from</span> <span class="nn">asnake.client</span> <span class="kn">import</span> <span class="n">ASnakeClient</span>
 <span class="kn">import</span> <span class="nn">asnake.jsonmodel</span> <span class="k">as</span> <span class="nn">jm</span>
-<span class="kn">from</span> <span class="nn">asnake.jsonmodel</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
-<span class="kn">from</span> <span class="nn">boltons.setutils</span> <span class="k">import</span> <span class="n">IndexedSet</span>
+<span class="kn">from</span> <span class="nn">asnake.jsonmodel</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">boltons.setutils</span> <span class="kn">import</span> <span class="n">IndexedSet</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="k">class</span> <span class="nc">ASnakeBadReturnCode</span><span class="p">:</span> <span class="k">pass</span>
 <div class="viewcode-block" id="ASpace"><a class="viewcode-back" href="../../index.html#asnake.aspace.ASpace">[docs]</a><span class="k">class</span> <span class="nc">ASpace</span><span class="p">():</span>
     <span class="c1"># this happens when you call ASpace()</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
         <span class="c1"># Connect to ASpace using .archivessnake.yml</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">ASnakeClient</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
@@ -167,7 +167,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;unknown version&#39;</span>
 
-<div class="viewcode-block" id="ASpace.__getattr__"><a class="viewcode-back" href="../../index.html#asnake.aspace.ASpace.__getattr__">[docs]</a>    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+<div class="viewcode-block" id="ASpace.__getattr__"><a class="viewcode-back" href="../../index.html#asnake.aspace.ASpace.__getattr__">[docs]</a>    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns the JSONModelRelation representing the route with the same name as the attribute requested.&#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">JSONModelRelation</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;all_ids&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span></div>
