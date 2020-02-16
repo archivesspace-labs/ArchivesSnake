@@ -231,7 +231,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">child</span><span class="p">[</span><span class="s1">&#39;has_children&#39;</span><span class="p">]:</span>
                 <span class="k">continue</span> <span class="c1"># this is a leaf, do not recurse</span>
-            <span class="n">subtree</span> <span class="o">=</span> <span class="n">find_subtree</span><span class="p">(</span><span class="n">child</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">],</span> <span class="n">uri</span><span class="p">)</span> <span class="c1"># recurse!</span>
+            <span class="n">subtree</span> <span class="o">=</span> <span class="n">find_subtree</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">uri</span><span class="p">)</span> <span class="c1"># recurse!</span>
+            <span class="k">if</span> <span class="n">subtree</span><span class="p">:</span> <span class="k">break</span>
     <span class="k">return</span> <span class="n">subtree</span></div>
 
 
@@ -361,8 +362,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tree_object</span> <span class="o">=</span> <span class="n">find_subtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pdb</span><span class="p">;</span><span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="s2">&quot;tree&quot;</span><span class="p">))</span>
-
         <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">tree_object</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TreeNode"><a class="viewcode-back" href="../../index.html#asnake.jsonmodel.TreeNode">[docs]</a><span class="k">class</span> <span class="nc">TreeNode</span><span class="p">(</span><span class="n">JSONModelObject</span><span class="p">):</span>
