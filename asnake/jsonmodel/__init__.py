@@ -84,7 +84,8 @@ def find_subtree(tree, uri):
         else:
             if not child['has_children']:
                 continue # this is a leaf, do not recurse
-            subtree = find_subtree(child['children'], uri) # recurse!
+            subtree = find_subtree(child, uri) # recurse!
+            if subtree: break
     return subtree
 
 
@@ -214,8 +215,8 @@ class ComponentObject(JSONModelObject):
         try:
             tree_object = find_subtree(self.resource.tree.json(), self.uri)
         except:
+            import pdb;pdb.set_trace()
             raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
-
         return wrap_json_object(tree_object, self._client)
 
 class TreeNode(JSONModelObject):
