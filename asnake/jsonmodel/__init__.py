@@ -215,7 +215,6 @@ class ComponentObject(JSONModelObject):
         try:
             tree_object = find_subtree(self.resource.tree.json(), self.uri)
         except:
-            import pdb;pdb.set_trace()
             raise AttributeError("'{}' has no attribute '{}'".format(repr(self), "tree"))
         return wrap_json_object(tree_object, self._client)
 
