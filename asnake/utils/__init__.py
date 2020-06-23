@@ -253,11 +253,6 @@ and an :class:`asnake.client.ASnakeClient`, this method will return a
 generator which yields the JSON representation of any locations associated
 with the archival object.
 '''
-    ao_uri = None
-
-    resp = client.get(ao_uri, params={'resolve': ['top_container::container_locations']})
-    if resp.status_code != 200:
-        raise Exception("Unable to fetch archival object with resolved container locations")
 
     for instance in resp.json()['instances']:
         for container_loc in instance['sub_container']['top_container']['_resolved']['container_locations']:
