@@ -1,30 +1,16 @@
+import json
 from functools import wraps
 
 
-def check_type(obj_type):
+def jsonify():
     def real_decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not isinstance(args[0], obj_type):
-                raise TypeError("{} is not a {}".format(args[0], obj_type))
-
-            ao_uri = None
-            # if object has .json(), replace with value of .json()
-            if callable(getattr(ao_thingit, 'json', None)):
-                ao_thingit = ao_thingit.json()
-
-            if isinstance(ao_thingit, str):
-                ao_uri = ao_thingit
-                
-            elif isinstance(ao_thingit, Mapping):
-                ao_uri = ao_thingit.get("uri", ao_thingit.get("ref", None))
-
-            if not ao_uri:
-                raise Exception('Object passed could not be understood as an Archival Object or URI')
-
-            resp = client.get(ao_uri, params={'resolve': ['top_container::container_locations']})
-            if resp.status_code != 200:
-                raise Exception("Unable to fetch archival object with resolved container locations")
-            return func(*args, **kwargs)
+            updated = list(args)
+            if callable(getattr(args[0], 'json', None)):
+                updated[0] = args[0].json()
+            elif isinstance(args[0], str):
+                updated[0] = args[0].loads(args[0])
+            return func(*updated, **kwargs)
         return wrapper
     return real_decorator
