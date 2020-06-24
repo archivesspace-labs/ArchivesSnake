@@ -1,0 +1,22 @@
+{
+  "jsonmodel_type": "note_multipart",
+  "type": "bioghist",
+  "subnotes": [
+    {
+      "jsonmodel_type": "note_text",
+      "content": "Bioghist with ordered list",
+      "publish": true
+    },
+    {
+      "jsonmodel_type": "note_orderedlist",
+      "title": "ordered list",
+      "publish": true,
+      "items": [
+        "item1",
+        "item2"
+      ]
+    }
+  ],
+  "persistent_id": "9286c71e85ef1cb362c6064b0fb00f05",
+  "publish": true
+}

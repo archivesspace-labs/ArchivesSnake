@@ -1,0 +1,68 @@
+{
+	"lock_version": 0,
+	"identifier": "7d00a056e9e96894a8d1a6009f9bf9a1",
+	"created_by": "admin",
+	"last_modified_by": "admin",
+	"create_time": "2020-03-17T19:37:24Z",
+	"system_mtime": "2020-03-17T19:37:24Z",
+	"user_mtime": "2020-03-17T19:37:24Z",
+	"start_date": "1994-12-30",
+	"end_date": "2200-03-10",
+	"rights_type": "other",
+	"other_rights_basis": "donor",
+	"jsonmodel_type": "rights_statement",
+	"external_documents": [],
+	"acts": [{
+			"start_date": "2004-12-30",
+			"end_date": "2200-03-10",
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2020-03-17T19:37:24Z",
+			"system_mtime": "2020-03-17T19:37:24Z",
+			"user_mtime": "2020-03-17T19:37:24Z",
+			"act_type": "disseminate",
+			"restriction": "conditional",
+			"jsonmodel_type": "rights_statement_act",
+			"notes": [{
+				"jsonmodel_type": "note_rights_statement_act",
+				"type": "additional_information",
+				"content": [
+					"Records are open pending secondary approval process."
+				],
+				"persistent_id": "eac9bf0de69c43304da96dadcefa5198",
+				"publish": false
+			}]
+		},
+		{
+			"start_date": "1994-12-30",
+			"end_date": "1984-03-10",
+			"created_by": "admin",
+			"last_modified_by": "admin",
+			"create_time": "2020-03-17T19:37:24Z",
+			"system_mtime": "2020-03-17T19:37:24Z",
+			"user_mtime": "2020-03-17T19:37:24Z",
+			"act_type": "disseminate",
+			"restriction": "disallow",
+			"jsonmodel_type": "rights_statement_act",
+			"notes": [{
+				"jsonmodel_type": "note_rights_statement_act",
+				"type": "additional_information",
+				"content": [
+					"Records are open for research after expiration of embargo period."
+				],
+				"persistent_id": "fea389061ab13970c44606b92c4b6154",
+				"publish": false
+			}]
+		}
+	],
+	"linked_agents": [],
+	"notes": [{
+		"jsonmodel_type": "note_rights_statement",
+		"type": "type_note",
+		"content": [
+			"Records embargoed for 10 years after date of creation."
+		],
+		"persistent_id": "57fb793d9ff31e69a336189e1913b4e3",
+		"publish": false
+	}]
+}

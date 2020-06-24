@@ -1,0 +1,33 @@
+{
+    "lock_version": 0,
+    "identifier": "e5dc6d09b9fe8640c05fe3de2926868c",
+    "created_by": "admin",
+    "last_modified_by": "admin",
+    "create_time": "2020-03-19T13:07:41Z",
+    "system_mtime": "2020-03-19T13:07:41Z",
+    "user_mtime": "2020-03-19T13:07:41Z",
+    "start_date": "2020-02-01",
+    "end_date": "2090-05-06",
+    "rights_type": "copyright",
+    "status": "copyrighted",
+    "jurisdiction": "US",
+    "jsonmodel_type": "rights_statement",
+    "external_documents": [],
+    "acts": [
+        {
+            "start_date": "2020-01-01",
+            "end_date": "2090-12-31",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-03-19T13:07:41Z",
+            "system_mtime": "2020-03-19T13:07:41Z",
+            "user_mtime": "2020-03-19T13:07:41Z",
+            "act_type": "use",
+            "restriction": "disallow",
+            "jsonmodel_type": "rights_statement_act",
+            "notes": []
+        }
+    ],
+    "linked_agents": [],
+    "notes": []
+}

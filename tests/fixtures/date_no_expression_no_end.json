@@ -1,0 +1,12 @@
+{
+  "lock_version": 0,
+  "begin": "1905",
+  "created_by": "greg",
+  "last_modified_by": "greg",
+  "create_time": "2017-08-08T21:11:46Z",
+  "system_mtime": "2017-08-08T21:11:46Z",
+  "user_mtime": "2017-08-08T21:11:46Z",
+  "date_type": "inclusive",
+  "label": "creation",
+  "jsonmodel_type": "date"
+}

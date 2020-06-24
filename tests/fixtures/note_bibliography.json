@@ -1,0 +1,12 @@
+{
+  "jsonmodel_type": "note_bibliography",
+  "content": [
+    "bibliography"
+  ],
+  "items": [
+    "item 1",
+    "item 2"
+  ],
+  "persistent_id": "e5275d70ec328dd680d701e8594601f2",
+  "publish": true
+}
