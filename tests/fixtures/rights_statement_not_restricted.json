@@ -1,0 +1,48 @@
+{
+	"lock_version": 0,
+	"identifier": "7e3f88d5e63580aab2655ca3bb79352c",
+	"created_by": "admin",
+	"last_modified_by": "admin",
+	"create_time": "2020-03-17T19:37:24Z",
+	"system_mtime": "2020-03-17T19:37:24Z",
+	"user_mtime": "2020-03-17T19:37:24Z",
+	"start_date": "1994-12-30",
+	"end_date": "2200-03-10",
+	"determination_date": "2019-04-23",
+	"rights_type": "copyright",
+	"status": "copyrighted",
+	"jurisdiction": "US",
+	"jsonmodel_type": "rights_statement",
+	"external_documents": [],
+	"acts": [{
+		"start_date": "1994-12-30",
+		"end_date": "2200-03-10",
+		"created_by": "admin",
+		"last_modified_by": "admin",
+		"create_time": "2020-03-17T19:37:24Z",
+		"system_mtime": "2020-03-17T19:37:24Z",
+		"user_mtime": "2020-03-17T19:37:24Z",
+		"act_type": "publish",
+		"restriction": "allow",
+		"jsonmodel_type": "rights_statement_act",
+		"notes": [{
+			"jsonmodel_type": "note_rights_statement_act",
+			"type": "additional_information",
+			"content": [
+				"Records under copyright may not be republished without permission from the copyright holder."
+			],
+			"persistent_id": "69e17d2fcdcd977dec8593f738b66161",
+			"publish": false
+		}]
+	}],
+	"linked_agents": [],
+	"notes": [{
+		"jsonmodel_type": "note_rights_statement",
+		"type": "type_note",
+		"content": [
+			"Work for hire, under copyright until 40 years after creation."
+		],
+		"persistent_id": "fd5b4b78338b246e8e121d2309efd771",
+		"publish": false
+	}]
+}

@@ -1,0 +1,28 @@
+{
+  "jsonmodel_type": "note_multipart",
+  "type": "bioghist",
+  "subnotes": [
+    {
+      "jsonmodel_type": "note_text",
+      "content": "bioghist with defined list",
+      "publish": true
+    },
+    {
+      "jsonmodel_type": "note_definedlist",
+      "title": "defined list",
+      "publish": true,
+      "items": [
+        {
+          "label": "item",
+          "value": "1"
+        },
+        {
+          "label": "item",
+          "value": "2"
+        }
+      ]
+    }
+  ],
+  "persistent_id": "0032cffa9e2fa854171a77d3f0ab7886",
+  "publish": true
+}
