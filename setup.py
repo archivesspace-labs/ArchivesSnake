@@ -22,6 +22,7 @@ setup(
         "boltons",
         "pyyaml",
         "pytest",
+        "rapidfuzz",
         "requests",
         "vcrpy",
 	"structlog",
