@@ -9,10 +9,10 @@ from rapidfuzz import fuzz
 from asnake.jsonmodel import JSONModelObject
 from string import Formatter
 
-from .decorators import check_type
+from .decorators import jsonify
 
 
-@check_type(dict)
+@jsonify()
 def get_note_text(note):
     """Parses note content from different note types.
 
@@ -43,7 +43,7 @@ def get_note_text(note):
                 subnote["content"], list) else [subnote["content"]]
         return content
 
-    if note["jsonmodel_type"] == "note_singlepart":
+    if note["jsonmodel_type"] in ["note_singlepart", "note_langmaterial"]:
         content = note["content"]
     elif note["jsonmodel_type"] == "note_bibliography":
         data = []
@@ -63,7 +63,7 @@ def get_note_text(note):
     return content
 
 
-@check_type(dict)
+@jsonify()
 def text_in_note(note, query_string):
     """Performs fuzzy searching against note text.
 
@@ -84,11 +84,11 @@ def text_in_note(note, query_string):
     return bool(ratio)
 
 
-@check_type(JSONModelObject)
+@jsonify()
 def format_from_obj(obj, format_string):
     """Generates a human-readable string from an object.
 
-    :param JSONModelObject location: an ArchivesSpace object.
+    :param JSONModelObject or dict: an ArchivesSpace object.
 
     :returns: a string in the chosen format.
     :rtype: str
@@ -100,7 +100,7 @@ def format_from_obj(obj, format_string):
             d = {}
             matches = [i[1] for i in Formatter().parse(format_string) if i[1]]
             for m in matches:
-                d.update({m: getattr(obj, m, "")})
+                d.update({m: obj[m]})
             return format_string.format(**d)
         except KeyError as e:
             raise KeyError(
@@ -108,7 +108,7 @@ def format_from_obj(obj, format_string):
                     str(e)))
 
 
-@check_type(dict)
+@jsonify()
 def format_resource_id(resource, separator=":"):
     """Concatenates the four-part ID for a resource record.
 
@@ -128,8 +128,8 @@ def format_resource_id(resource, separator=":"):
     return separator.join(resource_id)
 
 
-@check_type(JSONModelObject)
-def closest_value(archival_object, key):
+@jsonify()
+def closest_value(archival_object, key, client):
     """Finds the closest value matching a key.
 
     Starts with an archival object, and iterates up through its ancestors
@@ -141,13 +141,14 @@ def closest_value(archival_object, key):
     :returns: The value of the key, which could be a str, list, or dict.
     :rtype: str, list, or key
     """
-    if getattr(archival_object, key) not in ["", [], {}, None]:
-        return getattr(archival_object, key)
+    if archival_object.get(key) not in ["", [], {}, None]:
+        return archival_object[key]
     else:
         for ancestor in archival_object.ancestors:
             return closest_value(ancestor, key)
 
 
+@jsonify()
 def get_orphans(object_list, null_attribute):
     """Finds objects in a list which do not have a value in a specified field.
 
@@ -162,7 +163,7 @@ def get_orphans(object_list, null_attribute):
             yield obj
 
 
-@check_type(dict)
+@jsonify()
 def get_expression(date):
     """Returns a date expression for a date object.
 
@@ -183,7 +184,7 @@ def get_expression(date):
     return expression
 
 
-@check_type(dict)
+@jsonify()
 def indicates_restriction(rights_statement, restriction_acts):
     """Parses a rights statement to determine if it indicates a restriction.
 
@@ -207,7 +208,7 @@ def indicates_restriction(rights_statement, restriction_acts):
     return False
 
 
-@check_type(dict)
+@jsonify()
 def is_restricted(archival_object, query_string, restriction_acts):
     """Parses an archival object to determine if it is restricted.
 
@@ -232,7 +233,6 @@ def is_restricted(archival_object, query_string, restriction_acts):
     return False
 
 
-@check_type(str)
 def strip_html_tags(string):
     """Strips HTML tags from a string.
 
@@ -265,11 +265,10 @@ with the archival object.
 
     if not ao_uri:
         raise Exception('Object passed could not be understood as an Archival Object or URI')
-
     resp = client.get(ao_uri, params={'resolve': ['top_container::container_locations']})
+    
     if resp.status_code != 200:
         raise Exception("Unable to fetch archival object with resolved container locations")
-
     for instance in resp.json()['instances']:
         for container_loc in instance['sub_container']['top_container']['_resolved']['container_locations']:
             yield container_loc['_resolved']

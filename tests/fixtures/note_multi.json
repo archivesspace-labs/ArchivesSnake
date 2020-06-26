@@ -1,0 +1,17 @@
+{
+  "jsonmodel_type": "note_multipart",
+  "persistent_id": "d08e4b20fceb371af437d3e2a23dda6f",
+  "label": "Access",
+  "type": "accessrestrict",
+  "rights_restriction": {
+    "local_access_restriction_type": []
+  },
+  "subnotes": [
+    {
+      "jsonmodel_type": "note_text",
+      "content": "materials are restricted",
+      "publish": true
+    }
+  ],
+  "publish": true
+}

@@ -1,0 +1,27 @@
+{
+  "jsonmodel_type": "note_multipart",
+  "persistent_id": "c51deda8203865fb5716a78fe7fe1563",
+  "type": "odd",
+  "subnotes": [
+    {
+      "jsonmodel_type": "note_text",
+      "content": "general note with chronology",
+      "publish": true
+    },
+    {
+      "jsonmodel_type": "note_chronology",
+      "title": "chronology",
+      "publish": true,
+      "items": [
+        {
+          "event_date": "date",
+          "events": [
+            "event1",
+            "event2"
+          ]
+        }
+      ]
+    }
+  ],
+  "publish": true
+}

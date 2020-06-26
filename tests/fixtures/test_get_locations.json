@@ -1,0 +1,314 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "http://localhost:8089/users/admin/login?expiring=False",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "ArchivesSnake/0.1"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "private, must-revalidate, max-age=0"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Server": [
+                        "Jetty(8.1.5.v20120716)"
+                    ],
+                    "Content-Length": [
+                        "2981"
+                    ],
+                    "Date": [
+                        "Tue, 31 Mar 2020 18:03:41 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "{\"session\":\"2906aaa765989e38f71f2c45bdb8c17c94374ac743066f311d6e3aa0ccf02a80\",\"user\":{\"lock_version\":21,\"username\":\"admin\",\"name\":\"Administrator\",\"is_system_user\":true,\"create_time\":\"2020-03-31T16:49:55Z\",\"system_mtime\":\"2020-03-31T18:03:41Z\",\"user_mtime\":\"2020-03-31T18:03:41Z\",\"jsonmodel_type\":\"user\",\"groups\":[],\"is_admin\":true,\"uri\":\"/users/1\",\"agent_record\":{\"ref\":\"/agents/people/1\"},\"permissions\":{\"/repositories/1\":[\"update_location_record\",\"delete_vocabulary_record\",\"update_subject_record\",\"delete_subject_record\",\"update_agent_record\",\"delete_agent_record\",\"update_vocabulary_record\",\"update_enumeration_record\",\"merge_subject_record\",\"merge_agent_record\",\"update_container_profile_record\",\"update_location_profile_record\",\"administer_system\",\"become_user\",\"cancel_importer_job\",\"cancel_job\",\"create_job\",\"create_repository\",\"delete_archival_record\",\"delete_assessment_record\",\"delete_classification_record\",\"delete_event_record\",\"delete_repository\",\"import_records\",\"index_system\",\"manage_agent_record\",\"manage_assessment_attributes\",\"manage_container_profile_record\",\"manage_container_record\",\"manage_enumeration_record\",\"manage_location_profile_record\",\"manage_rde_templates\",\"manage_repository\",\"manage_subject_record\",\"manage_users\",\"manage_vocabulary_record\",\"mediate_edits\",\"merge_agents_and_subjects\",\"merge_archival_record\",\"suppress_archival_record\",\"transfer_archival_record\",\"transfer_repository\",\"update_accession_record\",\"update_assessment_record\",\"update_classification_record\",\"update_container_record\",\"update_digital_object_record\",\"update_event_record\",\"update_resource_record\",\"view_agent_contact_record\",\"view_all_records\",\"view_repository\",\"view_suppressed\"],\"_archivesspace\":[\"administer_system\",\"become_user\",\"cancel_importer_job\",\"cancel_job\",\"create_job\",\"create_repository\",\"delete_archival_record\",\"delete_assessment_record\",\"delete_classification_record\",\"delete_event_record\",\"delete_repository\",\"import_records\",\"index_system\",\"manage_agent_record\",\"manage_assessment_attributes\",\"manage_container_profile_record\",\"manage_container_record\",\"manage_enumeration_record\",\"manage_location_profile_record\",\"manage_rde_templates\",\"manage_repository\",\"manage_subject_record\",\"manage_users\",\"manage_vocabulary_record\",\"mediate_edits\",\"merge_agents_and_subjects\",\"merge_archival_record\",\"suppress_archival_record\",\"transfer_archival_record\",\"transfer_repository\",\"update_accession_record\",\"update_assessment_record\",\"update_classification_record\",\"update_container_record\",\"update_digital_object_record\",\"update_event_record\",\"update_resource_record\",\"view_agent_contact_record\",\"view_all_records\",\"view_repository\",\"view_suppressed\",\"update_location_record\",\"delete_vocabulary_record\",\"update_subject_record\",\"delete_subject_record\",\"update_agent_record\",\"delete_agent_record\",\"update_vocabulary_record\",\"update_enumeration_record\",\"merge_subject_record\",\"merge_agent_record\",\"update_container_profile_record\",\"update_location_profile_record\"]}}}\n"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:8089/version",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "ArchivesSnake/0.1"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "private, must-revalidate, max-age=0"
+                    ],
+                    "Content-Type": [
+                        "text/html;charset=UTF-8"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "Server": [
+                        "Jetty(8.1.5.v20120716)"
+                    ],
+                    "Content-Length": [
+                        "22"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "Date": [
+                        "Tue, 31 Mar 2020 18:03:41 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "ArchivesSpace (v2.7.1)"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:8089/repositories/2",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "ArchivesSnake/0.1"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "private, must-revalidate, max-age=0"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Server": [
+                        "Jetty(8.1.5.v20120716)"
+                    ],
+                    "Content-Length": [
+                        "582"
+                    ],
+                    "Date": [
+                        "Tue, 31 Mar 2020 18:03:41 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "{\"lock_version\":0,\"repo_code\":\"test_repo\",\"name\":\"Test Repository\",\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-03-31T16:59:14Z\",\"system_mtime\":\"2020-03-31T16:59:14Z\",\"user_mtime\":\"2020-03-31T16:59:14Z\",\"publish\":true,\"oai_is_disabled\":false,\"oai_sets_available\":\"[\\\"888\\\",\\\"889\\\",\\\"890\\\",\\\"891\\\",\\\"892\\\",\\\"893\\\",\\\"894\\\",\\\"895\\\",\\\"896\\\",\\\"897\\\",\\\"898\\\"]\",\"slug\":\"test_repo\",\"is_slug_auto\":false,\"jsonmodel_type\":\"repository\",\"uri\":\"/repositories/2\",\"display_string\":\"Test Repository (test_repo)\",\"agent_representation\":{\"ref\":\"/agents/corporate_entities/1\"}}\n"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:8089/repositories/2/archival_objects?all_ids=True",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "ArchivesSnake/0.1"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "private, must-revalidate, max-age=0"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Server": [
+                        "Jetty(8.1.5.v20120716)"
+                    ],
+                    "Content-Length": [
+                        "882"
+                    ],
+                    "Date": [
+                        "Tue, 31 Mar 2020 18:03:41 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249]\n"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:8089/repositories/2/archival_objects/7",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "ArchivesSnake/0.1"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "private, must-revalidate, max-age=0"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Server": [
+                        "Jetty(8.1.5.v20120716)"
+                    ],
+                    "Content-Length": [
+                        "1949"
+                    ],
+                    "Date": [
+                        "Tue, 31 Mar 2020 18:03:41 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "{\"lock_version\":0,\"position\":0,\"publish\":true,\"ref_id\":\"de2ec07d4aa1425d818005306ee76377\",\"title\":\"American Philosophical Society Library: Max Bergmann Papers\",\"display_string\":\"American Philosophical Society Library: Max Bergmann Papers, undated\",\"restrictions_apply\":false,\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-03-31T17:01:32Z\",\"system_mtime\":\"2020-03-31T17:05:47Z\",\"user_mtime\":\"2020-03-31T17:01:32Z\",\"suppressed\":false,\"is_slug_auto\":true,\"level\":\"file\",\"jsonmodel_type\":\"archival_object\",\"external_ids\":[],\"subjects\":[],\"linked_events\":[],\"extents\":[],\"lang_materials\":[],\"dates\":[{\"lock_version\":0,\"expression\":\"undated\",\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-03-31T17:01:32Z\",\"system_mtime\":\"2020-03-31T17:01:32Z\",\"user_mtime\":\"2020-03-31T17:01:32Z\",\"date_type\":\"single\",\"label\":\"creation\",\"era\":\"ce\",\"calendar\":\"gregorian\",\"jsonmodel_type\":\"date\"}],\"external_documents\":[],\"rights_statements\":[],\"linked_agents\":[],\"ancestors\":[{\"ref\":\"/repositories/2/archival_objects/1\",\"level\":\"series\"},{\"ref\":\"/repositories/2/resources/1\",\"level\":\"collection\"}],\"instances\":[{\"lock_version\":0,\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-03-31T17:01:32Z\",\"system_mtime\":\"2020-03-31T17:01:32Z\",\"user_mtime\":\"2020-03-31T17:01:32Z\",\"instance_type\":\"mixed materials\",\"jsonmodel_type\":\"instance\",\"is_representative\":false,\"sub_container\":{\"lock_version\":0,\"indicator_2\":\"1\",\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-03-31T17:01:32Z\",\"system_mtime\":\"2020-03-31T17:01:32Z\",\"user_mtime\":\"2020-03-31T17:01:32Z\",\"type_2\":\"folder\",\"jsonmodel_type\":\"sub_container\",\"top_container\":{\"ref\":\"/repositories/2/top_containers/1\"}}}],\"notes\":[],\"uri\":\"/repositories/2/archival_objects/7\",\"repository\":{\"ref\":\"/repositories/2\"},\"resource\":{\"ref\":\"/repositories/2/resources/1\"},\"parent\":{\"ref\":\"/repositories/2/archival_objects/1\"},\"has_unpublished_ancestor\":false}\n"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:8089/repositories/2/top_containers/1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "ArchivesSnake/0.1"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "private, must-revalidate, max-age=0"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Server": [
+                        "Jetty(8.1.5.v20120716)"
+                    ],
+                    "Content-Length": [
+                        "1315"
+                    ],
+                    "Date": [
+                        "Tue, 31 Mar 2020 18:03:41 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "{\"lock_version\":18,\"barcode\":\"A0000000035731\",\"indicator\":\"1\",\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-03-31T17:01:29Z\",\"system_mtime\":\"2020-03-31T17:05:47Z\",\"user_mtime\":\"2020-03-31T17:05:47Z\",\"type\":\"box\",\"jsonmodel_type\":\"top_container\",\"active_restrictions\":[],\"container_locations\":[{\"jsonmodel_type\":\"container_location\",\"status\":\"current\",\"start_date\":\"2020-03-31\",\"system_mtime\":\"2020-03-31 17:05:47 UTC\",\"user_mtime\":\"2020-03-31 17:05:47 UTC\",\"ref\":\"/locations/1\"}],\"series\":[{\"ref\":\"/repositories/2/archival_objects/1\",\"identifier\":\"1\",\"display_string\":\"Personal, 1886\u20131961 (bulk 1933\u20131946)\",\"level_display_string\":\"Series\",\"publish\":true},{\"ref\":\"/repositories/2/archival_objects/2\",\"identifier\":\"2\",\"display_string\":\"Laboratory Administration, 1934\u20131946 (bulk 1941\u20131944)\",\"level_display_string\":\"Series\",\"publish\":true}],\"collection\":[{\"ref\":\"/repositories/2/resources/1\",\"identifier\":\"FA001\",\"display_string\":\"Max Bergmann papers, Rockefeller Institute for Medical Research Scientific Staff\"}],\"uri\":\"/repositories/2/top_containers/1\",\"repository\":{\"ref\":\"/repositories/2\"},\"restricted\":false,\"is_linked_to_published_record\":true,\"display_string\":\"Box 1: Series 1; Series 2 [A0000000035731]\",\"long_display_string\":\"FA001, Series 1; Series 2, Box 1 [A0000000035731]\"}\n"
+                }
+            }
+        }
+    ]
+}

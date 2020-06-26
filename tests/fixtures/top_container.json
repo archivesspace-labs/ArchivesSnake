@@ -1,0 +1,39 @@
+{
+    "lock_version": 2,
+    "indicator": "1",
+    "created_by": "admin",
+    "last_modified_by": "admin",
+    "create_time": "2020-03-19T13:07:07Z",
+    "system_mtime": "2020-03-19T13:14:45Z",
+    "user_mtime": "2020-03-19T13:14:44Z",
+    "created_for_collection": "/repositories/2/resources/13064",
+    "type": "box",
+    "jsonmodel_type": "top_container",
+    "active_restrictions": [],
+    "container_locations": [
+        {
+            "jsonmodel_type": "container_location",
+            "status": "current",
+            "start_date": "2020-03-19",
+            "system_mtime": "2020-03-19 13:14:44 UTC",
+            "user_mtime": "2020-03-19 13:14:44 UTC",
+            "ref": "/locations/7799"
+        }
+    ],
+    "series": [],
+    "collection": [
+        {
+            "ref": "/repositories/2/resources/13064",
+            "identifier": "1",
+            "display_string": "kmtests"
+        }
+    ],
+    "uri": "/repositories/2/top_containers/191155",
+    "repository": {
+        "ref": "/repositories/2"
+    },
+    "restricted": false,
+    "is_linked_to_published_record": true,
+    "display_string": "Box 1",
+    "long_display_string": "1, Box 1"
+}

@@ -1,0 +1,21 @@
+{
+  "jsonmodel_type": "note_index",
+  "label": "index note",
+  "content": [
+    "index note"
+  ],
+  "items": [
+    {
+      "jsonmodel_type": "note_index_item",
+      "value": "title1",
+      "type": "title"
+    },
+    {
+      "jsonmodel_type": "note_index_item",
+      "value": "title2",
+      "type": "title"
+    }
+  ],
+  "persistent_id": "d6ae385258de58d7d5d03d29c193c00a",
+  "publish": true
+}
