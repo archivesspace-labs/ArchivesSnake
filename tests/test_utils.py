@@ -10,7 +10,7 @@ from asnake import utils
 
 rac_vcr = vcr.VCR(
     serializer="json",
-    cassette_library_dir=os.path.join("fixtures", "cassettes"),
+    cassette_library_dir=os.path.join("tests/fixtures", "cassettes"),
     record_mode="once",
     match_on=["path", "method"],
     filter_query_parameters=["username", "password"],
@@ -22,13 +22,13 @@ class TestDataHelpers(unittest.TestCase):
     """Tests the data helper functions."""
 
     def obj_from_fixture(self, filename, client=None):
-        with open(os.path.join("fixtures", filename)) as json_file:
+        with open(os.path.join("tests/fixtures", filename)) as json_file:
             data = json.load(json_file)
             obj = wrap_json_object(data, client=client)
             return obj
 
     def load_fixture(self, filename, client=None):
-        with open(os.path.join("fixtures", filename)) as json_file:
+        with open(os.path.join("tests/fixtures", filename)) as json_file:
             data = json.load(json_file)
             return data
 
