@@ -12,7 +12,7 @@ from string import Formatter
 from .decorators import jsonify
 
 
-@jsonify()
+@jsonify
 def get_note_text(note):
     """Parses note content from different note types.
 
@@ -63,7 +63,7 @@ def get_note_text(note):
     return content
 
 
-@jsonify()
+@jsonify
 def text_in_note(note, query_string):
     """Performs fuzzy searching against note text.
 
@@ -84,7 +84,7 @@ def text_in_note(note, query_string):
     return bool(ratio)
 
 
-@jsonify()
+@jsonify
 def format_from_obj(obj, format_string):
     """Generates a human-readable string from an object.
 
@@ -108,7 +108,7 @@ def format_from_obj(obj, format_string):
                     str(e)))
 
 
-@jsonify()
+@jsonify
 def format_resource_id(resource, separator=":"):
     """Concatenates the four-part ID for a resource record.
 
@@ -128,7 +128,7 @@ def format_resource_id(resource, separator=":"):
     return separator.join(resource_id)
 
 
-@jsonify()
+@urify
 def closest_value(archival_object, key, client):
     """Finds the closest value matching a key.
 
@@ -148,7 +148,7 @@ def closest_value(archival_object, key, client):
             return closest_value(ancestor, key)
 
 
-@jsonify()
+@urify
 def get_orphans(object_list, null_attribute):
     """Finds objects in a list which do not have a value in a specified field.
 
@@ -243,7 +243,8 @@ def strip_html_tags(string):
     return cleantext
 
 
-def object_locations(ao_thingit, client):
+@urify
+def object_locations(ao_uri, client):
     '''Given any of:
 - the URI for an archival object
 - a dict with a key 'uri' or 'ref' containing said URI
@@ -253,20 +254,8 @@ and an :class:`asnake.client.ASnakeClient`, this method will return a
 generator which yields the JSON representation of any locations associated
 with the archival object.
 '''
-    ao_uri = None
-    # if object has .json(), replace with value of .json()
-    if callable(getattr(ao_thingit, 'json', None)):
-        ao_thingit = ao_thingit.json()
-
-    if isinstance(ao_thingit, str):
-        ao_uri = ao_thingit
-    elif isinstance(ao_thingit, Mapping):
-        ao_uri = ao_thingit.get("uri", ao_thingit.get("ref", None))
-
-    if not ao_uri:
-        raise Exception('Object passed could not be understood as an Archival Object or URI')
     resp = client.get(ao_uri, params={'resolve': ['top_container::container_locations']})
-    
+
     if resp.status_code != 200:
         raise Exception("Unable to fetch archival object with resolved container locations")
     for instance in resp.json()['instances']:
