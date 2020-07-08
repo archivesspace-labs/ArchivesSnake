@@ -97,7 +97,7 @@ def test_format_resource_id(self):
 
 @vcr.use_cassette
 def test_closest_value():
-    client = ASpace(baseurl="http://localhost:8089").client
+    client = ASpace().client
     value = utils.closest_value("/repositories/2/archival_objects/7", "extents", client)
     assert len(value) > 0
 
