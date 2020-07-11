@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - ArchivesSnake/0.1
     method: POST
-    uri: http://localhost:8089/users/admin/login?password=admin&expiring=False
+    uri: http://localhost:4567/users/admin/login?password=admin&expiring=False
   response:
     body:
       string: '{"session":"ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b","user":{"lock_version":91,"username":"admin","name":"Administrator","is_system_user":true,"create_time":"2020-06-26T16:02:36Z","system_mtime":"2020-07-11T18:18:43Z","user_mtime":"2020-07-11T18:18:43Z","jsonmodel_type":"user","groups":[],"is_admin":true,"uri":"/users/1","agent_record":{"ref":"/agents/people/1"},"permissions":{"/repositories/1":["update_enumeration_record","update_location_record","delete_vocabulary_record","update_subject_record","delete_subject_record","update_agent_record","delete_agent_record","update_vocabulary_record","merge_subject_record","merge_agent_record","update_container_profile_record","update_location_profile_record","administer_system","become_user","cancel_importer_job","cancel_job","create_job","create_repository","delete_archival_record","delete_assessment_record","delete_classification_record","delete_event_record","delete_repository","import_records","index_system","manage_agent_record","manage_assessment_attributes","manage_container_profile_record","manage_container_record","manage_enumeration_record","manage_location_profile_record","manage_rde_templates","manage_repository","manage_subject_record","manage_users","manage_vocabulary_record","mediate_edits","merge_agents_and_subjects","merge_archival_record","suppress_archival_record","transfer_archival_record","transfer_repository","update_accession_record","update_assessment_record","update_classification_record","update_container_record","update_digital_object_record","update_event_record","update_resource_record","view_agent_contact_record","view_all_records","view_repository","view_suppressed"],"_archivesspace":["administer_system","become_user","cancel_importer_job","cancel_job","create_job","create_repository","delete_archival_record","delete_assessment_record","delete_classification_record","delete_event_record","delete_repository","import_records","index_system","manage_agent_record","manage_assessment_attributes","manage_container_profile_record","manage_container_record","manage_enumeration_record","manage_location_profile_record","manage_rde_templates","manage_repository","manage_subject_record","manage_users","manage_vocabulary_record","mediate_edits","merge_agents_and_subjects","merge_archival_record","suppress_archival_record","transfer_archival_record","transfer_repository","update_accession_record","update_assessment_record","update_classification_record","update_container_record","update_digital_object_record","update_event_record","update_resource_record","view_agent_contact_record","view_all_records","view_repository","view_suppressed","update_enumeration_record","update_location_record","delete_vocabulary_record","update_subject_record","delete_subject_record","update_agent_record","delete_agent_record","update_vocabulary_record","merge_subject_record","merge_agent_record","update_container_profile_record","update_location_profile_record"]}}}
@@ -49,7 +49,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/version
+    uri: http://localhost:4567/version
   response:
     body:
       string: ArchivesSpace (v2.7.1)
@@ -87,7 +87,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/1
+    uri: http://localhost:4567/repositories/2/archival_objects/1
   response:
     body:
       string: "{\"lock_version\":0,\"position\":0,\"publish\":true,\"ref_id\":\"a0ba120af0bb44ba8088ddc61c4a7280\"\
@@ -172,7 +172,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/2
+    uri: http://localhost:4567/repositories/2/archival_objects/2
   response:
     body:
       string: "{\"lock_version\":0,\"position\":1,\"publish\":true,\"ref_id\":\"59fcadd4fa0b4687af150f71f7afec3b\"\
@@ -275,7 +275,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/3
+    uri: http://localhost:4567/repositories/2/archival_objects/3
   response:
     body:
       string: "{\"lock_version\":1,\"position\":2,\"publish\":false,\"ref_id\":\"\
@@ -352,7 +352,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/4
+    uri: http://localhost:4567/repositories/2/archival_objects/4
   response:
     body:
       string: '{"error":"ArchivalObject not found"}
@@ -388,7 +388,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/5
+    uri: http://localhost:4567/repositories/2/archival_objects/5
   response:
     body:
       string: '{"lock_version":0,"position":3,"publish":true,"ref_id":"6b94c240307b436ba87257aad3ba8695","component_id":"5","title":"Declassifed
@@ -438,7 +438,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/6
+    uri: http://localhost:4567/repositories/2/archival_objects/6
   response:
     body:
       string: '{"lock_version":0,"position":4,"publish":true,"ref_id":"e9dc013b5ac440e7a04930e3c04a5069","component_id":"6","title":"Lantern
@@ -480,7 +480,7 @@ interactions:
       X-ArchivesSpace-Session:
       - ebe2409bc0207ae63c864aceb1de8c461c9d7e670bcf5065ef335953e4ae662b
     method: GET
-    uri: http://localhost:8089/repositories/2/archival_objects/7
+    uri: http://localhost:4567/repositories/2/archival_objects/7
   response:
     body:
       string: '{"lock_version":0,"position":0,"publish":true,"ref_id":"de2ec07d4aa1425d818005306ee76377","component_id":"225","title":"American

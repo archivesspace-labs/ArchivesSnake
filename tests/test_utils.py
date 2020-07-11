@@ -48,6 +48,7 @@ def test_text_in_note():
         assert result == expected
 
 
+@vcr.use_cassette
 def test_object_locations():
     """Checks whether the function returns a list of dicts."""
     with rac_vcr.use_cassette("test_get_locations.json"):
@@ -85,7 +86,7 @@ def test_closest_value():
 @vcr.use_cassette
 def test_get_orphans():
     key = "linked_agents"
-    client = ASpace(baseurl="http://localhost:8089").client
+    client = ASpace().client
     archival_objects = [
         "/repositories/2/archival_objects/1",
         "/repositories/2/archival_objects/2",
