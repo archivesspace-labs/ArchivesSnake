@@ -51,15 +51,11 @@ def test_text_in_note():
 @vcr.use_cassette
 def test_object_locations():
     """Checks whether the function returns a list of dicts."""
-    with rac_vcr.use_cassette("test_get_locations.json"):
-        repository = ASpace(
-            baseurl="http://localhost:8089").repositories(2)
-        archival_object = repository.archival_objects(7)
-        locations = utils.object_locations(archival_object)
-        assert isinstance(locations, list)
-        assert len(locations) == 1
-        for obj in locations:
-            assert isinstance(obj, dict)
+    client = ASpace(baseurl="http://localhost:8089").client
+    locations = utils.object_locations("/repositories/2/archival_objects/7", client)
+    assert len(list(locations)) == 1
+    for obj in locations:
+        assert isinstance(obj, dict)
 
 
 def test_format_resource_id():
