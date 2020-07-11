@@ -25,28 +25,31 @@ def jsonify():
     return real_decorator
 
 
+def get_uri(ao_thingit):
+    ao_uri = None
+
+    # if object has .json(), replace with value of .json()
+    if callable(getattr(ao_thingit, 'json', None)):
+        ao_thingit = ao_thingit.json()
+
+    if isinstance(ao_thingit, str):
+        ao_uri = ao_thingit
+    elif isinstance(ao_thingit, Mapping):
+        ao_uri = ao_thingit.get("uri", ao_thingit.get("ref", None))
+
+    if not ao_uri:
+        raise Exception('Object passed could not be understood as an Archival Object or URI')
+
+    return ao_uri
+
+
 def urify():
     def real_decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             # clone args to a list so it is mutable
             updated = list(args)
-
-            ao_thingit = args[0]
-            ao_uri = None
-
-            # if object has .json(), replace with value of .json()
-            if callable(getattr(ao_thingit, 'json', None)):
-                ao_thingit = ao_thingit.json()
-
-            if isinstance(ao_thingit, str):
-                ao_uri = ao_thingit
-            elif isinstance(ao_thingit, Mapping):
-                ao_uri = ao_thingit.get("uri", ao_thingit.get("ref", None))
-
-            if not ao_uri:
-                raise Exception('Object passed could not be understood as an Archival Object or URI')
-
+            updated[0] = get_uri(args[0])
             return func(*updated, **kwargs)
         return wrapper
     return real_decorator
