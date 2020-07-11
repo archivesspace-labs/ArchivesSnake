@@ -102,15 +102,23 @@ def test_closest_value():
     assert len(value) > 0
 
 
-def test_get_orphans(self):
-    with rac_vcr.use_cassette("test_get_orphans.json"):
-        repository = ASpace(
-            baseurl="http://localhost:8089").repositories(2)
-        archival_objects = repository.archival_objects
-        orphans = utils.get_orphans(
-            archival_objects, "linked_agents")
-        for o in orphans:
-            self.assertIsInstance(o, JSONModelObject)
+@vcr.use_cassette
+def test_get_orphans():
+    key = "linked_agents"
+    client = ASpace(baseurl="http://localhost:8089").client
+    archival_objects = [
+        "/repositories/2/archival_objects/1",
+        "/repositories/2/archival_objects/2",
+        "/repositories/2/archival_objects/3",
+        "/repositories/2/archival_objects/4",
+        "/repositories/2/archival_objects/5",
+        "/repositories/2/archival_objects/6",
+        "/repositories/2/archival_objects/7"]
+    orphans = utils.get_orphans(
+        archival_objects, key, client)
+    for o in orphans:
+        assert isinstance(o, dict)
+        assert o.get(key) in ["", [], {}, None]
 
 
 def test_get_expression(self):
