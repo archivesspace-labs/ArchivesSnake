@@ -8,7 +8,7 @@ from rapidfuzz import fuzz
 from asnake.jsonmodel import JSONModelObject
 from string import Formatter
 
-from .decorators import jsonify, urify
+from .decorators import get_uri, jsonify, urify
 
 
 @jsonify()
@@ -150,19 +150,21 @@ def closest_value(archival_object, key, client):
             return closest_value(ancestor["ref"], key, client)
 
 
-@urify()
-def get_orphans(object_list, null_attribute):
+def get_orphans(object_list, null_attribute, client):
     """Finds objects in a list which do not have a value in a specified field.
 
-    :param list object_list: a list of ArchivesSpace objects.
+    :param list object_list: a list of URIs for an archival object, dicts with
+        a key 'uri' or 'ref' containing said URI, or objects responding to
+        .json() returning such a dict
     :param null_attribute: an attribute which must be empty or null.
 
     :yields: a list of ArchivesSpace objects.
     :yield type: dict
     """
     for obj in object_list:
-        if getattr(obj, null_attribute) in ["", [], {}, None]:
-            yield obj
+        obj_json = client.get(get_uri(obj)).json()
+        if obj_json.get(null_attribute) in ["", [], {}, None]:
+            yield obj_json
 
 
 @jsonify()
