@@ -7,7 +7,7 @@ A client library for working with the ArchivesSpace API. As institutions have ad
 ArchivesSnake has the following requirements:
 
 - Python 3.4 or higher
-- Ability to install packages via pip (Pipenv is recommended for development)
+- Ability to install packages via pip ([Pipenv](https://pypi.org/project/pipenv/) is recommended for development)
 
 ### Installation
 For an overview of setup and configuration, see the [Getting Started Guide on the Wiki](https://github.com/archivesspace-labs/ArchivesSnake/wiki/Getting-Started-Guide).
@@ -27,7 +27,7 @@ python3 setup.py sdist
 pip3 install dist/ArchivesSnake-0.2.0.tar.gz
 ```
 
-This assumes a standard Python 3 install, which provides pip3 and python3 commands. If your environment doesn't allow you to successfully run either command, please consult the documentation for your version of Python and/or your operating system.
+This assumes a standard Python 3 install, which provides `pip3` and `python3` commands. If your environment doesn't allow you to successfully run either command, please consult the documentation for your version of Python and/or your operating system.
 
 You'll need an internet connection to fetch ASnake's dependencies.
 
@@ -35,13 +35,14 @@ You'll need an internet connection to fetch ASnake's dependencies.
 
 ArchivesSnake looks for a .archivessnake.yml file in the home directory.
 
-* For OS X and Linux: /home/[my user name]/.archivessnake.yml
-* For Windows: C:\Users[my user name].archivessnake.yml 
+* For OS X and Linux: `/home/[my user name]/.archivessnake.yml`
+* For Windows: `C:\Users[my user name].archivessnake.yml` 
 
 An example .archivessnake.yml file:
-baseurl: http://localhost:8089
-username: 
-password: 
+
+`baseurl: http://localhost:8089`
+`username:`
+`password:` 
 
 | **Setting**     | **Description**                                                               | **Default Value**     |
 |-----------------|-------------------------------------------------------------------------------|-----------------------|
@@ -139,7 +140,7 @@ This will leave the following in `my_cool_logfile.log` (pretty-printed below, bu
 ## Functionality
 
 ### Low level API
-The low level API allows full access to the ArchivesSpace API unlike the ArchivesSnake Abstraction Layer which is effectively “read-only” (read more about the abstraction layer). The ArchivesSnake client operates as a wrapper over the Python requests module which allows users to send HTTP requests using Python. The low-level API client manages authorization, turns uris into full URLs, and handles paged resources. For further examples see use cases in wiki.
+The low level API allows full access to the ArchivesSpace API unlike the ArchivesSnake [Abstraction Layer](#Abstraction_Layer) which is effectively “read-only” (read more about the abstraction layer). The ArchivesSnake client operates as a wrapper over the Python requests module which allows users to send HTTP requests using Python. The low-level API client manages authorization, turns uris into full URLs, and handles paged resources. For further examples see use cases in wiki.
 
 For example, to fetch the JSON representation of all the repositories from an ArchivesSpace instance and save it to a variable:
 
@@ -189,12 +190,12 @@ client.get(uri) # gets the agent!
 ```
 
 ## Abstraction Layer
-The other way to use ASnake right now is a higher level, more convenient abstraction over the whole API. It lets you ignore some of the low-level details of the API, though you still need to know its structure. To use it, import the asnake.aspace.ASpace class.
+The other way to use ASnake right now is a higher level, more convenient abstraction over the whole API. It lets you ignore some of the low-level details of the API, though you still need to know its structure. To use it, import the `asnake.aspace.ASpace` class.
 
 There are three base classes involved:
-1. An ASpace class that represents the instance of ArchivesSpace you're connecting to
-2. A JSONModelObject class that represents individual objects
-3. A JSONModelRelation class that represents routes that return groups of objects. Both JSONModel classes have subtypes for representing various exceptional cases in the API.
+1. An `ASpace` class that represents the instance of ArchivesSpace you're connecting to
+2. A `JSONModelObject` class that represents individual objects
+3. A `JSONModelRelation` class that represents routes that return groups of objects. Both JSONModel classes have subtypes for representing various exceptional cases in the API.
 
 ### JSONModelObject
 JSONModelObjects wrap a single ASpace JSONModel object. Method calls on JSONModelObjects will return either the value stored in the object's JSON representation, or will try to make a call to the API to fetch a subsidiary route.
@@ -237,7 +238,7 @@ Get a copy of the wrapped JSON using:
 obj.json()
 ```
 
-The `.json` method makes a _deep copy_ of the object. This means that it creates a new collection object and then inserts copies of the objects found within the original object rather than just references to them. Otherwise, changes to the returned JSON would also affect the values inside the JSONModelObject. If you run into memory issues and are sure that you will not reuse the object from which you retrieved the JSON, you can use:
+The `.json` method makes a _deep copy_ of the object. This means that it creates a new collection object and then inserts copies of the objects found within the original object rather than just references to them. Otherwise, changes to the returned JSON would also affect the values inside the `JSONModelObject`. If you run into memory issues and are sure that you will not reuse the object from which you retrieved the JSON, you can use:
 
 ``` python
 obj._json
@@ -288,7 +289,7 @@ for repo in aspace.repositories:
 ```
 
 ## Detailed API Doc
-[Detailed ASnake API documentation] (https://archivesspace-labs.github.io/ArchivesSnake/) is generated from docstrings using Sphinx with the Read the Docs Theme.
+[Detailed ASnake API documentation](https://archivesspace-labs.github.io/ArchivesSnake/) is generated from docstrings using [Sphinx](https://www.sphinx-doc.org/en/master/index.html) with the [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/).
 
 The most important classes to understand are:
 - asnake.aspace.ASpace
@@ -335,4 +336,4 @@ Overview of how to contribute:
 Pull requests will be reviewed and merged by the ArchivesSnake Developer Team.
 
 ## License
-Copyright 2018 ArchivesSnake Developer Team. Licensed under the Apache License Version 2.0. See LICENSE.txt for more details.
+Copyright 2018 ArchivesSnake Developer Team. Licensed under the [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0). See [LICENSE.txt](https://github.com/archivesspace-labs/ArchivesSnake/blob/master/LICENSE.txt) for more details.
