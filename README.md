@@ -40,9 +40,9 @@ ArchivesSnake looks for a .archivessnake.yml file in the home directory.
 
 An example .archivessnake.yml file:
 
-`baseurl: http://localhost:8089`
-`username:`
-`password:` 
+`baseurl: http://localhost:8089`  
+`username:`  
+`password:`  
 
 | **Setting**     | **Description**                                                               | **Default Value**     |
 |-----------------|-------------------------------------------------------------------------------|-----------------------|
@@ -56,13 +56,13 @@ The logging config allows the following settings, none of which are present by d
 
 | **Setting**    | **Description**                                                           | **Notes**                          |
 |----------------|---------------------------------------------------------------------------|------------------------------------|
-| default_config | A default configuration to start from, see                                | [Logging](#logging) for more info  |
-| stream         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | cannot be combined with stream     |
-| filename       | name of file to be printed to                                             | cannot be combined with filename   |
-| filemode       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | only useful combined with filename |
+| default_config | A default configuration to start from, see                                | See [logging](#logging) for more info  |
+| stream         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | Cannot be combined with stream     |
+| filename       | name of file to be printed to                                             | Cannot be combined with filename   |
+| filemode       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | Only useful combined with filename |
 | level          | level to log at (e.g. 'INFO', 'DEBUG', 'WARNING')                         |                                    |
 
-You can also define a configuration file, formatted in the [YAML](http://yaml.org/) markup language.  By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
+You can also define a configuration file, formatted in the [YAML markup language](http://yaml.org/). By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
 
 An example configuration file:
 
@@ -72,13 +72,13 @@ username: admin
 password: admin
 retry_with_auth: false
 logging_config:
-    default_config: INFO_TO_STDERR
+default_config: INFO_TO_STDERR
 ```
 
 Default values corresponding to the admin account of an unaltered local development instance of ASpace are included as fallback values.
 
 ### Logging
-ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults.  By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error.  As logging in ArchivesSnake is by default universally below INFO level, in general the log will be silent unless you change configuration.  All of this can be configured; if you want to capture all possible logging from ASnake, that configuration should happen prior to creating an `asnake.client.ASnakeClient` or `asnake.aspace.ASpace` object
+ArchivesSnake uses [structlog](http://www.structlog.org/en/stable/) combined with the stdlib logging module to provide configurable logging with reasonable defaults. By default, log level is INFO, logging's default formatting is suppressed, and the log entries are formatted as line-oriented JSON and sent to standard error. Logging in ArchivesSnake is by default universally below INFO level, so in general the log will be silent unless you change the configuration. All of this can be configured; if you want to capture all possible logging from ASnake, that configuration should happen prior to creating an `asnake.client.ASnakeClient` or `asnake.aspace.ASpace` object:
 
 ``` python
 from asnake.client import ASnakeClient
@@ -140,7 +140,7 @@ This will leave the following in `my_cool_logfile.log` (pretty-printed below, bu
 ## Functionality
 
 ### Low level API
-The low level API allows full access to the ArchivesSpace API unlike the ArchivesSnake [Abstraction Layer](#Abstraction_Layer) which is effectively “read-only” (read more about the abstraction layer). The ArchivesSnake client operates as a wrapper over the Python requests module which allows users to send HTTP requests using Python. The low-level API client manages authorization, turns uris into full URLs, and handles paged resources. For further examples see use cases in wiki.
+The low-level API allows full access to the ArchivesSpace API unlike the ArchivesSnake [Abstraction Layer](#Abstraction_Layer) which is effectively “read-only” (read more about the abstraction layer). The ArchivesSnake client operates as a wrapper over the Python requests module which allows users to send HTTP requests using Python. The low-level API client manages authorization, turns uris into full URLs, and handles paged resources. For further examples see use cases in the Wiki.
 
 For example, to fetch the JSON representation of all the repositories from an ArchivesSpace instance and save it to a variable:
 
@@ -165,7 +165,7 @@ for repo in client.get_paged('repositories'):
     print(repo['name'])
 ```
 
-The `ASnakeClient` class is a convenience wrapper over the [requests](http://docs.python-requests.org/en/master/) module.  The additional functionality it provides is:
+The `ASnakeClient` class is a convenience wrapper over the [requests](http://docs.python-requests.org/en/master/) module. It provides additional functionality to:
 - Handle configuration
 - Handle and persist authorization across multiple requests
 - Prepend a baseurl to API paths
@@ -238,7 +238,7 @@ Get a copy of the wrapped JSON using:
 obj.json()
 ```
 
-The `.json` method makes a _deep copy_ of the object. This means that it creates a new collection object and then inserts copies of the objects found within the original object rather than just references to them. Otherwise, changes to the returned JSON would also affect the values inside the `JSONModelObject`. If you run into memory issues and are sure that you will not reuse the object from which you retrieved the JSON, you can use:
+The `.json` method makes a [deep copy](https://en.wikipedia.org/wiki/Object_copying#Deep_copy) of the object. This means that it creates a new collection object and then inserts copies of the objects found within the original object rather than just references to them. Otherwise, changes to the returned JSON would also affect the values inside the `JSONModelObject`. If you run into memory issues and are sure that you will not reuse the object from which you retrieved the JSON, you can use:
 
 ``` python
 obj._json
@@ -246,7 +246,7 @@ obj._json
 
 This is the original wrapped JSON as returned from the API.
 
-If you know the id of a particular thing in the collection, you can also treat `JSONModelRelation` objects as functions and pass the ids to get that specific thing, like so.
+If you know the specific id of something in the collection, you can also treat `JSONModelRelation` objects as functions and pass the ids to retrieve that particular thing, like so:
 
 ``` python
 aspace.repositories(101) # repository with id 101
@@ -272,7 +272,7 @@ for repo in aspace.repositories:
         print(resource.title)
 ```
 
-Currently, the `ASpace` interface is effectively read-only. If you need to create or update records (or just do something that we haven't implemented yet), you'll have to drop down to the low-level interface. For convenience, the ASnakeClient used by an ASpace object is accessible using:
+Currently, the `ASpace` interface is read-only. If you need to create or update records (or just do something that we haven't implemented yet), you'll have to drop down to the low-level interface. For convenience, the `ASnakeClient` used by an `ASpace object` is accessible using:
 
 ``` python
 aspace.client.get('/repositories/2/resources/1')
@@ -298,7 +298,7 @@ The most important classes to understand are:
 - asnake.jsonmodel.JSONModelRelation
 
 ## Scripts and Projects using ASnake
-Here are some example scripts and projects that make use of ASnake
+Here are some example scripts and projects that make use of ASnake:
 
 * [Python scripts to support ongoing ArchivesSpace work at Harvard](https://github.com/harvard-library/aspace_pyscripts)
 * [Python scripts to support container and instance data migration, also at Harvard](https://github.com/harvard-library/aspace_container_mgmt_scripts)
