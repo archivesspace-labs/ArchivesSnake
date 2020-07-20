@@ -189,7 +189,7 @@ uri = client.get('repositories/2').json()['agent_representation']['ref']
 client.get(uri) # gets the agent!
 ```
 
-## Abstraction Layer
+### Abstraction Layer
 The other way to use ASnake right now is a higher level, more convenient abstraction over the whole API. It lets you ignore some of the low-level details of the API, though you still need to know its structure. To use it, import the `asnake.aspace.ASpace` class.
 
 There are three base classes involved:
@@ -197,7 +197,7 @@ There are three base classes involved:
 2. A `JSONModelObject` class that represents individual objects
 3. A `JSONModelRelation` class that represents routes that return groups of objects. Both JSONModel classes have subtypes for representing various exceptional cases in the API.
 
-### JSONModelObject
+#### JSONModelObject
 JSONModelObjects wrap a single ASpace JSONModel object. Method calls on JSONModelObjects will return either the value stored in the object's JSON representation, or will try to make a call to the API to fetch a subsidiary route.
 
 For a JSONModelObject named `obj` wrapping this JSON:
