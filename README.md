@@ -140,7 +140,7 @@ This will leave the following in `my_cool_logfile.log` (pretty-printed below, bu
 ## Functionality
 
 ### Low level API
-The low-level API allows full access to the ArchivesSpace API unlike the ArchivesSnake [Abstraction Layer](#Abstraction_Layer) which is effectively “read-only” (read more about the abstraction layer). The ArchivesSnake client operates as a wrapper over the Python requests module which allows users to send HTTP requests using Python. The low-level API client manages authorization, turns uris into full URLs, and handles paged resources. For further examples see use cases in the Wiki.
+The low-level API allows full access to the ArchivesSpace API unlike the ArchivesSnake [Abstraction Layer](#Abstraction_Layer) which is effectively “read-only." The ArchivesSnake client operates as a wrapper over the Python requests module which allows users to send HTTP requests using Python. The low-level API client manages authorization, turns uris into full URLs, and handles paged resources. For further examples see use cases in the Wiki.
 
 For example, to fetch the JSON representation of all the repositories from an ArchivesSpace instance and save it to a variable:
 
