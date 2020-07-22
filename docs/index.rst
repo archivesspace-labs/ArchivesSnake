@@ -64,6 +64,10 @@ Welcome to ArchivesSnake's documentation!
          :members:
          :inherited-members:
 
+.. automodule:: asnake.utils
+   :members:
+   :inherited-members:
+
 Indices and tables
 ==================
 
