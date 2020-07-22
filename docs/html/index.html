@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,29 +12,27 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -49,7 +48,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> ArchivesSnake
+            <a href="#" class="icon icon-home"> ArchivesSnake
           
 
           
@@ -76,7 +75,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,7 +91,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -132,7 +129,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="#">Docs</a> &raquo;</li>
         
       <li>Welcome to ArchivesSnake’s documentation!</li>
     
@@ -157,22 +154,22 @@
 <h1>Welcome to ArchivesSnake’s documentation!<a class="headerlink" href="#welcome-to-archivessnake-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-asnake.aspace"></span><dl class="py class">
+<span class="target" id="module-asnake.aspace"></span><dl class="class">
 <dt id="asnake.aspace.ASpace">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.aspace.</code><code class="sig-name descname">ASpace</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">config</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#ASpace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.ASpace" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property">class </em><code class="sig-prename descclassname">asnake.aspace.</code><code class="sig-name descname">ASpace</code><span class="sig-paren">(</span><em class="sig-param">**config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#ASpace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.ASpace" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
 <dt id="asnake.aspace.ASpace.__getattr__">
-<code class="sig-name descname">__getattr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">attr</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#ASpace.__getattr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.ASpace.__getattr__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__getattr__</code><span class="sig-paren">(</span><em class="sig-param">attr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/aspace.html#ASpace.__getattr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.ASpace.__getattr__" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the JSONModelRelation representing the route with the same name as the attribute requested.</p>
 </dd></dl>
 
 </dd></dl>
 
-<span class="target" id="module-asnake.jsonmodel"></span><dl class="py class">
+<span class="target" id="module-asnake.jsonmodel"></span><dl class="class">
 <dt id="asnake.jsonmodel.JSONModelObject">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_rep</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelObject</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper over the JSONModel representation of a single object in ArchivesSpace.</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModelObject.id">
 <em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the id for the object if it has a useful ID, or else None.</p>
@@ -181,13 +178,13 @@ by API methods.  For example, searches can return different types of objects, an
 agents have unique ids per agent_type, not across all agents.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModelObject.json">
 <code class="sig-name descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject.json" title="Permalink to this definition">¶</a></dt>
 <dd><p>return safe-to-edit copy wrapped dict representing JSONModelObject contents.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModelObject.reify">
 <code class="sig-name descname">reify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.reify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelObject.reify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert object from a ref into a realized object.</p>
@@ -195,11 +192,11 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.ComponentObject">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ComponentObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_rep</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ComponentObject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ComponentObject</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ComponentObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specialized JSONModel subclass representing Archival Objects. Mostly exists to provide a way to get TreeNodes from AOs rather than having to start at the resource.</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.ComponentObject.id">
 <em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the id for the object if it has a useful ID, or else None.</p>
@@ -208,19 +205,19 @@ by API methods.  For example, searches can return different types of objects, an
 agents have unique ids per agent_type, not across all agents.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.ComponentObject.json">
 <code class="sig-name descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.json" title="Permalink to this definition">¶</a></dt>
 <dd><p>return safe-to-edit copy wrapped dict representing JSONModelObject contents.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.ComponentObject.reify">
 <code class="sig-name descname">reify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.reify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert object from a ref into a realized object.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.ComponentObject.tree">
 <em class="property">property </em><code class="sig-name descname">tree</code><a class="headerlink" href="#asnake.jsonmodel.ComponentObject.tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a TreeNode object for children of archival objects</p>
@@ -228,9 +225,9 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.JSONModelRelation">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelRelation</code><span class="sig-paren">(</span><em class="sig-param">uri</em>, <em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper over index routes and other routes that represent groups of items in ASpace.</p>
 <p>It provides two means of accessing objects in these collections:</p>
 <blockquote>
@@ -248,20 +245,20 @@ agents have unique ids per agent_type, not across all agents.</p>
 </div>
 <p>This object wraps the route and parameters, and does no caching - each iteration through a relation fetches data from ASpace fresh.</p>
 <p>Additionally, JSONModelRelations implement <cite>__getattr__</cite>, in order to handle nested and subsidiary routes, such as the routes for individual types of agents.</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModelRelation.__getattr__">
-<code class="sig-name descname">__getattr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__getattr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__getattr__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__getattr__</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__getattr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__getattr__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModelRelation.__call__">
-<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">myid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__call__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param">myid=None</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a JSONModelObject from the relation by id.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModelRelation.with_params">
-<code class="sig-name descname">with_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.with_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">with_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModelRelation.with_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">):</span>
@@ -272,9 +269,9 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.aspace.AgentRelation">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.aspace.</code><code class="sig-name descname">AgentRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.aspace.</code><code class="sig-name descname">AgentRelation</code><span class="sig-paren">(</span><em class="sig-param">uri</em>, <em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>subtype of JSONModelRelation for handling the <cite>/agents</cite> route hierarchy.</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span>                        <span class="c1"># all agents of all types</span>
@@ -283,22 +280,22 @@ agents have unique ids per agent_type, not across all agents.</p>
 <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="s2">&quot;people&quot;</span><span class="p">,</span> <span class="s2">&quot;families&quot;</span><span class="p">]</span>  <span class="c1"># Multiple types of agents</span>
 </pre></div>
 </div>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.aspace.AgentRelation.__getitem__">
-<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">only</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation.__getitem__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param">only</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.aspace.AgentRelation.__getitem__" title="Permalink to this definition">¶</a></dt>
 <dd><p>filter the AgentRelation to only the type or types passed in</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py exception">
+<dl class="exception">
 <dt id="asnake.jsonmodel.ASNakeBadAgentType">
 <em class="property">exception </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ASNakeBadAgentType</code><a class="reference internal" href="_modules/asnake/jsonmodel.html#ASNakeBadAgentType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ASNakeBadAgentType" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.AgentRelation">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">AgentRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.AgentRelation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">AgentRelation</code><span class="sig-paren">(</span><em class="sig-param">uri</em>, <em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#AgentRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.AgentRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>subtype of JSONModelRelation for handling the <cite>/agents</cite> route hierarchy.</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">agents</span>                        <span class="c1"># all agents of all types</span>
@@ -309,19 +306,19 @@ agents have unique ids per agent_type, not across all agents.</p>
 </div>
 </dd></dl>
 
-<dl class="py class">
-<dt id="id0">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ComponentObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_rep</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ComponentObject</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ComponentObject"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Specialized JSONModel subclass representing Archival Objects. Mostly exists to provide a way to get TreeNodes from AOs rather than having to start at the resource.</p>
-<dl class="py method">
-<dt id="id1">
-<em class="property">property </em><code class="sig-name descname">tree</code><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">tree</code></dt>
 <dd><p>Returns a TreeNode object for children of archival objects</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.JM">
 <em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JM</code><a class="reference internal" href="_modules/asnake/jsonmodel.html#JM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper class for creating hashes suitable for POSTing to ArchivesSpace.</p>
@@ -332,11 +329,11 @@ agents have unique ids per agent_type, not across all agents.</p>
 </div>
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.JSONModel">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parents</span></em>, <em class="sig-param"><span class="n">dct</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModel</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">parents</em>, <em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mixin providing functionality shared by JSONModel and JSONModelRelation classes.</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.JSONModel.default_client">
 <code class="sig-name descname">default_client</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModel.default_client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.JSONModel.default_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>return existing ASnakeClient or create, store, and return a new ASnakeClient</p>
@@ -344,36 +341,36 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 </dd></dl>
 
-<dl class="py class">
-<dt id="id2">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_rep</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelObject</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A wrapper over the JSONModel representation of a single object in ArchivesSpace.</p>
-<dl class="py method">
-<dt id="id3">
-<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">id</code></dt>
 <dd><p>Return the id for the object if it has a useful ID, or else None.</p>
 <p>Note: unlike uri, an id is Not fully unique within some collections returnable
 by API methods.  For example, searches can return different types of objects, and
 agents have unique ids per agent_type, not across all agents.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="id4">
-<code class="sig-name descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt>
+<code class="sig-name descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.json"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>return safe-to-edit copy wrapped dict representing JSONModelObject contents.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="id5">
-<code class="sig-name descname">reify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.reify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt>
+<code class="sig-name descname">reify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelObject.reify"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Convert object from a ref into a realized object.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
-<dt id="id6">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">JSONModelRelation</code><span class="sig-paren">(</span><em class="sig-param">uri</em>, <em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>A wrapper over index routes and other routes that represent groups of items in ASpace.</p>
 <p>It provides two means of accessing objects in these collections:</p>
 <blockquote>
@@ -391,9 +388,9 @@ agents have unique ids per agent_type, not across all agents.</p>
 </div>
 <p>This object wraps the route and parameters, and does no caching - each iteration through a relation fetches data from ASpace fresh.</p>
 <p>Additionally, JSONModelRelations implement <cite>__getattr__</cite>, in order to handle nested and subsidiary routes, such as the routes for individual types of agents.</p>
-<dl class="py method">
-<dt id="id7">
-<code class="sig-name descname">with_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt>
+<code class="sig-name descname">with_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#JSONModelRelation.with_params"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">):</span>
@@ -404,18 +401,18 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.ResourceRelation">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ResourceRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ResourceRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ResourceRelation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">ResourceRelation</code><span class="sig-paren">(</span><em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ResourceRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ResourceRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>subtype of JSONModelRelation for returning all resources from every repository</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">resources</span>      <span class="c1"># all resources from every repository</span>
 <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">resources</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># resource with id=42, regardless of what repo it&#39;s in</span>
 </pre></div>
 </div>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.ResourceRelation.with_params">
-<code class="sig-name descname">with_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ResourceRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ResourceRelation.with_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">with_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#ResourceRelation.with_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.ResourceRelation.with_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return JSONModelRelation with same uri and client, but add kwargs to params.</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">thing</span> <span class="ow">in</span> <span class="n">ASpace</span><span class="p">()</span><span class="o">.</span><span class="n">repositories</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">with_params</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s2">&quot;primary_type:resource&quot;</span><span class="p">):</span>
@@ -426,31 +423,31 @@ agents have unique ids per agent_type, not across all agents.</p>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.SolrRelation">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">SolrRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#SolrRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.SolrRelation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">SolrRelation</code><span class="sig-paren">(</span><em class="sig-param">uri</em>, <em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#SolrRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.SolrRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sometimes, the API returns solr responses, so we have to handle that. Facets are still tbd, but should be doable, but also I’m not sure if they’re widely used and thus need to be handled?.</p>
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.TreeNode">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">TreeNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_rep</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">TreeNode</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specialized JSONModel subclass representing nodes in trees, as returned
 from <a class="reference external" href="https://archivesspace.github.io/archivesspace/api/#get-a-resource-tree">/repositories/:repo_id/resources/:id/tree</a>.</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.TreeNode.node">
-<code class="sig-name descname">node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_uri</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode.node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode.node" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">node</code><span class="sig-paren">(</span><em class="sig-param">node_uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNode.node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNode.node" title="Permalink to this definition">¶</a></dt>
 <dd><p>A sub-route existing on resources, which returns info on the node passed in.</p>
 <p>Returned as an instance of <a class="reference internal" href="#asnake.jsonmodel.TreeNodeData" title="asnake.jsonmodel.TreeNodeData"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeNodeData</span></code></a>.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.TreeNode.record">
 <em class="property">property </em><code class="sig-name descname">record</code><a class="headerlink" href="#asnake.jsonmodel.TreeNode.record" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the full JSONModelObject for a node</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.TreeNode.walk">
 <em class="property">property </em><code class="sig-name descname">walk</code><a class="headerlink" href="#asnake.jsonmodel.TreeNode.walk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serial walk of all objects in tree and children (depth-first traversal)</p>
@@ -458,17 +455,17 @@ from <a class="reference external" href="https://archivesspace.github.io/archive
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.TreeNodeData">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">TreeNodeData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_rep</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNodeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNodeData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">TreeNodeData</code><span class="sig-paren">(</span><em class="sig-param">json_rep</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#TreeNodeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.TreeNodeData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object representing data about a node in a tree.</p>
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.jsonmodel.UserRelation">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">UserRelation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#UserRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.UserRelation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">UserRelation</code><span class="sig-paren">(</span><em class="sig-param">uri</em>, <em class="sig-param">params={}</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#UserRelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.UserRelation" title="Permalink to this definition">¶</a></dt>
 <dd><p>“Custom” relation to deal with the API’s failure to properly populate permissions for the <cite>/users</cite> index route</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.jsonmodel.UserRelation.current_user">
 <em class="property">property </em><code class="sig-name descname">current_user</code><a class="headerlink" href="#asnake.jsonmodel.UserRelation.current_user" title="Permalink to this definition">¶</a></dt>
 <dd><p><cite>/users/current-user</cite> route.</p>
@@ -476,9 +473,9 @@ from <a class="reference external" href="https://archivesspace.github.io/archive
 
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.jsonmodel.dispatch_type">
-<code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">dispatch_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#dispatch_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.dispatch_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">dispatch_type</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#dispatch_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.dispatch_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines if object is JSON suitable for wrapping with a JSONModelObject, or a narrower subtype.
 Returns either the correct class or False if no class is suitable.</p>
 <p>Note: IN GENERAL, it is safe to use this to test if a thing is a JSONModel subtype, but you should
@@ -498,79 +495,79 @@ and would need to be manually unwrapped otherwise.  So, usage like this:</p>
 <p>because it will break on wrapped or otherwise odd objects.</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.jsonmodel.find_subtree">
-<code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">find_subtree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tree</span></em>, <em class="sig-param"><span class="n">uri</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#find_subtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.find_subtree" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">find_subtree</code><span class="sig-paren">(</span><em class="sig-param">tree</em>, <em class="sig-param">uri</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#find_subtree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.find_subtree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Navigates a tree object to get a list of children of a specified archival object uri.</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.jsonmodel.wrap_json_object">
-<code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">wrap_json_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">client</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#wrap_json_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.wrap_json_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">asnake.jsonmodel.</code><code class="sig-name descname">wrap_json_object</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/jsonmodel.html#wrap_json_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.jsonmodel.wrap_json_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classify object, and either wrap it in the correct JSONModel type or return it as is.</p>
 <p>Prefer this STRONGLY to directly using the output of <a class="reference internal" href="#asnake.jsonmodel.dispatch_type" title="asnake.jsonmodel.dispatch_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">dispatch_type()</span></code></a></p>
 </dd></dl>
 
-<span class="target" id="module-asnake.client"></span><dl class="py class">
+<span class="target" id="module-asnake.client"></span><dl class="class">
 <dt id="asnake.client.ASnakeClient">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.client.</code><code class="sig-name descname">ASnakeClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">config</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.client.</code><code class="sig-name descname">ASnakeClient</code><span class="sig-paren">(</span><em class="sig-param">**config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>ArchivesSnake Web Client</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorizes the client against the configured archivesspace instance.</p>
 <p>Parses the JSON response, and stores the returned session token in the session.headers for future requests.
 Asks for a “non-expiring” session, which isn’t truly immortal, just long-lived.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.delete">
-<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.delete" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.delete" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.get" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.get" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.get_paged">
-<code class="sig-name descname">get_paged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">page_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_paged</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">page_size=100</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
 <dd><p>get list of json objects from urls of paged items</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.head">
-<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.head" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.head" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.options">
-<code class="sig-name descname">options</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.options" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">options</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.options" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.post">
-<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.post" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.post" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.ASnakeClient.put">
-<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.put" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.put" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
-<span class="target" id="module-asnake.client.web_client"></span><dl class="py exception">
+<span class="target" id="module-asnake.client.web_client"></span><dl class="exception">
 <dt id="asnake.client.web_client.ASnakeAuthError">
 <em class="property">exception </em><code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">ASnakeAuthError</code><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeAuthError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeAuthError" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><dl class="method">
 <dt id="asnake.client.web_client.ASnakeAuthError.with_traceback">
 <code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeAuthError.with_traceback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception.with_traceback(tb) –
@@ -579,67 +576,67 @@ set self.__traceback__ to tb and return self.</p>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.client.web_client.ASnakeClient">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">ASnakeClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">config</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">ASnakeClient</code><span class="sig-paren">(</span><em class="sig-param">**config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>ArchivesSnake Web Client</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorizes the client against the configured archivesspace instance.</p>
 <p>Parses the JSON response, and stores the returned session token in the session.headers for future requests.
 Asks for a “non-expiring” session, which isn’t truly immortal, just long-lived.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.delete">
-<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.delete" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.delete" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.delete()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.get" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.get" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.get()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.get_paged">
-<code class="sig-name descname">get_paged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">page_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_paged</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">page_size=100</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeClient.get_paged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.get_paged" title="Permalink to this definition">¶</a></dt>
 <dd><p>get list of json objects from urls of paged items</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.head">
-<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.head" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.head" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.head()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.options">
-<code class="sig-name descname">options</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.options" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">options</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.options" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.options()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.post">
-<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.post" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.post" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.post()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeClient.put">
-<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.put" title="(in Requests v2.24.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.24.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeClient.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxied <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session.put" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.put()</span></code></a> method from <a class="reference external" href="https://requests.readthedocs.io/en/latest/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="asnake.client.web_client.ASnakeProxyMethods">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">ASnakeProxyMethods</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parents</span></em>, <em class="sig-param"><span class="n">dct</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeProxyMethods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeProxyMethods" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">ASnakeProxyMethods</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">parents</em>, <em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeProxyMethods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeProxyMethods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Metaclass to set up proxy methods for all requests-supported HTTP methods</p>
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.client.web_client.ASnakeProxyMethods.mro">
 <code class="sig-name descname">mro</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeProxyMethods.mro" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a type’s method resolution order.</p>
@@ -647,10 +644,10 @@ Asks for a “non-expiring” session, which isn’t truly immortal, just long-l
 
 </dd></dl>
 
-<dl class="py exception">
+<dl class="exception">
 <dt id="asnake.client.web_client.ASnakeWeirdReturnError">
 <em class="property">exception </em><code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">ASnakeWeirdReturnError</code><a class="reference internal" href="_modules/asnake/client/web_client.html#ASnakeWeirdReturnError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.ASnakeWeirdReturnError" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><dl class="method">
 <dt id="asnake.client.web_client.ASnakeWeirdReturnError.with_traceback">
 <code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#asnake.client.web_client.ASnakeWeirdReturnError.with_traceback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception.with_traceback(tb) –
@@ -659,255 +656,55 @@ set self.__traceback__ to tb and return self.</p>
 
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.client.web_client.http_meth_factory">
-<code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">http_meth_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">meth</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#http_meth_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.http_meth_factory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">http_meth_factory</code><span class="sig-paren">(</span><em class="sig-param">meth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#http_meth_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.http_meth_factory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility method for producing HTTP proxy methods for ASnakeProxyMethods mixin class.</p>
 <p>Urls are prefixed with the value of baseurl from the client’s ASnakeConfig.  Arguments are
 passed unaltered to the matching requests.Session method.</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.client.web_client.listlike_seq">
-<code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">listlike_seq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#listlike_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.listlike_seq" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">asnake.client.web_client.</code><code class="sig-name descname">listlike_seq</code><span class="sig-paren">(</span><em class="sig-param">seq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/client/web_client.html#listlike_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.client.web_client.listlike_seq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine if a thing is a list-like (sequence of values) sequence that’s not string-like.</p>
 </dd></dl>
 
-<span class="target" id="module-asnake"></span><dl class="py class">
+<span class="target" id="module-asnake"></span><dl class="class">
 <dt id="asnake.ASnakeConfig">
-<em class="property">class </em><code class="sig-prename descclassname">asnake.</code><code class="sig-name descname">ASnakeConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">NOTHING</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configuration object.  Essentially a convenience wrapper over an instance of <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict" title="(in boltons v20.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict</span></code></a></p>
-<span class="target" id="module-asnake.logging"></span><dl class="py function">
+<em class="property">class </em><code class="sig-prename descclassname">asnake.</code><code class="sig-name descname">ASnakeConfig</code><span class="sig-paren">(</span><em class="sig-param">config=NOTHING</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configuration object.  Essentially a convenience wrapper over an instance of <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict" title="(in boltons v20.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict</span></code></a></p>
+<span class="target" id="module-asnake.logging"></span><dl class="function">
 <dt id="asnake.logging.ASnakeConfig.copy_config">
-<code class="sig-name descname">copy_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.copy_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">copy_config</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.copy_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy relevant information from one config to another.</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.logging.ASnakeConfig.default_logging_conf">
-<code class="sig-name descname">default_logging_conf</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">overrides</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.default_logging_conf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">default_logging_conf</code><span class="sig-paren">(</span><em class="sig-param">**overrides</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.default_logging_conf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a default stdlib logging configuration.</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.logging.ASnakeConfig.default_structlog_conf">
-<code class="sig-name descname">default_structlog_conf</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">overrides</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.default_structlog_conf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">default_structlog_conf</code><span class="sig-paren">(</span><em class="sig-param">**overrides</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.default_structlog_conf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a default configuration for structlog</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="asnake.logging.ASnakeConfig.setup_logging">
-<code class="sig-name descname">setup_logging</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stream</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filemode</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.setup_logging" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setup_logging</code><span class="sig-paren">(</span><em class="sig-param">config=None</em>, <em class="sig-param">level=None</em>, <em class="sig-param">stream=None</em>, <em class="sig-param">filename=None</em>, <em class="sig-param">filemode=None</em><span class="sig-paren">)</span><a class="headerlink" href="#asnake.logging.ASnakeConfig.setup_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets up both logging and structlog.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="asnake.ASnakeConfig.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>adds a set of configuration values in ‘most preferred’ position (i.e. last updated wins). See <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict.update_extend" title="(in boltons v20.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict.update_extend()</span></code></a>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/configurator.html#ASnakeConfig.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.ASnakeConfig.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a set of configuration values in ‘most preferred’ position (i.e. last updated wins). See <a class="reference external" href="https://boltons.readthedocs.io/en/latest/dictutils.html#boltons.dictutils.OrderedMultiDict.update_extend" title="(in boltons v20.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">boltons.dictutils.OrderedMultiDict.update_extend()</span></code></a>
 in the OMD docs</p>
 </dd></dl>
 
-</dd></dl>
-
-<span class="target" id="module-asnake.utils"></span><dl class="py function">
-<dt id="asnake.utils.closest_value">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">closest_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">archival_object</span></em>, <em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">client</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#closest_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.closest_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the closest value matching a key.</p>
-<p>Starts with an archival object, and iterates up through its ancestors
-until it finds a match for a key that is not empty or null.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>archival_object</strong> (<a class="reference internal" href="#id2" title="asnake.jsonmodel.JSONModelObject"><em>JSONModelObject</em></a>) – an ArchivesSpace archival_object.</p></li>
-<li><p><strong>key</strong> (<em>str</em>) – the key to match against.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The value of the key, which could be a str, list, or dict.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str, list, or key</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.format_from_obj">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">format_from_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">format_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#format_from_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.format_from_obj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a human-readable string from an object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>or dict</strong> (<a class="reference internal" href="#id2" title="asnake.jsonmodel.JSONModelObject"><em>JSONModelObject</em></a>) – an ArchivesSpace object.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a string in the chosen format.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.format_resource_id">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">format_resource_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">separator</span><span class="o">=</span><span class="default_value">':'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#format_resource_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.format_resource_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concatenates the four-part ID for a resource record.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>resource</strong> (<em>dict</em>) – an ArchivesSpace resource.</p></li>
-<li><p><strong>separator</strong> (<em>str</em>) – a separator to insert between the id parts. Defaults
-to <cite>:</cite>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a concatenated four-part ID for the resource record.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.get_expression">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">get_expression</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#get_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.get_expression" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a date expression for a date object.</p>
-<p>Concatenates start and end dates if no date expression exists.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>date</strong> (<em>dict</em>) – an ArchivesSpace date</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>date expression for the date object.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.get_note_text">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">get_note_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">note</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#get_note_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.get_note_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses note content from different note types.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dict</strong> – an ArchivesSpace note.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a list containing note content.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.get_orphans">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">get_orphans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">object_list</span></em>, <em class="sig-param"><span class="n">null_attribute</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#get_orphans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.get_orphans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds objects in a list which do not have a value in a specified field.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>object_list</strong> (<em>list</em>) – a list of ArchivesSpace objects.</p></li>
-<li><p><strong>null_attribute</strong> – an attribute which must be empty or null.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Yields</dt>
-<dd class="field-even"><p>a list of ArchivesSpace objects.</p>
-</dd>
-<dt class="field-odd">Yield type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.indicates_restriction">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">indicates_restriction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rights_statement</span></em>, <em class="sig-param"><span class="n">restriction_acts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#indicates_restriction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.indicates_restriction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a rights statement to determine if it indicates a restriction.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rights_statement</strong> (<em>dict</em>) – an ArchivesSpace rights statement.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if rights statement indicates a restriction, False if not.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.is_restricted">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">is_restricted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">archival_object</span></em>, <em class="sig-param"><span class="n">query_string</span></em>, <em class="sig-param"><span class="n">restriction_acts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#is_restricted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.is_restricted" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses an archival object to determine if it is restricted.</p>
-<p>Iterates through notes, looking for a conditions governing access note
-which contains a particular set of strings.
-Also looks for associated rights statements which indicate object may be
-restricted.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>archival_object</strong> (<em>dict</em>) – an ArchivesSpace archival_object.</p></li>
-<li><p><strong>restriction_acts</strong> (<em>list</em>) – a list of strings to match restriction act against.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if archival object is restricted, False if not.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.object_locations">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">object_locations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ao_thingit</span></em>, <em class="sig-param"><span class="n">client</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#object_locations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.object_locations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given any of:
-- the URI for an archival object
-- a dict with a key ‘uri’ or ‘ref’ containing said URI
-- an object responding to .json() returning such a dict</p>
-<p>and an <a class="reference internal" href="#asnake.client.ASnakeClient" title="asnake.client.ASnakeClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">asnake.client.ASnakeClient</span></code></a>, this method will return a
-generator which yields the JSON representation of any locations associated
-with the archival object.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.strip_html_tags">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">strip_html_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#strip_html_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.strip_html_tags" title="Permalink to this definition">¶</a></dt>
-<dd><p>Strips HTML tags from a string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – An input string from which to remove HTML tags.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="asnake.utils.text_in_note">
-<code class="sig-prename descclassname">asnake.utils.</code><code class="sig-name descname">text_in_note</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">note</span></em>, <em class="sig-param"><span class="n">query_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/asnake/utils.html#text_in_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#asnake.utils.text_in_note" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs fuzzy searching against note text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>note</strong> (<em>dict</em>) – an ArchivesSpace note.</p></li>
-<li><p><strong>query_string</strong> (<em>str</em>) – a string to match against.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if a match is found for <cite>query_string</cite>, False if no match is
-found.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
 </dd></dl>
 
 </div>
@@ -931,19 +728,11 @@ found.</p>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2018, Various Artists
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -954,6 +743,7 @@ found.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {
