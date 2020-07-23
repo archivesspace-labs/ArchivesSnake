@@ -1,0 +1,166 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - ArchivesSnake/0.1
+    method: POST
+    uri: http://localhost:8089/users/admin/login?password=admin&expiring=False
+  response:
+    body:
+      string: '{"session":"36deb59fe163d9c52f4ec29d6942d27a98e6fe30132ae0de95209c6d1a301314","user":{"lock_version":96,"username":"admin","name":"Administrator","is_system_user":true,"create_time":"2020-06-26T16:02:36Z","system_mtime":"2020-07-11T19:35:05Z","user_mtime":"2020-07-11T19:35:05Z","jsonmodel_type":"user","groups":[],"is_admin":true,"uri":"/users/1","agent_record":{"ref":"/agents/people/1"},"permissions":{"/repositories/1":["update_enumeration_record","update_location_record","delete_vocabulary_record","update_subject_record","delete_subject_record","update_agent_record","delete_agent_record","update_vocabulary_record","merge_subject_record","merge_agent_record","update_container_profile_record","update_location_profile_record","administer_system","become_user","cancel_importer_job","cancel_job","create_job","create_repository","delete_archival_record","delete_assessment_record","delete_classification_record","delete_event_record","delete_repository","import_records","index_system","manage_agent_record","manage_assessment_attributes","manage_container_profile_record","manage_container_record","manage_enumeration_record","manage_location_profile_record","manage_rde_templates","manage_repository","manage_subject_record","manage_users","manage_vocabulary_record","mediate_edits","merge_agents_and_subjects","merge_archival_record","suppress_archival_record","transfer_archival_record","transfer_repository","update_accession_record","update_assessment_record","update_classification_record","update_container_record","update_digital_object_record","update_event_record","update_resource_record","view_agent_contact_record","view_all_records","view_repository","view_suppressed"],"_archivesspace":["administer_system","become_user","cancel_importer_job","cancel_job","create_job","create_repository","delete_archival_record","delete_assessment_record","delete_classification_record","delete_event_record","delete_repository","import_records","index_system","manage_agent_record","manage_assessment_attributes","manage_container_profile_record","manage_container_record","manage_enumeration_record","manage_location_profile_record","manage_rde_templates","manage_repository","manage_subject_record","manage_users","manage_vocabulary_record","mediate_edits","merge_agents_and_subjects","merge_archival_record","suppress_archival_record","transfer_archival_record","transfer_repository","update_accession_record","update_assessment_record","update_classification_record","update_container_record","update_digital_object_record","update_event_record","update_resource_record","view_agent_contact_record","view_all_records","view_repository","view_suppressed","update_enumeration_record","update_location_record","delete_vocabulary_record","update_subject_record","delete_subject_record","update_agent_record","delete_agent_record","update_vocabulary_record","merge_subject_record","merge_agent_record","update_container_profile_record","update_location_profile_record"]}}}
+
+        '
+    headers:
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Length:
+      - '2981'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Jul 2020 19:35:05 GMT
+      Server:
+      - Jetty(8.1.5.v20120716)
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - ArchivesSnake/0.1
+      X-ArchivesSpace-Session:
+      - 36deb59fe163d9c52f4ec29d6942d27a98e6fe30132ae0de95209c6d1a301314
+    method: GET
+    uri: http://localhost:8089/version
+  response:
+    body:
+      string: ArchivesSpace (v2.7.1)
+    headers:
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Length:
+      - '22'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Sat, 11 Jul 2020 19:35:05 GMT
+      Server:
+      - Jetty(8.1.5.v20120716)
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - ArchivesSnake/0.1
+      X-ArchivesSpace-Session:
+      - 36deb59fe163d9c52f4ec29d6942d27a98e6fe30132ae0de95209c6d1a301314
+    method: GET
+    uri: http://localhost:8089/repositories/2/archival_objects/7?resolve%5B%5D=top_container%3A%3Acontainer_locations
+  response:
+    body:
+      string: "{\"lock_version\":0,\"position\":0,\"publish\":true,\"ref_id\":\"de2ec07d4aa1425d818005306ee76377\"\
+        ,\"component_id\":\"225\",\"title\":\"American Philosophical Society Library:\
+        \ Max Bergmann Papers\",\"display_string\":\"American Philosophical Society\
+        \ Library: Max Bergmann Papers, undated\",\"restrictions_apply\":false,\"\
+        created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-06-26T16:06:07Z\"\
+        ,\"system_mtime\":\"2020-07-11T19:34:43Z\",\"user_mtime\":\"2020-06-26T16:06:07Z\"\
+        ,\"suppressed\":false,\"is_slug_auto\":true,\"level\":\"file\",\"jsonmodel_type\"\
+        :\"archival_object\",\"external_ids\":[{\"external_id\":\"225\",\"source\"\
+        :\"Archivists Toolkit Database::RESOURCE_COMPONENT\",\"created_by\":\"admin\"\
+        ,\"last_modified_by\":\"admin\",\"create_time\":\"2020-06-26T16:06:07Z\",\"\
+        system_mtime\":\"2020-06-26T16:06:07Z\",\"user_mtime\":\"2020-06-26T16:06:07Z\"\
+        ,\"jsonmodel_type\":\"external_id\"}],\"subjects\":[],\"linked_events\":[],\"\
+        extents\":[],\"lang_materials\":[],\"dates\":[{\"lock_version\":0,\"expression\"\
+        :\"undated\",\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\"\
+        :\"2020-06-26T16:06:07Z\",\"system_mtime\":\"2020-06-26T16:06:07Z\",\"user_mtime\"\
+        :\"2020-06-26T16:06:07Z\",\"date_type\":\"single\",\"label\":\"creation\"\
+        ,\"era\":\"ce\",\"calendar\":\"gregorian\",\"jsonmodel_type\":\"date\"}],\"\
+        external_documents\":[],\"rights_statements\":[],\"linked_agents\":[],\"ancestors\"\
+        :[{\"ref\":\"/repositories/2/archival_objects/1\",\"level\":\"series\"},{\"\
+        ref\":\"/repositories/2/resources/1\",\"level\":\"collection\"}],\"instances\"\
+        :[{\"lock_version\":0,\"created_by\":\"admin\",\"last_modified_by\":\"admin\"\
+        ,\"create_time\":\"2020-06-26T16:06:07Z\",\"system_mtime\":\"2020-06-26T16:06:07Z\"\
+        ,\"user_mtime\":\"2020-06-26T16:06:07Z\",\"instance_type\":\"mixed materials\"\
+        ,\"jsonmodel_type\":\"instance\",\"is_representative\":false,\"sub_container\"\
+        :{\"lock_version\":0,\"indicator_2\":\"1\",\"created_by\":\"admin\",\"last_modified_by\"\
+        :\"admin\",\"create_time\":\"2020-06-26T16:06:07Z\",\"system_mtime\":\"2020-06-26T16:06:07Z\"\
+        ,\"user_mtime\":\"2020-06-26T16:06:07Z\",\"type_2\":\"folder\",\"jsonmodel_type\"\
+        :\"sub_container\",\"top_container\":{\"ref\":\"/repositories/2/top_containers/1\"\
+        ,\"_resolved\":{\"lock_version\":18,\"barcode\":\"A0000000035731\",\"indicator\"\
+        :\"1\",\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\"\
+        :\"2020-06-26T16:06:03Z\",\"system_mtime\":\"2020-07-11T19:34:43Z\",\"user_mtime\"\
+        :\"2020-07-11T19:34:43Z\",\"type\":\"box\",\"jsonmodel_type\":\"top_container\"\
+        ,\"active_restrictions\":[],\"container_locations\":[{\"jsonmodel_type\":\"\
+        container_location\",\"status\":\"current\",\"start_date\":\"2020-07-11\"\
+        ,\"system_mtime\":\"2020-07-11 19:34:43 UTC\",\"user_mtime\":\"2020-07-11\
+        \ 19:34:43 UTC\",\"ref\":\"/locations/1\",\"_resolved\":{\"lock_version\"\
+        :0,\"building\":\"Main building\",\"title\":\"Main building, 1, 204, C [Shelf:\
+        \ 45]\",\"floor\":\"1\",\"room\":\"204\",\"area\":\"C\",\"coordinate_1_label\"\
+        :\"Shelf\",\"coordinate_1_indicator\":\"45\",\"created_by\":\"admin\",\"last_modified_by\"\
+        :\"admin\",\"create_time\":\"2020-07-11T19:33:53Z\",\"system_mtime\":\"2020-07-11T19:33:53Z\"\
+        ,\"user_mtime\":\"2020-07-11T19:33:53Z\",\"jsonmodel_type\":\"location\",\"\
+        external_ids\":[],\"functions\":[],\"uri\":\"/locations/1\"}}],\"series\"\
+        :[{\"ref\":\"/repositories/2/archival_objects/1\",\"identifier\":\"1\",\"\
+        display_string\":\"Personal, 1886\u20131961 (bulk 1933\u20131946)\",\"level_display_string\"\
+        :\"Series\",\"publish\":true},{\"ref\":\"/repositories/2/archival_objects/2\"\
+        ,\"identifier\":\"2\",\"display_string\":\"Laboratory Administration, 1934\u2013\
+        1946 (bulk 1941\u20131944)\",\"level_display_string\":\"Series\",\"publish\"\
+        :true}],\"collection\":[{\"ref\":\"/repositories/2/resources/1\",\"identifier\"\
+        :\"FA001\",\"display_string\":\"Max Bergmann papers, Rockefeller Institute\
+        \ for Medical Research Scientific Staff\"}],\"uri\":\"/repositories/2/top_containers/1\"\
+        ,\"repository\":{\"ref\":\"/repositories/2\"},\"restricted\":false,\"is_linked_to_published_record\"\
+        :false,\"display_string\":\"Box 1: Series 1; Series 2 [A0000000035731]\",\"\
+        long_display_string\":\"FA001, Series 1; Series 2, Box 1 [A0000000035731]\"\
+        }}}}],\"notes\":[],\"uri\":\"/repositories/2/archival_objects/7\",\"repository\"\
+        :{\"ref\":\"/repositories/2\"},\"resource\":{\"ref\":\"/repositories/2/resources/1\"\
+        },\"parent\":{\"ref\":\"/repositories/2/archival_objects/1\"},\"has_unpublished_ancestor\"\
+        :false}\n"
+    headers:
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Length:
+      - '4009'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Jul 2020 19:35:05 GMT
+      Server:
+      - Jetty(8.1.5.v20120716)
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1
