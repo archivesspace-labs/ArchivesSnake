@@ -1,4 +1,5 @@
 import json
+from collections.abc import Mapping
 from functools import wraps
 
 
