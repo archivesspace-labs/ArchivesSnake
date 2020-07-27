@@ -312,17 +312,7 @@ Here are some example scripts and projects that make use of ASnake:
 For more examples on working with ASnake, please check the [Wiki page](https://github.com/archivesspace-labs/ArchivesSnake/wiki).
 
 ## Other API Scripts
-Here are several examples of non-ASnake scripts that operate on ArchivesSpace. Please feel free to submit your own via pull request!
-
-* [University of Denver links](Denver_links.md)
-* [Duke Examples](Duke_links.md)
-* [Harvard/Smith Ingest Client/Scripts](HarvardSmithLinks.md)
-* [Johns Hopkins University links](Johns_Hopkins_University_links.md)
-* [Penn State University Links](PSU_links.md)
-* [Rockefeller Archive Center Examples](RAC_links.md)
-* [Smith archivesspace Python Module](https://smithcollegelibraries.github.io/archivesspace-python/)
-* [Outline of UAlbany Draft Library](ualbanyExample.md)
-* [Yale University Links](Yale_Links.md)
+The [other_API_scripts directory](/other_API_scripts) contains several examples of non-ASnake scripts that operate on ArchivesSpace. Please feel free to submit your own via pull request!
 
 ## Contributing
 ArchivesSnake is a community driven, open source project. Contributions are welcome, and all contributors will be acknowledged. All contributions made to ArchivesSnake must be available for distribution under an Apache 2.0 License.
