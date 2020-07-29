@@ -76,8 +76,7 @@ def get_note_text(note):
             data.append(item["value"])
         content = data
     else:
-        subnote_content_list = list(parse_subnote(sn)
-                                    for sn in note["subnotes"])
+        subnote_content_list = list(parse_subnote(sn) for sn in note["subnotes"])
         content = [
             c for subnote_content in subnote_content_list for c in subnote_content]
     return content
@@ -218,12 +217,6 @@ def indicates_restriction(rights_statement, restriction_acts):
     :returns: True if rights statement indicates a restriction, False if not.
     :rtype: bool
     """
-    def is_expired(date):
-        today = datetime.now()
-        date = date if date else datetime.strftime("%Y-%m-%d")
-        return False if (
-            datetime.strptime(date, "%Y-%m-%d") >= today) else True
-
     if is_expired(rights_statement.get("end_date")):
         return False
     for act in rights_statement.get("acts"):
@@ -231,6 +224,20 @@ def indicates_restriction(rights_statement, restriction_acts):
                 in restriction_acts and not is_expired(act.get("end_date"))):
             return True
     return False
+
+
+def is_expired(date):
+    """Takes a date and then checks whether today's date is before or after passed date.
+
+    :param string date: a representation of a date
+
+    :returns: False if date argument is after today. True otherwise
+    :rtype: bool
+    """
+    today = datetime.now()
+    date = date if date else datetime.strftime("%Y-%m-%d")
+    return False if (
+        datetime.strptime(date, "%Y-%m-%d") >= today) else True
 
 
 @jsonify()
