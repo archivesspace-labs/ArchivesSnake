@@ -56,7 +56,7 @@ def get_note_text(note):
             data.append(item["value"])
         content = data
     else:
-        subnote_content_list = list(parse_subnote(sn) for sn in note["subnotes"])
+        subnote_content_list = [parse_subnote(sn) for sn in note["subnotes"]]
         content = [
             c for subnote_content in subnote_content_list for c in subnote_content]
     return content
