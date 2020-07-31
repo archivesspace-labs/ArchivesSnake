@@ -83,23 +83,22 @@ def get_note_text(note):
 
 
 @jsonify()
-def text_in_note(note, query_string):
+def text_in_note(note, query_string, confidence=97):
     """Performs fuzzy searching against note text.
 
     :param dict note: an ArchivesSpace note.
     :param str query_string: a string to match against.
+    :param int confidence: minimum confidence ratio to match against.
 
     :returns: True if a match is found for `query_string`, False if no match is
             found.
     :rtype: bool
     """
-    CONFIDENCE_RATIO = 97
-    """int: Minimum confidence ratio to match against."""
     note_content = get_note_text(note)
     ratio = fuzz.token_sort_ratio(
         " ".join([n.lower() for n in note_content]),
         query_string.lower(),
-        score_cutoff=CONFIDENCE_RATIO)
+        score_cutoff=confidence)
     return bool(ratio)
 
 
