@@ -10,29 +10,51 @@ from string import Formatter
 from collections.abc import Mapping
 from itertools import chain
 
-from .decorators import get_uri, jsonify, urify
 
-def resolve_to_uri(thingit, client):
+def resolve_to_uri(thingit):
+    """Given any of:
+- the URI for an ArchivesSpace object
+- a dict with a key 'uri' or 'ref' containing said URI
+- an object responding to .json() returning such a dict
+
+this method will return a string containing the URI for that resource.
+    """
     uri = None
     # if object has .json(), replace with value of .json()
     if callable(getattr(thingit, 'json', None)):
         thingit = thingit.json()
-
     if isinstance(thingit, str):
         uri = thingit
     elif isinstance(thingit, Mapping):
         uri = thingit.get("uri", thingit.get("ref", None))
-
     if not uri:
         raise Exception('Could not resolve "{}" to a URI'.format(thingit))
-
     return uri
 
 
+def resolve_to_json(thingit, client):
+    """Given any of:
+- the URI for an ArchivesSpace object
+- a dict with a key 'uri' or 'ref' containing said URI
+- an object responding to .json() returning such a dict
+
+this method will return a JSON representation of that object.
+"""
+    json = None
+    # if object has .json(), return that value
+    if isinstance(thingit, dict):
+        json = thingit
+    elif callable(getattr(thingit, 'json', None)):
+        json = thingit.json()
+    else:
+        uri = resolve_to_uri(thingit)
+        json = client.get(thingit).json()
+    if not json:
+        raise Exception('Could not resolve {} to JSON.'.format(thingit))
+    return json
 
 
-@jsonify()
-def get_note_text(note):
+def get_note_text(note, client):
     """Parses note content from different note types.
 
     :param dict: an ArchivesSpace note.
@@ -40,7 +62,7 @@ def get_note_text(note):
     :returns: a list containing note content.
     :rtype: list
     """
-    def parse_subnote(subnote):
+    def parse_subnote(subnote, client):
         """Parses note content from subnotes.
 
         :param dict: an ArchivesSpace subnote.
@@ -48,6 +70,7 @@ def get_note_text(note):
         :returns: a list containing subnote content.
         :rtype: list
         """
+        subnote = resolve_to_json(subnote, client)
         if subnote["jsonmodel_type"] in [
                 "note_orderedlist", "note_index"]:
             content = subnote["items"]
@@ -62,6 +85,7 @@ def get_note_text(note):
                 subnote["content"], list) else [subnote["content"]]
         return content
 
+    note = resolve_to_json(note, client)
     if note["jsonmodel_type"] in ["note_singlepart", "note_langmaterial"]:
         content = note["content"]
     elif note["jsonmodel_type"] == "note_bibliography":
@@ -75,14 +99,13 @@ def get_note_text(note):
             data.append(item["value"])
         content = data
     else:
-        subnote_content_list = [parse_subnote(sn) for sn in note["subnotes"]]
+        subnote_content_list = [parse_subnote(sn, client) for sn in note["subnotes"]]
         content = [
             c for subnote_content in subnote_content_list for c in subnote_content]
     return content
 
 
-@jsonify()
-def text_in_note(note, query_string, confidence=97):
+def text_in_note(note, query_string, client, confidence=97):
     """Performs fuzzy searching against note text.
 
     :param dict note: an ArchivesSpace note.
@@ -93,7 +116,8 @@ def text_in_note(note, query_string, confidence=97):
             found.
     :rtype: bool
     """
-    note_content = get_note_text(note)
+    note = resolve_to_json(note, client)
+    note_content = get_note_text(note, client)
     ratio = fuzz.token_sort_ratio(
         " ".join([n.lower() for n in note_content]),
         query_string.lower(),
@@ -101,8 +125,7 @@ def text_in_note(note, query_string, confidence=97):
     return bool(ratio)
 
 
-@jsonify()
-def format_from_obj(obj, format_string):
+def format_from_obj(obj, format_string, client):
     """Generates a human-readable string from an object.
 
     :param JSONModelObject or dict: an ArchivesSpace object.
@@ -110,6 +133,7 @@ def format_from_obj(obj, format_string):
     :returns: a string in the chosen format.
     :rtype: str
     """
+    obj = resolve_to_json(obj, client)
     if not format_string:
         raise Exception("No format string provided.")
     else:
@@ -121,12 +145,10 @@ def format_from_obj(obj, format_string):
             return format_string.format(**d)
         except KeyError as e:
             raise KeyError(
-                "The field {} was not found in this object".format(
-                    str(e)))
+                "The field {} was not found in this object".format(str(e)))
 
 
-@jsonify()
-def format_resource_id(resource, separator=":"):
+def format_resource_id(resource, client, separator=":"):
     """Concatenates the four-part ID for a resource record.
 
     :param dict resource: an ArchivesSpace resource.
@@ -136,6 +158,7 @@ def format_resource_id(resource, separator=":"):
     :returns: a concatenated four-part ID for the resource record.
     :rtype: str
     """
+    resource = resolve_to_json(resource, client)
     resource_id = []
     for x in range(4):
         try:
@@ -145,8 +168,7 @@ def format_resource_id(resource, separator=":"):
     return separator.join(resource_id)
 
 
-@urify()
-def closest_value(archival_object, key, client):
+def find_closest_value(archival_object, key, client):
     """Finds the closest value matching a key.
 
     Starts with an archival object, and iterates up through its ancestors
@@ -160,12 +182,15 @@ def closest_value(archival_object, key, client):
     :returns: The value of the key, which could be a str, list, or dict.
     :rtype: str, list, or key
     """
-    json_obj = client.get(archival_object).json()
-    if json_obj.get(key) not in ["", [], {}, None]:
-        return json_obj[key]
+    ao_uri = resolve_to_uri(archival_object)
+    archival_object = client.get(ao_uri, params={'resolve': ['ancestors']}).json()
+    if archival_object.get(key) not in ["", [], {}, None]:
+        return archival_object[key]
     else:
-        for ancestor in json_obj.get("ancestors"):
-            return closest_value(ancestor["ref"], key, client)
+        for ancestor in archival_object.get("ancestors"):
+            anc = ancestor.get("_resolved")
+            if anc.get(key) not in ["", [], {}, None]:
+                return anc[key]
 
 
 def get_orphans(object_list, null_attribute, client):
@@ -180,13 +205,12 @@ def get_orphans(object_list, null_attribute, client):
     :yield type: dict
     """
     for obj in object_list:
-        obj_json = client.get(get_uri(obj)).json()
-        if obj_json.get(null_attribute) in ["", [], {}, None]:
-            yield obj_json
+        obj = resolve_to_json(obj, client)
+        if obj.get(null_attribute) in ["", [], {}, None]:
+            yield obj
 
 
-@jsonify()
-def get_expression(date):
+def get_date_display(date, client):
     """Returns a date expression for a date object.
 
     Concatenates start and end dates if no date expression exists.
@@ -196,6 +220,7 @@ def get_expression(date):
     :returns: date expression for the date object.
     :rtype: str
     """
+    date = resolve_to_json(date, client)
     try:
         expression = date["expression"]
     except KeyError:
@@ -206,8 +231,7 @@ def get_expression(date):
     return expression
 
 
-@jsonify()
-def indicates_restriction(rights_statement, restriction_acts):
+def indicates_restriction(rights_statement, restriction_acts, client):
     """Parses a rights statement to determine if it indicates a restriction.
 
     :param dict rights_statement: an ArchivesSpace rights statement.
@@ -215,6 +239,7 @@ def indicates_restriction(rights_statement, restriction_acts):
     :returns: True if rights statement indicates a restriction, False if not.
     :rtype: bool
     """
+    rights_statement = resolve_to_json(rights_statement, client)
     if is_expired(rights_statement.get("end_date")):
         return False
     for act in rights_statement.get("acts"):
@@ -224,21 +249,20 @@ def indicates_restriction(rights_statement, restriction_acts):
     return False
 
 
-def is_expired(date):
+def is_expired(date_str):
     """Takes a date and then checks whether today's date is before or after passed date.
     Will return a ValueError if passed date argument is an invalid date.
 
-    :param string date: a representation of a date
+    :param string date: an ISO-formatted representation of a date
 
-    :returns: False if date argument is after today. True otherwise
+    :returns: False if date argument is after today or True if
     :rtype: bool
     """
-    parsed_date = date.fromisoformat(date)
+    parsed_date = date.fromisoformat(date_str)
     return parsed_date < date.today()
 
 
-@jsonify()
-def is_restricted(archival_object, query_string, restriction_acts):
+def is_restricted(archival_object, query_string, restriction_acts, client):
     """Parses an archival object to determine if it is restricted.
 
     Iterates through notes, looking for a conditions governing access note
@@ -252,12 +276,13 @@ def is_restricted(archival_object, query_string, restriction_acts):
     :returns: True if archival object is restricted, False if not.
     :rtype: bool
     """
+    archival_object = resolve_to_json(archival_object, client)
     for note in archival_object["notes"]:
         if note["type"] == "accessrestrict":
-            if text_in_note(note, query_string.lower()):
+            if text_in_note(note, query_string.lower(), client):
                 return True
     for rights_statement in archival_object["rights_statements"]:
-        if indicates_restriction(rights_statement, restriction_acts):
+        if indicates_restriction(rights_statement, restriction_acts, client):
             return True
     return False
 
@@ -272,19 +297,17 @@ def strip_html_tags(string):
     return cleantext
 
 
-@urify()
-def object_locations(ao_uri, client):
-    '''Given any of:
+def get_object_locations(ao_uri, client):
+    """Given any of:
 - the URI for an archival object
 - a dict with a key 'uri' or 'ref' containing said URI
 - an object responding to .json() returning such a dict
 
 and an :class:`asnake.client.ASnakeClient`, this method will return a
 generator which yields the JSON representation of any locations associated
-with the archival object.'''
-    ao_uri = resolve_to_uri(ao_thingit)
-    assert 'archival_object' in ao_uri
-
+with the archival object.
+"""
+    ao_uri = resolve_to_uri(ao_uri)
     resp = client.get(ao_uri, params={'resolve': ['top_container::container_locations']})
 
     if resp.status_code != 200:
@@ -294,14 +317,14 @@ with the archival object.'''
             yield container_loc['_resolved']
 
 def walk_tree(thingit, client):
-    '''Given any of:
+    """Given any of:
 - the URI for a resource
 - the URI for an archival object
 - a Mapping containing such a URI under the key 'uri'
 
 and an :class:`asnake.client.ASnakeClient`, this method will return a generator
 which yields the JSON representation of each successive element in the resource's tree,
-in order.'''
+in order."""
     uri = resolve_to_uri(thingit, client)
 
     params = {'offset': 0}
