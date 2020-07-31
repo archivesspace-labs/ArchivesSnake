@@ -15,8 +15,10 @@ def load_fixture(filename, client=None):
         return data
 
 
+@vcr.use_cassette
 def test_get_note_text():
     """Checks whether the returned note text matches the selected query string."""
+    client = ASpace().client
     for fixture, expected in [
             ("note_bibliography.json", [
                 "bibliography", "item 1", "item 2"]),
@@ -30,13 +32,15 @@ def test_get_note_text():
                 "Bioghist with ordered list", "item1", "item2"]),
             ("note_single.json", ["Go Mets!"])]:
         note = load_fixture(fixture)
-        result = utils.get_note_text(note)
+        result = utils.get_note_text(note, client)
         assert isinstance(result, list)
         assert set(result) == set(expected)
 
 
+@vcr.use_cassette
 def test_text_in_note():
     """Checks whether the query string and note content are close to a match."""
+    client = ASpace().client
     for fixture, query_string, expected in [
         ("note_single.json", "Go Mets!", True),
         ("note_single.json", "hello", False),
@@ -44,38 +48,40 @@ def test_text_in_note():
         ("note_multi.json", "Boo Yankees", False)
     ]:
         note = load_fixture(fixture)
-        result = utils.text_in_note(note, query_string)
+        result = utils.text_in_note(note, query_string, client)
         assert result == expected
 
 
 @vcr.use_cassette
 def test_object_locations():
     """Checks whether the function returns a list of dicts."""
-    client = ASpace(baseurl="http://localhost:8089").client
-    locations = utils.object_locations("/repositories/2/archival_objects/7", client)
+    client = ASpace().client
+    locations = utils.get_object_locations("/repositories/2/archival_objects/7", client)
     assert len(list(locations)) == 1
     for obj in locations:
         assert isinstance(obj, dict)
 
 
+@vcr.use_cassette
 def test_format_resource_id():
     """Checks whether the function returns a concatenated string as expected."""
+    client = ASpace().client
     for fixture, formatted, separator in [
             ("archival_object.json", "1;2;3;4", ";"),
             ("archival_object_2.json", "1:2:3", None)]:
         resource = load_fixture(fixture)
         if not separator:
-            result = utils.format_resource_id(resource)
+            result = utils.format_resource_id(resource, client)
         else:
-            result = utils.format_resource_id(resource, separator)
+            result = utils.format_resource_id(resource, client, separator)
         assert isinstance(result, str)
         assert result == formatted
 
 
 @vcr.use_cassette
-def test_closest_value():
+def test_find_closest_value():
     client = ASpace().client
-    value = utils.closest_value("/repositories/2/archival_objects/7", "extents", client)
+    value = utils.find_closest_value("/repositories/2/archival_objects/7", "extents", client)
     assert len(value) > 0
 
 
@@ -98,19 +104,23 @@ def test_get_orphans():
         assert o.get(key) in ["", [], {}, None]
 
 
-def test_get_expression():
-    """Tests whether the date expression function works as intended."""
+@vcr.use_cassette
+def test_get_date_display():
+    """Tests whether the date display function works as intended."""
+    client = ASpace().client
     for fixture, expected in [
             ("date_expression.json", "1905-1980"),
             ("date_no_expression.json", "1905-1980"),
             ("date_no_expression_no_end.json", "1905")]:
         date = load_fixture(fixture)
-        result = utils.get_expression(date)
+        result = utils.get_date_display(date, client)
         assert result == expected
 
 
+@vcr.use_cassette
 def test_indicates_restriction():
     """Tests whether rights statements are correctly parsed for restrictions."""
+    client = ASpace().client
     for fixture, restriction_acts, expected in [
             ("rights_statement_restricted.json",
              ["disallow", "conditional"], True),
@@ -126,12 +136,14 @@ def test_indicates_restriction():
             ("rights_statement_not_restricted.json", ["allow"], True)]:
         statement = load_fixture(fixture)
         status = utils.indicates_restriction(
-            statement, restriction_acts)
+            statement, restriction_acts, client)
         assert status == expected
 
 
+@vcr.use_cassette
 def test_is_restricted():
     """Tests whether the function can find restrictions in an AS archival object."""
+    client = ASpace().client
     for fixture, query_string, restriction_acts, expected in [
         ("archival_object.json", "materials are restricted",
          ["disallow", "conditional"], True),
@@ -146,7 +158,7 @@ def test_is_restricted():
     ]:
         archival_object = load_fixture(fixture)
         result = utils.is_restricted(
-            archival_object, query_string, restriction_acts)
+            archival_object, query_string, restriction_acts, client)
         assert result == expected
 
 
@@ -158,8 +170,10 @@ def test_strip_html_tags():
     assert output == expected
 
 
+@vcr.use_cassette
 def test_format_from_obj():
     """Test that format strings can be passed to objects as expected."""
+    client = ASpace().client
     for fixture, format_string in [
         ("date_expression.json", "{begin} - {end} ({expression})"),
         ("date_expression.json", None),
@@ -167,13 +181,13 @@ def test_format_from_obj():
         date = load_fixture(fixture)
         if not format_string:
             with raises(Exception) as excpt:
-                utils.format_from_obj(date, format_string)
+                utils.format_from_obj(date, format_string, client)
             assert str(excpt.value) == "No format string provided."
         else:
             formatted = utils.format_from_obj(
-                date, format_string)
+                date, format_string, client)
             assert formatted == "1905 - 1980 (1905-1980)"
             with raises(KeyError) as excpt:
                 formatted = utils.format_from_obj(
-                    date, "{start} - {end} ({expression})")
+                    date, "{start} - {end} ({expression})", client)
             assert "was not found in this object" in str(excpt.value)
