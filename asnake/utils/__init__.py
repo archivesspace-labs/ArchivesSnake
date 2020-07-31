@@ -2,7 +2,7 @@
 #
 # Note: module under active development, should be considered a WIP
 #       code here subject to change and relocation with no notice
-from datetime import datetime
+from datetime import date
 import re
 from rapidfuzz import fuzz
 from asnake.jsonmodel import JSONModelObject
@@ -207,16 +207,15 @@ def indicates_restriction(rights_statement, restriction_acts):
 
 def is_expired(date):
     """Takes a date and then checks whether today's date is before or after passed date.
+    Will return a ValueError if passed date argument is an invalid date.
 
     :param string date: a representation of a date
 
     :returns: False if date argument is after today. True otherwise
     :rtype: bool
     """
-    today = datetime.now()
-    date = date if date else datetime.strftime("%Y-%m-%d")
-    return False if (
-        datetime.strptime(date, "%Y-%m-%d") >= today) else True
+    parsed_date = date.fromisoformat(date)
+    return parsed_date < date.today()
 
 
 @jsonify()
