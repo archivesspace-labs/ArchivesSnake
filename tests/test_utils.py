@@ -4,6 +4,7 @@ from pytest import raises
 
 import vcr
 from asnake.aspace import ASpace
+from asnake.jsonmodel import wrap_json_object
 from asnake import utils
 
 from .common import vcr
@@ -13,6 +14,29 @@ def load_fixture(filename, client=None):
     with open(os.path.join("tests/fixtures/utils", filename)) as json_file:
         data = json.load(json_file)
         return data
+
+
+def test_resolve_to_uri():
+    expected = "/repositories/2/archival_objects/1"
+    for to_resolve in [
+            expected,
+            {"ref": expected},
+            {"uri": expected},
+            wrap_json_object({"uri": expected})]:
+        resolved = utils.resolve_to_uri(to_resolve)
+        assert resolved == expected
+
+
+@vcr.use_cassette
+def test_resolve_to_json():
+    client = ASpace().client
+    expected = load_fixture("archival_object.json")
+    uri = "/repositories/2/archival_objects/1"
+    for to_resolve in [
+            uri,
+            wrap_json_object(expected)]:
+        resolved = utils.resolve_to_json(to_resolve, client)
+        assert resolved == expected
 
 
 @vcr.use_cassette
@@ -67,8 +91,8 @@ def test_format_resource_id():
     """Checks whether the function returns a concatenated string as expected."""
     client = ASpace().client
     for fixture, formatted, separator in [
-            ("archival_object.json", "1;2;3;4", ";"),
-            ("archival_object_2.json", "1:2:3", None)]:
+            ("resource.json", "1;2;3;4", ";"),
+            ("resource_2.json", "1:2:3", None)]:
         resource = load_fixture(fixture)
         if not separator:
             result = utils.format_resource_id(resource, client)
@@ -142,19 +166,19 @@ def test_indicates_restriction():
 
 @vcr.use_cassette
 def test_is_restricted():
-    """Tests whether the function can find restrictions in an AS archival object."""
+    """Tests whether the function can find restrictions."""
     client = ASpace().client
     for fixture, query_string, restriction_acts, expected in [
-        ("archival_object.json", "materials are restricted",
+        ("resource.json", "materials are restricted",
          ["disallow", "conditional"], True),
-        ("archival_object.json",
-         "materials are restricted", ["allow"], True),
-        ("archival_object.json", "test", ["allow"], False),
-        ("archival_object_2.json", "materials are restricted",
+        ("resource.json", "materials are restricted",
+         ["allow"], True),
+        ("resource.json", "test", ["allow"], False),
+        ("resource_2.json", "materials are restricted",
          ["disallow", "conditional"], True),
-        ("archival_object_2.json", "test", ["allow"], False),
-        ("archival_object_3.json",
-         "materials are restricted", ["allow"], False)
+        ("resource_2.json", "test", ["allow"], False),
+        ("resource_3.json", "materials are restricted",
+         ["allow"], False)
     ]:
         archival_object = load_fixture(fixture)
         result = utils.is_restricted(

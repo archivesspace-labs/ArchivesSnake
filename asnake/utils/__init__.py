@@ -35,13 +35,11 @@ this method will return a string containing the URI for that resource.
 def resolve_to_json(thingit, client):
     """Given any of:
 - the URI for an ArchivesSpace object
-- a dict with a key 'uri' or 'ref' containing said URI
 - an object responding to .json() returning such a dict
 
 this method will return a JSON representation of that object.
 """
     json = None
-    # if object has .json(), return that value
     if isinstance(thingit, dict):
         json = thingit
     elif callable(getattr(thingit, 'json', None)):

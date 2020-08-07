@@ -1,0 +1,161 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - ArchivesSnake/0.1
+    method: POST
+    uri: http://localhost:4567/users/admin/login?password=admin&expiring=False
+  response:
+    body:
+      string: '{"session":"5e08338c2bb3143ccd7a591548f398d7d0ac0f0044c43f38e1b048a397cf56ff","user":{"lock_version":123,"username":"admin","name":"Administrator","is_system_user":true,"create_time":"2020-06-26T16:02:36Z","system_mtime":"2020-08-07T01:08:47Z","user_mtime":"2020-08-07T01:08:47Z","jsonmodel_type":"user","groups":[],"is_admin":true,"uri":"/users/1","agent_record":{"ref":"/agents/people/1"},"permissions":{"/repositories/1":["update_enumeration_record","update_location_record","delete_vocabulary_record","update_subject_record","delete_subject_record","update_agent_record","delete_agent_record","update_vocabulary_record","merge_subject_record","merge_agent_record","update_container_profile_record","update_location_profile_record","administer_system","become_user","cancel_importer_job","cancel_job","create_job","create_repository","delete_archival_record","delete_assessment_record","delete_classification_record","delete_event_record","delete_repository","import_records","index_system","manage_agent_record","manage_assessment_attributes","manage_container_profile_record","manage_container_record","manage_enumeration_record","manage_location_profile_record","manage_rde_templates","manage_repository","manage_subject_record","manage_users","manage_vocabulary_record","mediate_edits","merge_agents_and_subjects","merge_archival_record","suppress_archival_record","transfer_archival_record","transfer_repository","update_accession_record","update_assessment_record","update_classification_record","update_container_record","update_digital_object_record","update_event_record","update_resource_record","view_agent_contact_record","view_all_records","view_repository","view_suppressed"],"_archivesspace":["administer_system","become_user","cancel_importer_job","cancel_job","create_job","create_repository","delete_archival_record","delete_assessment_record","delete_classification_record","delete_event_record","delete_repository","import_records","index_system","manage_agent_record","manage_assessment_attributes","manage_container_profile_record","manage_container_record","manage_enumeration_record","manage_location_profile_record","manage_rde_templates","manage_repository","manage_subject_record","manage_users","manage_vocabulary_record","mediate_edits","merge_agents_and_subjects","merge_archival_record","suppress_archival_record","transfer_archival_record","transfer_repository","update_accession_record","update_assessment_record","update_classification_record","update_container_record","update_digital_object_record","update_event_record","update_resource_record","view_agent_contact_record","view_all_records","view_repository","view_suppressed","update_enumeration_record","update_location_record","delete_vocabulary_record","update_subject_record","delete_subject_record","update_agent_record","delete_agent_record","update_vocabulary_record","merge_subject_record","merge_agent_record","update_container_profile_record","update_location_profile_record"]}}}
+
+        '
+    headers:
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Length:
+      - '2982'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Aug 2020 01:08:47 GMT
+      Server:
+      - Jetty(8.1.5.v20120716)
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - ArchivesSnake/0.1
+      X-ArchivesSpace-Session:
+      - 5e08338c2bb3143ccd7a591548f398d7d0ac0f0044c43f38e1b048a397cf56ff
+    method: GET
+    uri: http://localhost:4567/version
+  response:
+    body:
+      string: ArchivesSpace (v2.7.1)
+    headers:
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Length:
+      - '22'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Fri, 07 Aug 2020 01:08:47 GMT
+      Server:
+      - Jetty(8.1.5.v20120716)
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - ArchivesSnake/0.1
+      X-ArchivesSpace-Session:
+      - 5e08338c2bb3143ccd7a591548f398d7d0ac0f0044c43f38e1b048a397cf56ff
+    method: GET
+    uri: http://localhost:4567/repositories/2/archival_objects/1
+  response:
+    body:
+      string: "{\"lock_version\":0,\"position\":0,\"publish\":true,\"ref_id\":\"a0ba120af0bb44ba8088ddc61c4a7280\"\
+        ,\"component_id\":\"1\",\"title\":\"Personal\",\"display_string\":\"Personal,\
+        \ 1886\u20131961 (bulk 1933\u20131946)\",\"restrictions_apply\":false,\"created_by\"\
+        :\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"2020-06-26T16:06:06Z\"\
+        ,\"system_mtime\":\"2020-06-26T16:10:29Z\",\"user_mtime\":\"2020-06-26T16:06:06Z\"\
+        ,\"suppressed\":false,\"is_slug_auto\":true,\"level\":\"series\",\"jsonmodel_type\"\
+        :\"archival_object\",\"external_ids\":[{\"external_id\":\"216\",\"source\"\
+        :\"Archivists Toolkit Database::RESOURCE_COMPONENT\",\"created_by\":\"admin\"\
+        ,\"last_modified_by\":\"admin\",\"create_time\":\"2020-06-26T16:06:06Z\",\"\
+        system_mtime\":\"2020-06-26T16:06:06Z\",\"user_mtime\":\"2020-06-26T16:06:06Z\"\
+        ,\"jsonmodel_type\":\"external_id\"}],\"subjects\":[],\"linked_events\":[],\"\
+        extents\":[{\"lock_version\":0,\"number\":\"0.2\",\"created_by\":\"admin\"\
+        ,\"last_modified_by\":\"admin\",\"create_time\":\"2020-06-26T16:06:06Z\",\"\
+        system_mtime\":\"2020-06-26T16:06:06Z\",\"user_mtime\":\"2020-06-26T16:06:06Z\"\
+        ,\"portion\":\"whole\",\"extent_type\":\"Cubic Feet\",\"jsonmodel_type\":\"\
+        extent\"}],\"lang_materials\":[],\"dates\":[{\"lock_version\":0,\"expression\"\
+        :\"1886\u20131961 (bulk 1933\u20131946)\",\"begin\":\"1886\",\"end\":\"1961\"\
+        ,\"created_by\":\"admin\",\"last_modified_by\":\"admin\",\"create_time\":\"\
+        2020-06-26T16:06:06Z\",\"system_mtime\":\"2020-06-26T16:06:06Z\",\"user_mtime\"\
+        :\"2020-06-26T16:06:06Z\",\"date_type\":\"inclusive\",\"label\":\"creation\"\
+        ,\"jsonmodel_type\":\"date\"},{\"lock_version\":0,\"expression\":\"1933-1946\"\
+        ,\"begin\":\"1933\",\"end\":\"1946\",\"created_by\":\"admin\",\"last_modified_by\"\
+        :\"admin\",\"create_time\":\"2020-06-26T16:06:06Z\",\"system_mtime\":\"2020-06-26T16:06:06Z\"\
+        ,\"user_mtime\":\"2020-06-26T16:06:06Z\",\"date_type\":\"bulk\",\"label\"\
+        :\"creation\",\"jsonmodel_type\":\"date\"}],\"external_documents\":[],\"rights_statements\"\
+        :[],\"linked_agents\":[],\"ancestors\":[{\"ref\":\"/repositories/2/resources/1\"\
+        ,\"level\":\"collection\"}],\"instances\":[],\"notes\":[{\"jsonmodel_type\"\
+        :\"note_multipart\",\"subnotes\":[{\"publish\":true,\"jsonmodel_type\":\"\
+        note_text\",\"content\":\"Alphabetical by subject or format.\"}],\"type\"\
+        :\"arrangement\",\"persistent_id\":\"a37f8c3285188bc06dbd5f5a1cccf876\",\"\
+        label\":\"Arrangement:\",\"publish\":true},{\"jsonmodel_type\":\"note_multipart\"\
+        ,\"subnotes\":[{\"publish\":true,\"jsonmodel_type\":\"note_text\",\"content\"\
+        :\"This series consists primarily of Bergmann's correspondence from 1934\u2013\
+        1944 documenting his appointment to the Rockefeller Institute of Medical Research\
+        \ (RIMR), arrangements for his arrival in the U.S., efforts to gain immigrant\
+        \ status, retiring allowances, and RIMR administrative matters. Correspondents\
+        \ include Simon Flexner, H. T. Clarke, and J. B. Conant. The series also documents\
+        \ Bergmann's death and his funeral service held at RIMR, including a biographical\
+        \ memoir written by Joseph S. Fruton that was used in the Memorial Minute\
+        \ adopted by the Board of Scientific Directors and a short address delivered\
+        \ by Fruton at the funeral service. Other biographical records consist of\
+        \ copies of documents submitted for naturalization, including Bergmann's birth\
+        \ certificate, prison record, and marriage certificate, all of which are in\
+        \ German. Also included are several photographs of Bergmann, a listing of\
+        \ periodicals and books from Bergmann's library that were made available for\
+        \ purchase by Joseph Fruton following Bergmann's death, and a copy of the\
+        \ collection description and inventory for the Max Bergmann papers housed\
+        \ at the American Philosophical Society Library.\"}],\"type\":\"scopecontent\"\
+        ,\"persistent_id\":\"b032fef2831cdc94b9bbd83c2588eb43\",\"label\":\"Summary:\"\
+        ,\"publish\":true}],\"uri\":\"/repositories/2/archival_objects/1\",\"repository\"\
+        :{\"ref\":\"/repositories/2\"},\"resource\":{\"ref\":\"/repositories/2/resources/1\"\
+        },\"has_unpublished_ancestor\":false}\n"
+    headers:
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Length:
+      - '3675'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Aug 2020 01:08:47 GMT
+      Server:
+      - Jetty(8.1.5.v20120716)
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1
