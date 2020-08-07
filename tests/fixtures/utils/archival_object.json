@@ -1,145 +1,126 @@
 {
-    "lock_version": 3,
-    "title": "kmtests",
+    "lock_version": 0,
+    "position": 0,
     "publish": true,
-    "restrictions": false,
-    "created_by": "k.martin",
+    "ref_id": "a0ba120af0bb44ba8088ddc61c4a7280",
+    "component_id": "1",
+    "title": "Personal",
+    "display_string": "Personal, 1886–1961 (bulk 1933–1946)",
+    "restrictions_apply": false,
+    "created_by": "admin",
     "last_modified_by": "admin",
-    "create_time": "2020-03-09T16:25:14Z",
-    "system_mtime": "2020-03-19T13:07:13Z",
-    "user_mtime": "2020-03-19T13:07:13Z",
+    "create_time": "2020-06-26T16:06:06Z",
+    "system_mtime": "2020-06-26T16:10:29Z",
+    "user_mtime": "2020-06-26T16:06:06Z",
     "suppressed": false,
-    "is_slug_auto": false,
-    "id_0": "1",
-    "id_1": "2",
-    "id_2": "3",
-    "id_3": "4",
-    "language": "ang",
-    "level": "collection",
-    "jsonmodel_type": "resource",
-    "external_ids": [],
+    "is_slug_auto": true,
+    "level": "series",
+    "jsonmodel_type": "archival_object",
+    "external_ids": [
+        {
+            "external_id": "216",
+            "source": "Archivists Toolkit Database::RESOURCE_COMPONENT",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-06-26T16:06:06Z",
+            "system_mtime": "2020-06-26T16:06:06Z",
+            "user_mtime": "2020-06-26T16:06:06Z",
+            "jsonmodel_type": "external_id"
+        }
+    ],
     "subjects": [],
     "linked_events": [],
     "extents": [
         {
             "lock_version": 0,
-            "number": "1",
+            "number": "0.2",
             "created_by": "admin",
             "last_modified_by": "admin",
-            "create_time": "2020-03-19T13:07:40Z",
-            "system_mtime": "2020-03-19T13:07:40Z",
-            "user_mtime": "2020-03-19T13:07:40Z",
+            "create_time": "2020-06-26T16:06:06Z",
+            "system_mtime": "2020-06-26T16:06:06Z",
+            "user_mtime": "2020-06-26T16:06:06Z",
             "portion": "whole",
             "extent_type": "Cubic Feet",
             "jsonmodel_type": "extent"
         }
     ],
+    "lang_materials": [],
     "dates": [
         {
             "lock_version": 0,
-            "begin": "1990",
-            "end": "2000",
+            "expression": "1886–1961 (bulk 1933–1946)",
+            "begin": "1886",
+            "end": "1961",
             "created_by": "admin",
             "last_modified_by": "admin",
-            "create_time": "2020-03-19T13:07:40Z",
-            "system_mtime": "2020-03-19T13:07:40Z",
-            "user_mtime": "2020-03-19T13:07:40Z",
+            "create_time": "2020-06-26T16:06:06Z",
+            "system_mtime": "2020-06-26T16:06:06Z",
+            "user_mtime": "2020-06-26T16:06:06Z",
+            "date_type": "inclusive",
+            "label": "creation",
+            "jsonmodel_type": "date"
+        },
+        {
+            "lock_version": 0,
+            "expression": "1933-1946",
+            "begin": "1933",
+            "end": "1946",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-06-26T16:06:06Z",
+            "system_mtime": "2020-06-26T16:06:06Z",
+            "user_mtime": "2020-06-26T16:06:06Z",
             "date_type": "bulk",
             "label": "creation",
-            "era": "ce",
-            "calendar": "gregorian",
             "jsonmodel_type": "date"
         }
     ],
     "external_documents": [],
-    "rights_statements": [
-        {
-            "lock_version": 0,
-            "identifier": "e5dc6d09b9fe8640c05fe3de2926868c",
-            "created_by": "admin",
-            "last_modified_by": "admin",
-            "create_time": "2020-03-19T13:07:41Z",
-            "system_mtime": "2020-03-19T13:07:41Z",
-            "user_mtime": "2020-03-19T13:07:41Z",
-            "start_date": "2020-02-01",
-            "end_date": "2090-05-06",
-            "rights_type": "copyright",
-            "status": "copyrighted",
-            "jurisdiction": "US",
-            "jsonmodel_type": "rights_statement",
-            "external_documents": [],
-            "acts": [
-                {
-                    "start_date": "2020-01-01",
-                    "end_date": "2090-12-31",
-                    "created_by": "admin",
-                    "last_modified_by": "admin",
-                    "create_time": "2020-03-19T13:07:41Z",
-                    "system_mtime": "2020-03-19T13:07:41Z",
-                    "user_mtime": "2020-03-19T13:07:41Z",
-                    "act_type": "use",
-                    "restriction": "disallow",
-                    "jsonmodel_type": "rights_statement_act",
-                    "notes": []
-                }
-            ],
-            "linked_agents": [],
-            "notes": []
-        }
-    ],
+    "rights_statements": [],
     "linked_agents": [],
-    "revision_statements": [],
-    "instances": [
+    "ancestors": [
         {
-            "lock_version": 0,
-            "created_by": "admin",
-            "last_modified_by": "admin",
-            "create_time": "2020-03-19T13:07:41Z",
-            "system_mtime": "2020-03-19T13:07:41Z",
-            "user_mtime": "2020-03-19T13:07:41Z",
-            "instance_type": "mixed materials",
-            "jsonmodel_type": "instance",
-            "is_representative": false,
-            "sub_container": {
-                "lock_version": 0,
-                "created_by": "admin",
-                "last_modified_by": "admin",
-                "create_time": "2020-03-19T13:07:41Z",
-                "system_mtime": "2020-03-19T13:07:41Z",
-                "user_mtime": "2020-03-19T13:07:41Z",
-                "jsonmodel_type": "sub_container",
-                "top_container": {
-                    "ref": "/repositories/2/top_containers/191155"
-                }
-            }
+            "ref": "/repositories/2/resources/1",
+            "level": "collection"
         }
     ],
-    "deaccessions": [],
-    "related_accessions": [],
-    "classifications": [],
+    "instances": [],
     "notes": [
         {
             "jsonmodel_type": "note_multipart",
-            "persistent_id": "7e39d839488e068c65f822e52f5ffa01",
-            "type": "accessrestrict",
-            "rights_restriction": {
-                "local_access_restriction_type": []
-            },
             "subnotes": [
                 {
+                    "publish": true,
                     "jsonmodel_type": "note_text",
-                    "content": "materials are restricted",
-                    "publish": true
+                    "content": "Alphabetical by subject or format."
                 }
             ],
+            "type": "arrangement",
+            "persistent_id": "a37f8c3285188bc06dbd5f5a1cccf876",
+            "label": "Arrangement:",
+            "publish": true
+        },
+        {
+            "jsonmodel_type": "note_multipart",
+            "subnotes": [
+                {
+                    "publish": true,
+                    "jsonmodel_type": "note_text",
+                    "content": "This series consists primarily of Bergmann's correspondence from 1934–1944 documenting his appointment to the Rockefeller Institute of Medical Research (RIMR), arrangements for his arrival in the U.S., efforts to gain immigrant status, retiring allowances, and RIMR administrative matters. Correspondents include Simon Flexner, H. T. Clarke, and J. B. Conant. The series also documents Bergmann's death and his funeral service held at RIMR, including a biographical memoir written by Joseph S. Fruton that was used in the Memorial Minute adopted by the Board of Scientific Directors and a short address delivered by Fruton at the funeral service. Other biographical records consist of copies of documents submitted for naturalization, including Bergmann's birth certificate, prison record, and marriage certificate, all of which are in German. Also included are several photographs of Bergmann, a listing of periodicals and books from Bergmann's library that were made available for purchase by Joseph Fruton following Bergmann's death, and a copy of the collection description and inventory for the Max Bergmann papers housed at the American Philosophical Society Library."
+                }
+            ],
+            "type": "scopecontent",
+            "persistent_id": "b032fef2831cdc94b9bbd83c2588eb43",
+            "label": "Summary:",
             "publish": true
         }
     ],
-    "uri": "/repositories/2/resources/13064",
+    "uri": "/repositories/2/archival_objects/1",
     "repository": {
         "ref": "/repositories/2"
     },
-    "tree": {
-        "ref": "/repositories/2/resources/13064/tree"
-    }
+    "resource": {
+        "ref": "/repositories/2/resources/1"
+    },
+    "has_unpublished_ancestor": false
 }

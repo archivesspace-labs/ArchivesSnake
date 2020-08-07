@@ -1,0 +1,145 @@
+{
+    "lock_version": 3,
+    "title": "kmtests",
+    "publish": true,
+    "restrictions": false,
+    "created_by": "k.martin",
+    "last_modified_by": "admin",
+    "create_time": "2020-03-09T16:25:14Z",
+    "system_mtime": "2020-03-19T13:07:13Z",
+    "user_mtime": "2020-03-19T13:07:13Z",
+    "suppressed": false,
+    "is_slug_auto": false,
+    "id_0": "1",
+    "id_1": "2",
+    "id_2": "3",
+    "id_3": "4",
+    "language": "ang",
+    "level": "collection",
+    "jsonmodel_type": "resource",
+    "external_ids": [],
+    "subjects": [],
+    "linked_events": [],
+    "extents": [
+        {
+            "lock_version": 0,
+            "number": "1",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-03-19T13:07:40Z",
+            "system_mtime": "2020-03-19T13:07:40Z",
+            "user_mtime": "2020-03-19T13:07:40Z",
+            "portion": "whole",
+            "extent_type": "Cubic Feet",
+            "jsonmodel_type": "extent"
+        }
+    ],
+    "dates": [
+        {
+            "lock_version": 0,
+            "begin": "1990",
+            "end": "2000",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-03-19T13:07:40Z",
+            "system_mtime": "2020-03-19T13:07:40Z",
+            "user_mtime": "2020-03-19T13:07:40Z",
+            "date_type": "bulk",
+            "label": "creation",
+            "era": "ce",
+            "calendar": "gregorian",
+            "jsonmodel_type": "date"
+        }
+    ],
+    "external_documents": [],
+    "rights_statements": [
+        {
+            "lock_version": 0,
+            "identifier": "e5dc6d09b9fe8640c05fe3de2926868c",
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-03-19T13:07:41Z",
+            "system_mtime": "2020-03-19T13:07:41Z",
+            "user_mtime": "2020-03-19T13:07:41Z",
+            "start_date": "2020-02-01",
+            "end_date": "2090-05-06",
+            "rights_type": "copyright",
+            "status": "copyrighted",
+            "jurisdiction": "US",
+            "jsonmodel_type": "rights_statement",
+            "external_documents": [],
+            "acts": [
+                {
+                    "start_date": "2020-01-01",
+                    "end_date": "2090-12-31",
+                    "created_by": "admin",
+                    "last_modified_by": "admin",
+                    "create_time": "2020-03-19T13:07:41Z",
+                    "system_mtime": "2020-03-19T13:07:41Z",
+                    "user_mtime": "2020-03-19T13:07:41Z",
+                    "act_type": "use",
+                    "restriction": "disallow",
+                    "jsonmodel_type": "rights_statement_act",
+                    "notes": []
+                }
+            ],
+            "linked_agents": [],
+            "notes": []
+        }
+    ],
+    "linked_agents": [],
+    "revision_statements": [],
+    "instances": [
+        {
+            "lock_version": 0,
+            "created_by": "admin",
+            "last_modified_by": "admin",
+            "create_time": "2020-03-19T13:07:41Z",
+            "system_mtime": "2020-03-19T13:07:41Z",
+            "user_mtime": "2020-03-19T13:07:41Z",
+            "instance_type": "mixed materials",
+            "jsonmodel_type": "instance",
+            "is_representative": false,
+            "sub_container": {
+                "lock_version": 0,
+                "created_by": "admin",
+                "last_modified_by": "admin",
+                "create_time": "2020-03-19T13:07:41Z",
+                "system_mtime": "2020-03-19T13:07:41Z",
+                "user_mtime": "2020-03-19T13:07:41Z",
+                "jsonmodel_type": "sub_container",
+                "top_container": {
+                    "ref": "/repositories/2/top_containers/191155"
+                }
+            }
+        }
+    ],
+    "deaccessions": [],
+    "related_accessions": [],
+    "classifications": [],
+    "notes": [
+        {
+            "jsonmodel_type": "note_multipart",
+            "persistent_id": "7e39d839488e068c65f822e52f5ffa01",
+            "type": "accessrestrict",
+            "rights_restriction": {
+                "local_access_restriction_type": []
+            },
+            "subnotes": [
+                {
+                    "jsonmodel_type": "note_text",
+                    "content": "materials are restricted",
+                    "publish": true
+                }
+            ],
+            "publish": true
+        }
+    ],
+    "uri": "/repositories/2/resources/13064",
+    "repository": {
+        "ref": "/repositories/2"
+    },
+    "tree": {
+        "ref": "/repositories/2/resources/13064/tree"
+    }
+}
