@@ -116,7 +116,7 @@ def text_in_note(note, query_string, client, confidence=97):
     """
     note = resolve_to_json(note, client)
     note_content = get_note_text(note, client)
-    ratio = fuzz.token_sort_ratio(
+    ratio = fuzz.partial_ratio(
         " ".join([n.lower() for n in note_content]),
         query_string.lower(),
         score_cutoff=confidence)
