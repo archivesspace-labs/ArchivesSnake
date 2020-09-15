@@ -23,7 +23,7 @@ setup(
         "pyyaml",
         "rapidfuzz",
         "requests",
-	"structlog",
-	"more_itertools",
+	    "structlog",
+	    "more_itertools",
     ],
 )
