@@ -47,14 +47,14 @@ def test_get_note_text():
             ("note_bibliography.json", [
                 "bibliography", "item 1", "item 2"]),
             ("note_index.json", ["title1", "title2"]),
-            ("note_multi.json", ["materials are restricted"]),
+            ("note_multi.json", ["Materials are restricted until a future date."]),
             ("note_multi_chronology.json", [
                 "general note with chronology", "date", "event1", "event2"]),
             ("note_multi_defined.json", [
                 "bioghist with defined list", "item", "1", "item", "2"]),
             ("note_multi_ordered.json", [
                 "Bioghist with ordered list", "item1", "item2"]),
-            ("note_single.json", ["Go Mets!"])]:
+            ("note_single.json", ["Go Mets! They are the best!"])]:
         note = load_fixture(fixture)
         result = utils.get_note_text(note, client)
         assert isinstance(result, list)
