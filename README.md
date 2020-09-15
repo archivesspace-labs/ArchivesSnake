@@ -40,27 +40,29 @@ ArchivesSnake looks for a .archivessnake.yml file in the home directory.
 
 An example .archivessnake.yml file:
 
-`baseurl: http://localhost:8089`  
-`username:`  
-`password:`  
+```yaml
+baseurl: 'http://localhost:8089'  
+username: 'admin'  
+password: 'admin'
+```
 
 | **Setting**     | **Description**                                                               | **Default Value**     |
 |-----------------|-------------------------------------------------------------------------------|-----------------------|
-| baseurl         | The location (including port if not on port 80) of your archivesspace backend | http://localhost:4567 |
-| username        | Username for authorization                                                    | admin                 |
-| password        | Password for authorization                                                    | admin                 |
-| retry_with_auth | Whether to respond to 403 errors by trying to authorize and retrying          | True                  |
-| logging_config  | Hash with various config values for the logging subsystem                     | **see below**         |
+| `baseurl`         | The location (including port if not on port 80) of your archivesspace backend | http://localhost:4567 |
+| `username`        | Username for authorization                                                    | admin                 |
+| `password`        | Password for authorization                                                    | admin                 |
+| `retry_with_auth` | Whether to respond to 403 errors by trying to authorize and retrying          | True                  |
+| `logging_config`  | Hash with various config values for the logging subsystem                     | **see below**         |
 
 The logging config allows the following settings, none of which are present by default:
 
 | **Setting**    | **Description**                                                           | **Notes**                          |
 |----------------|---------------------------------------------------------------------------|------------------------------------|
-| default_config | A default configuration to start from, see                                | See [logging](#logging) for more info  |
-| stream         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | Cannot be combined with stream     |
-| filename       | name of file to be printed to                                             | Cannot be combined with filename   |
-| filemode       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | Only useful combined with filename |
-| level          | level to log at (e.g. 'INFO', 'DEBUG', 'WARNING')                         |                                    |
+| `default_config` | A default configuration to start from                                | See [logging](#logging) for more info  |
+| `stream`         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | Cannot be combined with `filename`     |
+| `filename`       | name of file to be printed to                                             | Cannot be combined with `stream`   |
+| `filemode`       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | Only useful combined with `filename` |
+| `level`          | level to log at (e.g. 'INFO', 'DEBUG', 'WARNING')                         |                                    |
 
 You can also define a configuration file, formatted in the [YAML markup language](http://yaml.org/). By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
 
@@ -312,7 +314,7 @@ Here are some example scripts and projects that make use of ASnake:
 For more examples on working with ASnake, please check the [Wiki page](https://github.com/archivesspace-labs/ArchivesSnake/wiki).
 
 ## Other API Scripts
-The [other_API_scripts directory](/other_API_scripts) contains several examples of non-ASnake scripts that operate on ArchivesSpace. Please feel free to submit your own via pull request!
+The [`other_API_scripts`](/other_API_scripts) directory contains several examples of non-ASnake scripts that operate on ArchivesSpace. Please feel free to submit your own via pull request!
 
 ## Contributing
 ArchivesSnake is a community driven, open source project. Contributions are welcome, and all contributors will be acknowledged. All contributions made to ArchivesSnake must be available for distribution under an Apache 2.0 License.
