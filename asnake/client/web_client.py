@@ -99,7 +99,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
 
         resp = self.session.post(
             "/".join([self.config['baseurl'].rstrip("/"), 'users/{username}/login']).format(username=quote(username)),
-            params={"password": password, "expiring": False}
+            data={"password": password, "expiring": False}
         )
 
         if resp.status_code != 200:
