@@ -12,6 +12,7 @@ structlog = "*"
 more_itertools = "*"
 "e1839a8" = {path = ".", editable = true}
 pytest = "*"
+rapidfuzz = "*"
 
 [dev-packages]
 pytest = "*"
