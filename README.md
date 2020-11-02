@@ -24,7 +24,7 @@ To install from git:
 git clone https://github.com/archivesspace-labs/ArchivesSnake.git
 cd ArchivesSnake
 python3 setup.py sdist
-pip3 install dist/ArchivesSnake-0.2.0.tar.gz
+pip3 install dist/ArchivesSnake-0.9.0.tar.gz
 ```
 
 This assumes a standard Python 3 install, which provides `pip3` and `python3` commands. If your environment doesn't allow you to successfully run either command, please consult the documentation for your version of Python and/or your operating system.
