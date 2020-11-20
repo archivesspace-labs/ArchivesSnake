@@ -323,7 +323,7 @@ def walk_tree(thingit, client):
 and an :class:`asnake.client.ASnakeClient`, this method will return a generator
 which yields the JSON representation of each successive element in the resource's tree,
 in order."""
-    uri = resolve_to_uri(thingit, client)
+    uri = resolve_to_uri(thingit)
 
     params = {'offset': 0}
     if not 'archival_object' in uri:
