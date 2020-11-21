@@ -362,7 +362,6 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tree_object</span> <span class="o">=</span> <span class="n">find_subtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">pdb</span><span class="p">;</span><span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; has no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="s2">&quot;tree&quot;</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">wrap_json_object</span><span class="p">(</span><span class="n">tree_object</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
 
