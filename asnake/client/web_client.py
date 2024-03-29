@@ -9,8 +9,10 @@ import asnake.logging as logging
 
 log = None # initialized on first client init
 
-class ASnakeAuthError(Exception): pass
-class ASnakeWeirdReturnError(Exception): pass
+class ASnakeError(Exception): pass
+class ASnakeAuthError(ASnakeError): pass
+class ASnakeWeirdReturnError(ASnakeError): pass
+class ASnakeArgumentError(ASnakeError): pass
 
 def listlike_seq(seq):
     '''Determine if a thing is a list-like (sequence of values) sequence that's not string-like.'''
@@ -86,14 +88,32 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
         log.debug("client created")
 
 
-    def authorize(self, username=None, password=None):
+    def authorize(self, username=None, password=None, session_token=None, session_header_name=None):
         '''Authorizes the client against the configured archivesspace instance.
 
         Parses the JSON response, and stores the returned session token in the session.headers for future requests.
         Asks for a "non-expiring" session, which isn't truly immortal, just long-lived.'''
 
-        username = username or self.config['username']
-        password = password or self.config['password']
+        # Populate values from config if empty
+        username      = username or self.config.get('username', None)
+        password      = password or self.config.get('password', None)
+        session_token = session_token or self.config.get('session_token', None)
+
+        if all((username, password, session_token,)):
+            log.debug('argument error in authorize')
+            raise ASnakeAuthError("Cannot set both username/password and session_token")
+
+        session_header_name = session_header_name or self.config['session_header_name']
+
+        # If we have a session_token already
+        if session_token:
+            self.session.headers[session_header_name] = session_token
+            log.debug("setting session token directly")
+            return session_token
+
+        # Otherwise, use ASpace login to get one
+
+
 
         log.debug("authorizing against ArchivesSpace", user=username)
 
@@ -107,7 +127,7 @@ class ASnakeClient(metaclass=ASnakeProxyMethods):
             raise ASnakeAuthError("Failed to authorize ASnake with status: {}".format(resp.status_code))
         else:
             session_token = json.loads(resp.text)['session']
-            self.session.headers['X-ArchivesSpace-Session'] = session_token
+            self.session.headers[session_header_name] = session_token
             log.debug("authorization success", session_token=session_token)
             return session_token
 
