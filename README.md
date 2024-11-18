@@ -36,7 +36,7 @@ You'll need an internet connection to fetch ASnake's dependencies.
 ArchivesSnake looks for a .archivessnake.yml file in the home directory.
 
 * For OS X and Linux: `/home/[my user name]/.archivessnake.yml`
-* For Windows: `C:\Users[my user name].archivessnake.yml` 
+* For Windows: `C:\Users\[my user name]\.archivessnake.yml` 
 
 An example .archivessnake.yml file:
 
