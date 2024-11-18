@@ -39,7 +39,7 @@ ArchivesSnake looks for a .archivessnake.yml file in the home directory.
 * For Windows: `C:\Users\[my user name]\.archivessnake.yml` 
 
 
-An minimal example of an .archivessnake.yml file:
+An minimal example of a .archivessnake.yml file:
 
 ```yaml
 baseurl: 'http://localhost:8089'
