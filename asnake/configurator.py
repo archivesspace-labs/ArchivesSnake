@@ -16,7 +16,9 @@ def ConfigSources(yaml_path):
         'baseurl'         : 'http://localhost:4567',
         'username'        : 'admin',
         'password'        : 'admin',
-        'retry_with_auth' : True
+        'session_header_name': 'X-ArchivesSpace-Session',
+        'retry_with_auth' : True,
+
     })
 
 
@@ -35,6 +37,9 @@ class ASnakeConfig:
 
     def __getitem__(self, k):
         return self.config[k]
+
+    def get(self, k, default=None):
+        return self.config.get(k, default)
 
     def __contains__(self, k):
         return k in self.config

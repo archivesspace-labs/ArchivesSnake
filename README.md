@@ -38,31 +38,36 @@ ArchivesSnake looks for a .archivessnake.yml file in the home directory.
 * For OS X and Linux: `/home/[my user name]/.archivessnake.yml`
 * For Windows: `C:\Users\[my user name]\.archivessnake.yml` 
 
-An example .archivessnake.yml file:
+
+An minimal example of a .archivessnake.yml file:
 
 ```yaml
-baseurl: 'http://localhost:8089'  
-username: 'admin'  
+baseurl: 'http://localhost:8089'
+username: 'admin'
 password: 'admin'
 ```
 
-| **Setting**     | **Description**                                                               | **Default Value**     |
-|-----------------|-------------------------------------------------------------------------------|-----------------------|
-| `baseurl`         | The location (including port if not on port 80) of your archivesspace backend | http://localhost:4567 |
-| `username`        | Username for authorization                                                    | admin                 |
-| `password`        | Password for authorization                                                    | admin                 |
-| `retry_with_auth` | Whether to respond to 403 errors by trying to authorize and retrying          | True                  |
-| `logging_config`  | Hash with various config values for the logging subsystem                     | **see below**         |
+| **Setting**           | **Description**                                                               | **Default Value**       |
+|-----------------------|-------------------------------------------------------------------------------|-------------------------|
+| `baseurl`             | The location (including port if not on port 80) of your archivesspace backend | http://localhost:4567   |
+| `username`            | Username for authorization                                                    | admin                   |
+| `password`            | Password for authorization                                                    | admin                   |
+| `session_token`       | Session token for authorization                                               | **see below**           |
+| `session_header_name` | Header to send session token in                                               | X-ArchivesSpace-Session |
+| `retry_with_auth`     | Whether to respond to 403 errors by trying to authorize and retrying          | True                    |
+| `logging_config`      | Hash with various config values for the logging subsystem                     | **see below**           |
+
+`username`/`password` and `session_token` are mutually exclusive. In a normally configured ArchivesSpace system, you will want to use `username`/`password`. `session_token` allows you to set a fixed value for the session, in case you are sharing a long-lived session amongst several apps, or using an authorization customization that bypasses the ArchivesSpace login route. Examples of this include proxies or SSO plugins.  `session_header_name` lets you customize the header you pass the session in, since some proxies use a different header than `X-ArchivesSpace-Session`.
 
 The logging config allows the following settings, none of which are present by default:
 
-| **Setting**    | **Description**                                                           | **Notes**                          |
-|----------------|---------------------------------------------------------------------------|------------------------------------|
-| `default_config` | A default configuration to start from                                | See [logging](#logging) for more info  |
-| `stream`         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | Cannot be combined with `filename`     |
-| `filename`       | name of file to be printed to                                             | Cannot be combined with `stream`   |
-| `filemode`       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | Only useful combined with `filename` |
-| `level`          | level to log at (e.g. 'INFO', 'DEBUG', 'WARNING')                         |                                    |
+| **Setting**      | **Description**                                                           | **Notes**                             |
+|------------------|---------------------------------------------------------------------------|---------------------------------------|
+| `default_config` | A default configuration to start from                                     | See [logging](#logging) for more info |
+| `stream`         | stream to be printed to (e.g. sys.stdin, sys.stdout, an open file)        | Cannot be combined with `filename`    |
+| `filename`       | name of file to be printed to                                             | Cannot be combined with `stream`      |
+| `filemode`       | mode to apply to file, as per `open` ('w' for write, 'a' for append, etc) | Only useful combined with `filename`  |
+| `level`          | level to log at (e.g. 'INFO', 'DEBUG', 'WARNING')                         |                                       |
 
 You can also define a configuration file, formatted in the [YAML markup language](http://yaml.org/). By default, ASnake looks for a file called `.archivessnake.yml` in the home directory of the user running it.  If an environment variable `ASNAKE_CONFIG_FILE` is set, ASnake will treat it as a filename and search there.
 
