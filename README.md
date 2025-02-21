@@ -79,7 +79,7 @@ username: admin
 password: admin
 retry_with_auth: false
 logging_config:
-default_config: INFO_TO_STDERR
+    default_config: INFO_TO_STDERR
 ```
 
 Default values corresponding to the admin account of an unaltered local development instance of ASpace are included as fallback values.
